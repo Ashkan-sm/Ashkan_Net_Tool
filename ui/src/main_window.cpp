@@ -15,8 +15,6 @@ void MainWindow::main_window(){
     ImGui::End();
 
     main_toolbar();
-
-
 }
 
 void MainWindow::main_toolbar() {
@@ -31,14 +29,13 @@ void MainWindow::main_toolbar() {
 
     float toolbar_height = io.DisplaySize.y;
 
-    // Position toolbar on the left edge
     ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x - conf::toolbar_width, 0));
     ImGui::SetNextWindowSize(ImVec2(conf::toolbar_width, toolbar_height));
 
     ImGui::Begin("VerticalToolbar", nullptr, toolbar_flags);
-    if (ImGui::Button("arpSpoof", ImVec2(conf::toolbar_width-16, conf::toolbar_button_height)))
+    if (ImGui::Button("ArpSpoof", ImVec2(conf::toolbar_width-16, conf::toolbar_button_height)))
     {
-        // Handle New
+
     }
 
     if (ImGui::Button("ArpPoiseningDetection", ImVec2(conf::toolbar_width-16, conf::toolbar_button_height)))
@@ -46,8 +43,6 @@ void MainWindow::main_toolbar() {
         // Handle Open
     }
 
-
-    // Add more buttons or icons here
 
     ImGui::End();
 }
