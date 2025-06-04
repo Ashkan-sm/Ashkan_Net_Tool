@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "model/PcapPlusPlus-25.05/3rdParty/json",
+		"source" : "model/PcapPlusPlus-25.05/3rdParty/json"
+	}
+}
