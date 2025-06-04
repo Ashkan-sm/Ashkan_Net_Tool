@@ -6,7 +6,12 @@
 #define ASHKANTOOL_INTERFACE_H
 
 
-class Interface {
+class ModelInterface {
+public:
+    ModelInterface();
+
+
+private:
 
 };
 

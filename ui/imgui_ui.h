@@ -26,6 +26,8 @@
 #include "../libs/emscripten/emscripten_mainloop_stub.h"
 #endif
 
+#include "src/main_window.h"
+
 static void glfw_error_callback(int error, const char* description)
 {
     fprintf(stderr, "GLFW Error %d: %s\n", error, description);
@@ -33,6 +35,7 @@ static void glfw_error_callback(int error, const char* description)
 class ImguiUi {
 public:
     ImguiUi();
+    int exec();
 };
 
 

@@ -1,5 +1,10 @@
 #include "ui/imgui_ui.h"
+#include "model/interface.h"
+#include <iostream>
 int main(int, char**)
 {
-    ImguiUi ui();
+    ModelInterface system;
+    ImguiUi ui;
+    return ui.exec();
+
 }

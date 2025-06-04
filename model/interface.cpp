@@ -3,3 +3,7 @@
 //
 
 #include "interface.h"
+
+ModelInterface::ModelInterface() {
+
+}
