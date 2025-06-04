@@ -1,0 +1,64 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"install"
+		],
+		"files" : 
+		[
+			"Pcap++/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 107,
+				"parent" : 0
+			}
+		]
+	},
+	"installers" : 
+	[
+		{
+			"backtrace" : 1,
+			"component" : "Unspecified",
+			"destination" : "lib",
+			"paths" : 
+			[
+				"Pcap++/libPcap++.a"
+			],
+			"targetId" : "Pcap++::@41925b711d26286f9ef2",
+			"targetIndex" : 42,
+			"type" : "target"
+		},
+		{
+			"backtrace" : 1,
+			"component" : "Unspecified",
+			"destination" : "include/pcapplusplus",
+			"paths" : 
+			[
+				"Pcap++/header/Device.h",
+				"Pcap++/header/DeviceListBase.h",
+				"Pcap++/header/NetworkUtils.h",
+				"Pcap++/header/PcapDevice.h",
+				"Pcap++/header/PcapFileDevice.h",
+				"Pcap++/header/PcapFilter.h",
+				"Pcap++/header/PcapLiveDevice.h",
+				"Pcap++/header/PcapLiveDeviceList.h",
+				"Pcap++/header/RawSocketDevice.h",
+				"Pcap++/header/LinuxNicInformationSocket.h"
+			],
+			"type" : "file"
+		}
+	],
+	"paths" : 
+	{
+		"build" : "Pcap++",
+		"source" : "Pcap++"
+	}
+}

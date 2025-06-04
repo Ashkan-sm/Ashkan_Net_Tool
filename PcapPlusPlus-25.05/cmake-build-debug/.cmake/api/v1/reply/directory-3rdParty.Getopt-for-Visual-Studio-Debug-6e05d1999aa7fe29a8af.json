@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "3rdParty/Getopt-for-Visual-Studio",
+		"source" : "3rdParty/Getopt-for-Visual-Studio"
+	}
+}
