@@ -11,13 +11,16 @@ ArpSpoofWindow::ArpSpoofWindow(ModelInterface *core) : ISubWindow(core) {
 
 }
 void ArpSpoofWindow::draw() {
+    ImVec2 avail(ImGui::GetMainViewport()->Size.x-ImGui::FindWindowByName("VerticalToolbar")->Size.x,ImGui::GetMainViewport()->Size.y-ImGui::FindWindowByName("Log")->Size.y);
     static ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoResize |
                                     ImGuiWindowFlags_NoMove |
                                     ImGuiWindowFlags_NoCollapse |
                                     ImGuiWindowFlags_NoNavFocus ;
     static ImGuiInputTextFlags input_text_ip_flag = ImGuiInputTextFlags_CharsDecimal;
+
+
     ImGui::SetNextWindowPos(ImVec2(0, 0));
-    ImGui::SetNextWindowSize(ImVec2(ImGui::GetIO().DisplaySize.x - conf::toolbar_width, ImGui::GetIO().DisplaySize.y));
+    ImGui::SetNextWindowSize(avail);
 
     ImGui::Begin("ArpSpoofWindow", nullptr, window_flags);
 
@@ -39,7 +42,14 @@ void ArpSpoofWindow::draw() {
     static char forward_to_ip[16] = "";
     ImGui::InputTextWithHint("forward_to(ip)", "0.0.0.0", forward_to_ip, IM_ARRAYSIZE(forward_to_ip),input_text_ip_flag);
 
-    ImGui::NewLine();if (ImGui::Button("start poisoning")){}
+    ImGui::NewLine();if (ImGui::Button("start poisoning")){core_->start_arp_poison(interface_ip,victim_src_ip,victim_dst_ip,forward_to_ip);}
+
+
+    for(auto i:core_->get_live_threads()) {
+        if (ImGui::Button(("kill thread " + std::to_string(i)).c_str())) {
+            core_->kill_thread(i);
+        }
+    }
     ImGui::End();
 }
 
@@ -48,12 +58,16 @@ DefaultWindow::DefaultWindow(ModelInterface *core) : ISubWindow(core) {
 
 }
 void DefaultWindow::draw() {
-    ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoResize |
-                                    ImGuiWindowFlags_NoMove |
-                                    ImGuiWindowFlags_NoCollapse |
-                                    ImGuiWindowFlags_NoNavFocus ;
+    ImVec2 avail(ImGui::GetMainViewport()->Size.x-ImGui::FindWindowByName("VerticalToolbar")->Size.x,ImGui::GetMainViewport()->Size.y-ImGui::FindWindowByName("Log")->Size.y);
+    static ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoResize |
+                                           ImGuiWindowFlags_NoMove |
+                                           ImGuiWindowFlags_NoCollapse |
+                                           ImGuiWindowFlags_NoNavFocus ;
+    static ImGuiInputTextFlags input_text_ip_flag = ImGuiInputTextFlags_CharsDecimal;
+
+
     ImGui::SetNextWindowPos(ImVec2(0, 0));
-    ImGui::SetNextWindowSize(ImVec2(ImGui::GetIO().DisplaySize.x - conf::toolbar_width, ImGui::GetIO().DisplaySize.y));
+    ImGui::SetNextWindowSize(avail);
 
     ImGui::Begin("default window", nullptr, window_flags);
     ImGui::Text("This subwindow fills the entire screen");

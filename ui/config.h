@@ -3,6 +3,7 @@
 namespace conf {
     const float toolbar_width = 200;
     const float toolbar_button_height=30;
+    const float log_window_height=200;
 
 
 }

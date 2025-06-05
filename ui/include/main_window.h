@@ -27,8 +27,10 @@ private:
     std::shared_ptr<ISubWindow> arp_spoof_window;
 
     void draw_main_toolbar();
+    void draw_log_window();
     std::shared_ptr<ISubWindow> sub_window_;
 
+    char log_buffer_[1024]="";
 
 };
 #endif //ASHKANTOOL_MAIN_WINDOW_H
