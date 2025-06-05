@@ -8,18 +8,24 @@
 #include <functional>
 #include <vector>
 #include <string>
-class Logger {
-public:
-    static Logger& getInstance();
-    void log(const std::string &log);
-    void add_log_method(std::function<void(const std::string &)> method);
-private:
-    Logger();
-    Logger(const Logger&) = delete;
-    Logger& operator=(const Logger&) = delete;
+namespace ashk {
+    class Logger {
+    public:
+        static Logger &getInstance();
 
-    std::vector<std::function<void(const std::string &)>> log_methods;
-};
+        void log(const std::string &log);
 
+        void add_log_method(std::function<void(const std::string &)> method);
+
+    private:
+        Logger();
+
+        Logger(const Logger &) = delete;
+
+        Logger &operator=(const Logger &) = delete;
+
+        std::vector<std::function<void(const std::string &)>> log_methods;
+    };
+}
 
 #endif //ASHKANTOOL_LOGGER_H

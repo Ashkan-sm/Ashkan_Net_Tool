@@ -98,6 +98,7 @@ void Net_core::start_arp_poisoning(pcpp::IPv4Address iface_ip, pcpp::IPv4Address
 
             std::this_thread::sleep_for(std::chrono::seconds(5));
         }
+
     });
 
 }
@@ -128,3 +129,30 @@ std::vector<int> Net_core::get_live_threads() {
     }
     return out;
 }
+
+void Net_core::start_arp_poison_detecion(pcpp::IPv4Address iface_ip) {
+    logger_.log("starting arp poison detection . . .\n");
+    dev_=pcpp::PcapLiveDeviceList::getInstance().getDeviceByIp(iface_ip);
+    if(dev_ == nullptr){
+        logger_.log("couldnt find device\n");
+        return;
+    }
+    if(!dev_->open()){
+        logger_.log("couldn't open device");
+        return;
+    }
+
+    add_live_thread([=](std::shared_ptr<bool> alive){
+        ArpPoisoningDetectionCookie cookie;
+        if (!capture_wrapper.start_capture(dev_,PacketReceiver::onPacketArrivesArpPoisoningDetection,&cookie,last_added_thread_id))
+            return;
+        while(*alive){
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+        }
+        capture_wrapper.stop_capture(dev_);
+
+    });
+
+}
+
+void arp_poision_detection_on_packet_arives();

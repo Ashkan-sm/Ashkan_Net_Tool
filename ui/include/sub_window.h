@@ -14,6 +14,7 @@ public:
     virtual void draw() = 0;
 protected:
     ModelInterface *core_;
+    void draw_base(const std::string &name);
 private:
 };
 class DefaultWindow :public ISubWindow{
@@ -28,5 +29,10 @@ public:
     void draw() override;
 };
 
+class ArpPoisonDetectionWindow :public ISubWindow{
+public:
+    ArpPoisonDetectionWindow(ModelInterface *core);
+    void draw() override;
+};
 
 #endif //ASHKANTOOL_SUB_WINDOW_H

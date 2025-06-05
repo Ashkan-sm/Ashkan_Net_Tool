@@ -5,6 +5,7 @@ MainWindow::MainWindow(ModelInterface *core) :core_(core){
 
     default_window=std::make_shared<DefaultWindow>(core_);
     arp_spoof_window=std::make_shared<ArpSpoofWindow>(core_);
+    arp_poison_detection_window=std::make_shared<ArpPoisonDetectionWindow>(core_);
 
     sub_window_=default_window;
 
@@ -46,7 +47,7 @@ void MainWindow::draw_main_toolbar() {
 
     if (ImGui::Button("ArpPoisoningDetection", ImVec2(conf::toolbar_width-16, conf::toolbar_button_height)))
     {
-
+        sub_window_=arp_poison_detection_window;
     }
 
 

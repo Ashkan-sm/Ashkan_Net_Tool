@@ -7,6 +7,10 @@ add_library(AshkanTool-Core
         include/net_core.h
         src/logger.cpp
         include/logger.h
+        src/packet_receiver.cpp
+        include/packet_receiver.h
+        src/capture_wrapper.cpp
+        include/capture_wrapper.h
 )
 target_link_libraries(AshkanTool-Core
         PUBLIC

@@ -54,4 +54,21 @@ void ModelInterface::kill_thread(int id) {
     core_.kill_thread(id);
 }
 
+void ModelInterface::start_arp_poison_detection(std::string iface_ip) {
+    pcpp::IPv4Address iface;
+
+    try
+    {
+        iface = pcpp::IPv4Address(iface_ip);
+
+    }
+    catch (const std::exception&)
+    {
+        logger_.log("invalid ip inputs\n");
+        return;
+    }
+    core_.start_arp_poison_detecion(iface_ip);
+
+}
+
 

@@ -8,12 +8,14 @@
 #include "include/net_core.h"
 #include <string>
 #include "include/logger.h"
+
 class ModelInterface {
 public:
     ModelInterface();
     std::string arp(std::string ip);
     std::string get_interface_ip();
     void start_arp_poison(std::string iface_ip,std::string vic_src_ip,std::string vic_dst_ip,std::string forward_to_ip);
+    void start_arp_poison_detection(std::string iface_ip);
     void add_logger_method(std::function<void(const std::string &)> method);
     std::vector<int> get_live_threads();
     void kill_thread(int id);

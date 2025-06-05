@@ -25,6 +25,7 @@ private:
     ModelInterface *core_;
     std::shared_ptr<ISubWindow> default_window;
     std::shared_ptr<ISubWindow> arp_spoof_window;
+    std::shared_ptr<ISubWindow> arp_poison_detection_window;
 
     void draw_main_toolbar();
     void draw_log_window();
