@@ -4,8 +4,10 @@
 
 #include "imgui_ui.h"
 
-ImguiUi::ImguiUi() {
+ImguiUi::ImguiUi(ModelInterface *core):core_(core) {
+
 }
+
 
 int ImguiUi::exec() {
     glfwSetErrorCallback(glfw_error_callback);
@@ -95,6 +97,9 @@ int ImguiUi::exec() {
     io.IniFilename = nullptr;
     EMSCRIPTEN_MAINLOOP_BEGIN
 #else
+
+    MainWindow main_Window(core_);
+
     while (!glfwWindowShouldClose(window))
 #endif
     {
@@ -115,7 +120,7 @@ int ImguiUi::exec() {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        MainWindow::main_window();
+        main_Window.draw();
 
 
         // Rendering
@@ -142,3 +147,5 @@ int ImguiUi::exec() {
     glfwTerminate();
 
 }
+
+

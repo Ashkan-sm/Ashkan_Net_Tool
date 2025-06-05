@@ -26,7 +26,8 @@
 #include "../libs/emscripten/emscripten_mainloop_stub.h"
 #endif
 
-#include "src/main_window.h"
+#include "include/main_window.h"
+#include "../model/interface.h"
 
 static void glfw_error_callback(int error, const char* description)
 {
@@ -34,9 +35,12 @@ static void glfw_error_callback(int error, const char* description)
 }
 class ImguiUi {
 public:
-    ImguiUi();
+    ImguiUi(ModelInterface *core);
     int exec();
+private:
+    ModelInterface *core_;
 };
+
 
 
 #endif //ASHKANTOOL_IMGUI_UI_H

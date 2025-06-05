@@ -19,11 +19,11 @@ add_library(AshkanTool-ui
         imgui_ui.cpp
         imgui_ui.h
         src/main_window.cpp
-        src/imgui_headers.h
-        src/main_window.h
+        include/imgui_headers.h
+        include/main_window.h
         config.h
         src/sub_window.cpp
-        src/sub_window.h)
+        include/sub_window.h)
 
 target_include_directories(AshkanTool-ui
         PUBLIC
@@ -41,6 +41,7 @@ target_link_libraries(AshkanTool-ui
         dl
         pthread
         GL
+        AshkanTool-Core
 )
 
 add_executable(UiHelp imgui/examples/example_glfw_opengl3/main.cpp)

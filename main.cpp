@@ -4,7 +4,7 @@
 int main(int, char**)
 {
     ModelInterface system;
-    ImguiUi ui;
+    ImguiUi ui(&system);
     return ui.exec();
 
 }

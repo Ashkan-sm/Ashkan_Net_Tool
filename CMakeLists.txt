@@ -6,9 +6,9 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(AshkanTool main.cpp)
 
-
-add_subdirectory(model)
 add_subdirectory(ui)
+add_subdirectory(model)
+
 
 target_link_libraries(AshkanTool
         PRIVATE
