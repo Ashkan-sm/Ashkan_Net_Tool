@@ -4,15 +4,23 @@ add_library(AshkanTool-Core
         interface.cpp
         interface.hpp
         src/net-core.cpp
-        include/net-core.hpp
-        src/logger.cpp
-        include/logger.hpp
+        src/net-core.hpp
+        ../utils/logger.cpp
+        ../utils/logger.hpp
         src/packet-receiver.cpp
-        include/packet-receiver.hpp
+        src/packet-receiver.hpp
         src/capture-wrapper.cpp
-        include/capture-wrapper.hpp
-        utils/task.cpp
-        utils/task.hpp
+        src/capture-wrapper.hpp
+        src/Task/task.cpp
+        src/Task/task.hpp
+        src/Task/tasks/arp-poisoning-task.cpp
+        src/Task/tasks/arp-poisoning-task.hpp
+        ../utils/net-utils.cpp
+        ../utils/net-utils.hpp
+        src/Task/tasks/arp-poison-detection-task.cpp
+        src/Task/tasks/arp-poison-detection-task.hpp
+        src/Task/tasks/vlan-hopping-task.cpp
+        src/Task/tasks/vlan-hopping-task.hpp
 )
 target_link_libraries(AshkanTool-Core
         PUBLIC

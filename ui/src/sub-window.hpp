@@ -39,4 +39,12 @@ public:
     explicit SendArpRequestWindow(ashk::ModelInterface *core);
     void draw() override;
 };
+class VlanHoppingWindow  :public ISubWindow{
+public:
+    explicit VlanHoppingWindow(ashk::ModelInterface *core);
+    void draw() override;
+};
+
+
+
 #endif //ASHKANTOOL_SUB_WINDOW_HPP

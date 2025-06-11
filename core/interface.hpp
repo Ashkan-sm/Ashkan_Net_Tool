@@ -5,9 +5,9 @@
 #ifndef ASHKANTOOL_INTERFACE_HPP
 #define ASHKANTOOL_INTERFACE_HPP
 
-#include "include/net-core.hpp"
+#include "src/net-core.hpp"
 #include <string>
-#include "include/logger.hpp"
+#include "../utils/logger.hpp"
 namespace ashk {
 
 class ModelInterface {
@@ -21,16 +21,16 @@ public:
 
     void start_arp_poison(std::string iface_ip, std::string vic_src_ip, std::string vic_dst_ip,
                           std::string forward_to_ip);
-
     void start_arp_poison_detection(std::string iface_ip);
+    void start_vlan_hopping(std::string iface_ip_str,std::string vlan_id_str);
 
     void add_logger_method(std::function<void(const std::string &)> method);
-    std::vector<int> get_live_threads();
-    void kill_thread(int id);
+    std::vector<int> get_running_tasks();
+    void end_task(int id);
 
 private:
     Net_core core_;
-    Logger &logger_ = Logger::getInstance();
+    utils::Logger &logger_ = utils::Logger::getInstance();
 
 
 };

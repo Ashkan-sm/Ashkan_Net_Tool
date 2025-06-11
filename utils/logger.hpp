@@ -8,7 +8,7 @@
 #include <functional>
 #include <vector>
 #include <string>
-namespace ashk {
+namespace ashk::utils {
     class Logger {
     public:
         static Logger &getInstance();

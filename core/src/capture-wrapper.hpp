@@ -6,19 +6,19 @@
 #define ASHKANTOOL_CAPTURE_WRAPPER_HPP
 
 #include <iostream>
-#include <MacAddress.h>
-#include <IpAddress.h>
-#include <Logger.h>
-#include <PcapPlusPlusVersion.h>
-#include <PcapLiveDeviceList.h>
-#include <PcapLiveDevice.h>
-#include <NetworkUtils.h>
+#include "MacAddress.h"
+#include "IpAddress.h"
+#include "Logger.h"
+#include "PcapPlusPlusVersion.h"
+#include "PcapLiveDeviceList.h"
+#include "PcapLiveDevice.h"
+#include "NetworkUtils.h"
 #include <getopt.h>
-#include <SystemUtils.h>
-#include <EthLayer.h>
-#include <Packet.h>
+#include "SystemUtils.h"
+#include "EthLayer.h"
+#include "Packet.h"
 #include <mutex>
-#include "logger.hpp"
+#include "../../utils/logger.hpp"
 namespace ashk {
 
 class CaptureWrapper {
@@ -40,7 +40,7 @@ private:
     std::mutex m_is_capturing;
     bool is_capturing = false;
     int capturing_thread_id = 0;
-    Logger &logger = Logger::getInstance();
+    utils::Logger &logger = utils::Logger::getInstance();
 
 };
 

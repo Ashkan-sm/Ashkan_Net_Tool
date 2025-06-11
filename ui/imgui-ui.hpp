@@ -26,7 +26,7 @@
 #include "../libs/emscripten/emscripten_mainloop_stub.h"
 #endif
 
-#include "include/main-window.hpp"
+#include "src/main-window.hpp"
 #include "../core/interface.hpp"
 
 static void glfw_error_callback(int error, const char* description)

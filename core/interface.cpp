@@ -45,12 +45,12 @@ void ModelInterface::add_logger_method(std::function<void(const std::string &)> 
     logger_.add_log_method(method);
 }
 
-std::vector<int> ModelInterface::get_live_threads() {
-    return core_.get_live_threads();
+std::vector<int> ModelInterface::get_running_tasks() {
+    return core_.get_running_tasks();
 }
 
-void ModelInterface::kill_thread(int id) {
-    core_.kill_thread(id);
+void ModelInterface::end_task(int id) {
+    core_.end_task(id);
 }
 
 void ModelInterface::start_arp_poison_detection(std::string iface_ip) {
@@ -73,7 +73,7 @@ void ModelInterface::send_arp_req(const std::string& iface_ip_str, const std::st
     pcpp::IPv4Address ip;
 
     try {
-        iface = pcpp::IPv4Address(iface);
+        iface = pcpp::IPv4Address(iface_ip_str);
         ip = pcpp::IPv4Address(ip_str);
 
     }
@@ -83,5 +83,20 @@ void ModelInterface::send_arp_req(const std::string& iface_ip_str, const std::st
     }
     core_.send_arp_req(iface,ip);
 }
+
+    void ModelInterface::start_vlan_hopping(std::string iface_ip_str, std::string vlan_id_str) {
+        pcpp::IPv4Address iface;
+        int vlan_id;
+        try {
+            iface = pcpp::IPv4Address(iface_ip_str);
+            vlan_id=std::stoi(vlan_id_str);
+
+        }
+        catch (const std::exception &) {
+            logger_.log("invalid inputs\n");
+            return;
+        }
+        core_.start_vlan_hopping(iface,vlan_id);
+    }
 
 }

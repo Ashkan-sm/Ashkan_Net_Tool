@@ -2,8 +2,8 @@
 // Created by dev on 6/5/25.
 //
 
-#include "../include/logger.hpp"
-namespace ashk{
+#include "logger.hpp"
+namespace ashk::utils{
 
 Logger & Logger::getInstance() {
     static Logger logger;

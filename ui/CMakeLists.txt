@@ -9,11 +9,11 @@ add_library(AshkanTool-ui
         imgui-ui.cpp
         imgui-ui.hpp
         src/main-window.cpp
-        include/imgui-headers.hpp
-        include/main-window.hpp
+        src/imgui-headers.hpp
+        src/main-window.hpp
         config.h
         src/sub-window.cpp
-        include/sub-window.hpp)
+        src/sub-window.hpp)
 
 target_include_directories(AshkanTool-ui
         PUBLIC
