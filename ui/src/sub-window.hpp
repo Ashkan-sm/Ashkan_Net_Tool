@@ -7,6 +7,7 @@
 #include "imgui-headers.hpp"
 #include "config.h"
 #include "../../core/interface.hpp"
+#include <EthDot3Layer.h>
 
 class ISubWindow {
 public:

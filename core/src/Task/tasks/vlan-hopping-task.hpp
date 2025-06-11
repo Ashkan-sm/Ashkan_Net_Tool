@@ -23,6 +23,9 @@
 #include "../../../../utils/net-utils.hpp"
 #include "../../packet-receiver.hpp"
 #include "../../capture-wrapper.hpp"
+#include "RawPacket.h"
+#include <EthDot3Layer.h>
+
 namespace ashk::tasks{
 class VlanHoppingTask : public Task {
 public:

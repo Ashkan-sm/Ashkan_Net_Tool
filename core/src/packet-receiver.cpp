@@ -35,6 +35,8 @@ void ashk::PacketReceiver::onPacketArrivesArpPoisoningDetection(pcpp::RawPacket 
 }
 
 void ashk::PacketReceiver::onPacketArrivesVlanHopping(pcpp::RawPacket *rawPacket, pcpp::PcapLiveDevice *dev, void *cookie) {
+
+
     auto *data = static_cast<VlanHoppingCookie *>(cookie);
 
     // Parse the original packet
@@ -56,10 +58,22 @@ void ashk::PacketReceiver::onPacketArrivesVlanHopping(pcpp::RawPacket *rawPacket
         return;
     }
     pcpp::Packet new_packet(rawPacket->getRawDataLen()+100);
-    pcpp::EthLayer new_ethlayer(*ethLayer);
+    pcpp::EthLayer new_ethlayer(srcMac,dstMac,PCPP_ETHERTYPE_VLAN);
+
+
+
+    pcpp::VlanLayer outerVlan(2,    // VLAN ID
+                        0,      // Priority
+                        0,      // DEI
+                        PCPP_ETHERTYPE_VLAN);
+    pcpp::VlanLayer innerVlan(1,    // Target VLAN ID
+                        0,      // Priority
+                        0,      // DEI
+                        PCPP_ETHERTYPE_IP);
+
     new_packet.addLayer(&new_ethlayer);
-    pcpp::VlanLayer vlanlayer(data->vlan_id, false,1,PCPP_ETHERTYPE_IP);
-    new_packet.addLayer(&vlanlayer);
+    new_packet.addLayer(&outerVlan);
+    new_packet.addLayer(&innerVlan);
 
 
     for(pcpp::Layer *layer=ethLayer->getNextLayer();layer!= nullptr;layer=layer->getNextLayer()){

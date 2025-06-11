@@ -12,18 +12,14 @@ namespace ashk::utils {
     class Logger {
     public:
         static Logger &getInstance();
+        Logger(const Logger &) = delete;
+        Logger &operator=(const Logger &) = delete;
 
         void log(const std::string &log);
-
         void add_log_method(const std::function<void(const std::string &)> &method);
 
     private:
         Logger();
-
-        Logger(const Logger &) = delete;
-
-        Logger &operator=(const Logger &) = delete;
-
         std::vector<std::function<void(const std::string &)>> log_methods;
     };
 }
