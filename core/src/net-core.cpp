@@ -58,7 +58,7 @@ std::vector<int> Net_core::get_running_tasks() {
 }
 
 void Net_core::start_arp_poison_detection(pcpp::IPv4Address iface_ip) {
-    tasks[last_added_task_id]=std::make_unique<tasks::ArpPoisonDetectionTask>(dev_,iface_ip,last_added_task_id);
+    tasks[last_added_task_id]=std::make_unique<tasks::ArpPoisonDetectionTask>(iface_ip,last_added_task_id);
     tasks[last_added_task_id]->start();
     last_added_task_id++;
 
@@ -107,6 +107,12 @@ void Net_core::start_vlan_hopping(pcpp::IPv4Address iface_ip, int vlan_id) {
     tasks[last_added_task_id]->start();
     last_added_task_id++;
 }
+
+    void Net_core::start_mitm_forwarding(pcpp::IPv4Address iface_ip, pcpp::IPv4Address victim, pcpp::IPv4Address gateway) {
+        tasks[last_added_task_id]=std::make_unique<tasks::MITMPacketForwarding>(iface_ip,victim,gateway,last_added_task_id);
+        tasks[last_added_task_id]->start();
+        last_added_task_id++;
+    }
 
 
 }

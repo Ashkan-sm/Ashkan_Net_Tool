@@ -21,6 +21,7 @@
 #include "../../utils/logger.hpp"
 #include "VlanLayer.h"
 #include "PayloadLayer.h"
+#include <IpAddress.h>
 namespace ashk {
 
     struct ArpPoisoningDetectionCookie {
@@ -29,10 +30,17 @@ namespace ashk {
     struct VlanHoppingCookie {
         int vlan_id;
     };
+    struct MITMForwardingCookie {
+        pcpp::IPv4Address victim_ip;
+        pcpp::MacAddress victim_mac;
+        pcpp::IPv4Address gateway_ip;
+        pcpp::MacAddress gateway_mac;
+    };
     class PacketReceiver {
     public:
         static void onPacketArrivesArpPoisoningDetection(pcpp::RawPacket *raw_packet, pcpp::PcapLiveDevice *dev, void *cookie);
         static void onPacketArrivesVlanHopping(pcpp::RawPacket *raw_packet, pcpp::PcapLiveDevice *dev, void *cookie);
+        static void onPacketArrivesMITMForwarding(pcpp::RawPacket *raw_packet, pcpp::PcapLiveDevice *dev, void *cookie);
     };
 
 

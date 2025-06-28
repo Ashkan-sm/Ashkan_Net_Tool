@@ -27,7 +27,7 @@ void ashk::tasks::ArpPoisoningTask::exec() {
             return;
         }
     }
-    pcpp::MacAddress vic_dst_mac = NetUtils::arp(vic_dst_ip,dev_);
+    pcpp::MacAddress vic_dst_mac;
     if (vic_dst_ip == iface_ip) {
         vic_dst_mac = iface_mac;
     } else {

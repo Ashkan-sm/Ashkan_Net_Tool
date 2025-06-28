@@ -35,5 +35,5 @@ target_link_libraries(UiHelp         imgui
         ${GLFW_LIBRARIES}
         dl
         pthread
-        GL)
-
+        GL
+)

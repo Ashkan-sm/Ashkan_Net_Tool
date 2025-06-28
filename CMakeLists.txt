@@ -36,3 +36,13 @@ target_link_libraries(AshkanTool
 
         Pcap++ Packet++ Common++
 )
+set(RESOURCE_SRC_DIR "${CMAKE_SOURCE_DIR}/ui/resource")
+set(RESOURCE_DST_DIR "${CMAKE_BINARY_DIR}/ui-resource")
+
+# Copy after build
+add_custom_command(
+        TARGET AshkanTool POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${RESOURCE_SRC_DIR}" "${RESOURCE_DST_DIR}"
+        COMMENT "Copying subproject resources to build directory"
+)

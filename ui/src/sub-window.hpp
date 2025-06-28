@@ -45,7 +45,11 @@ public:
     explicit VlanHoppingWindow(ashk::ModelInterface *core);
     void draw() override;
 };
-
+class MITMWindow  :public ISubWindow{
+public:
+    explicit MITMWindow(ashk::ModelInterface *core);
+    void draw() override;
+};
 
 
 #endif //ASHKANTOOL_SUB_WINDOW_HPP

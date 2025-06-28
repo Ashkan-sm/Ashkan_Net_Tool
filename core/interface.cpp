@@ -99,4 +99,22 @@ void ModelInterface::send_arp_req(const std::string& iface_ip_str, const std::st
         core_.start_vlan_hopping(iface,vlan_id);
     }
 
+    void ModelInterface::start_mitm_forwarding(const std::string& iface_ip_str,std::string victim_ip, std::string gateway_ip) {
+        pcpp::IPv4Address iface;
+        pcpp::IPv4Address victim;
+        pcpp::IPv4Address gateway;
+
+        try {
+            iface = pcpp::IPv4Address(iface_ip_str);
+            victim= pcpp::IPv4Address(victim_ip);
+            gateway= pcpp::IPv4Address(gateway_ip);
+
+        }
+        catch (const std::exception &) {
+            logger_.log("invalid ip inputs\n");
+            return;
+        }
+        core_.start_mitm_forwarding(iface,victim,gateway);
+    }
+
 }

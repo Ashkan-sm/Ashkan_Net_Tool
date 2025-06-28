@@ -21,6 +21,8 @@ add_library(AshkanTool-Core
         src/Task/tasks/arp-poison-detection-task.hpp
         src/Task/tasks/vlan-hopping-task.cpp
         src/Task/tasks/vlan-hopping-task.hpp
+        src/Task/tasks/mitm-packet-forwarding.cpp
+        src/Task/tasks/mitm-packet-forwarding.hpp
 )
 target_link_libraries(AshkanTool-Core
         PUBLIC

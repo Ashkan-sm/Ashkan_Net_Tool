@@ -54,8 +54,8 @@ int ImguiUi::exec() {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
-//    ImFont* myFont = io.Fonts->AddFontFromFileTTF("ui/resource/Roboto-VariableFont_wdth,wght.ttf", 16.0f);
-//    io.FontDefault=myFont;
+    ImFont* myFont = io.Fonts->AddFontFromFileTTF("ui-resource/Roboto-VariableFont_wdth,wght.ttf", 16.0f);
+    io.FontDefault=myFont;
 
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls

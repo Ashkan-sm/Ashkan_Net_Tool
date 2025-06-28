@@ -142,3 +142,36 @@ void VlanHoppingWindow::draw() {
 
     ImGui::End();
 }
+
+MITMWindow::MITMWindow(ashk::ModelInterface *core) : ISubWindow(core) {
+
+}
+
+void MITMWindow::draw() {
+    draw_base("ManInTheMiddleWindow");
+    static ImGuiInputTextFlags input_text_ip_flag = ImGuiInputTextFlags_CharsDecimal;
+
+    static char interface_ip[16] = "";
+    ImGui::InputTextWithHint("interface(ip)", "0.0.0.0", interface_ip, IM_ARRAYSIZE(interface_ip),input_text_ip_flag);
+    ImGui::SameLine(); if (ImGui::Button("discover")){
+        std::string ip=core_->get_interface_ip();
+        std::memcpy(interface_ip,ip.c_str(),ip.size());
+    }
+
+    static char victim_ip[16] = "";
+    ImGui::InputTextWithHint("victim(ip)", "0.0.0.0", victim_ip, IM_ARRAYSIZE(victim_ip),input_text_ip_flag);
+
+    static char gateway_ip[16] = "";
+    ImGui::InputTextWithHint("gateway(ip)", "0.0.0.0", gateway_ip, IM_ARRAYSIZE(gateway_ip),input_text_ip_flag);
+
+
+    ImGui::NewLine();if (ImGui::Button("start forwarding")){core_->start_mitm_forwarding(interface_ip,victim_ip,gateway_ip);}
+
+
+    for(auto i:core_->get_running_tasks()) {
+        if (ImGui::Button(("kill thread " + std::to_string(i)).c_str())) {
+            core_->end_task(i);
+        }
+    }
+    ImGui::End();
+}
