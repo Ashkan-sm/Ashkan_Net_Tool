@@ -28,7 +28,9 @@ namespace ashk {
         std::map<pcpp::IPv4Address, std::vector<pcpp::MacAddress>> ip_mac_map;
     };
     struct VlanHoppingCookie {
-        int vlan_id;
+        int inner_id;
+        int outer_id;
+
     };
     struct MITMForwardingCookie {
         pcpp::IPv4Address victim_ip;

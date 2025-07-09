@@ -23,6 +23,8 @@ add_library(AshkanTool-Core
         src/Task/tasks/vlan-hopping-task.hpp
         src/Task/tasks/mitm-packet-forwarding.cpp
         src/Task/tasks/mitm-packet-forwarding.hpp
+        src/Task/tasks/dtp-negotiation.cpp
+        src/Task/tasks/dtp-negotiation.hpp
 )
 target_link_libraries(AshkanTool-Core
         PUBLIC

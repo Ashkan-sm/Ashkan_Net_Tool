@@ -22,7 +22,8 @@ public:
     void start_arp_poison(std::string iface_ip, std::string vic_src_ip, std::string vic_dst_ip,
                           std::string forward_to_ip);
     void start_arp_poison_detection(std::string iface_ip);
-    void start_vlan_hopping(std::string iface_ip_str,std::string vlan_id_str);
+    void start_vlan_hopping(std::string iface_ip_str,std::string outer_str,std::string inner_str);
+    void start_dtp_negotiation(std::string iface_ip_str,const std::string &domain_name);
     void start_mitm_forwarding(const std::string& iface_ip_str,std::string victim_ip,std::string gateway_ip);
 
     void add_logger_method(std::function<void(const std::string &)> method);

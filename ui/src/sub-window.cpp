@@ -124,17 +124,30 @@ void VlanHoppingWindow::draw() {
     draw_base("VlanHoppingWindow");
 
     static ImGuiInputTextFlags input_text_ip_flag = ImGuiInputTextFlags_CharsDecimal;
+
     static char interface_ip[16] = "";
     ImGui::InputTextWithHint("interface(ip)", "0.0.0.0", interface_ip, IM_ARRAYSIZE(interface_ip),input_text_ip_flag);
     ImGui::SameLine(); if (ImGui::Button("discover")){
         std::string ip=core_->get_interface_ip();
         std::memcpy(interface_ip,ip.c_str(),ip.size());
     }
-    static char vlan_id[16] = "";
-    ImGui::InputTextWithHint("vlan(id)", "0", vlan_id, IM_ARRAYSIZE(interface_ip),input_text_ip_flag);
-    ImGui::NewLine();if (ImGui::Button("Start Hopping")){core_->start_vlan_hopping(interface_ip,vlan_id);}
 
-    for(auto i:core_->get_running_tasks()) {
+    ImGui::NewLine();
+    ImGui::Text("Double_Tagging");
+    static char outer_tag[16] = "";
+    static char inner_tag[16] = "";
+    ImGui::InputTextWithHint("outer_tag", "0", outer_tag, IM_ARRAYSIZE(interface_ip),input_text_ip_flag);
+    ImGui::InputTextWithHint("inner_tag", "0", inner_tag, IM_ARRAYSIZE(interface_ip),input_text_ip_flag);
+    if (ImGui::Button("Start Hopping")){core_->start_vlan_hopping(interface_ip,outer_tag,inner_tag);}
+
+    ImGui::NewLine();
+    ImGui::Text("DTP_Negotiation");
+    static char domain_name[32] = "";
+    ImGui::InputTextWithHint("domain_name", "name", domain_name, 32);
+    ImGui::SameLine(); if (ImGui::Button("extract")){}
+    if (ImGui::Button("Start Negotiation")){core_->start_dtp_negotiation(interface_ip,domain_name);}
+
+    ImGui::NewLine();for(auto i:core_->get_running_tasks()) {
         if (ImGui::Button(("kill thread " + std::to_string(i)).c_str())) {
             core_->end_task(i);
         }

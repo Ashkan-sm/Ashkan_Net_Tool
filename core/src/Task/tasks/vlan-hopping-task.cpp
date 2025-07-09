@@ -7,11 +7,13 @@
 
 ashk::tasks::VlanHoppingTask::VlanHoppingTask(pcpp::PcapLiveDevice *dev,
                                               pcpp::IPv4Address iface_ip,
-                                              int vlan_id,
+                                              int outer_id,
+                                              int inner_id,
                                               int last_task_id):
                                               dev_(dev),
                                               iface_ip(iface_ip),
-                                              vlan_id(vlan_id),
+                                              outer_id(outer_id),
+                                              inner_id(inner_id),
                                               last_task_id(last_task_id){
 
 
@@ -30,10 +32,11 @@ void ashk::tasks::VlanHoppingTask::exec() {
     }
 
     VlanHoppingCookie cookie;
-    cookie.vlan_id=vlan_id;
+    cookie.inner_id=inner_id;
+    cookie.outer_id=outer_id;
     if (!capture_wrapper.start_capture(dev_, PacketReceiver::onPacketArrivesVlanHopping, &cookie,last_task_id))
         return;
-    while (m.test()) {
+    while (is_running()) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
     capture_wrapper.stop_capture(dev_);

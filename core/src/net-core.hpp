@@ -23,7 +23,9 @@
 #include "Task/tasks/arp-poisoning-task.hpp"
 #include "Task/tasks/arp-poison-detection-task.hpp"
 #include "Task/tasks/vlan-hopping-task.hpp"
+#include "Task/tasks/dtp-negotiation.hpp"
 #include "Task/tasks/mitm-packet-forwarding.hpp"
+
 #include <map>
 
 #include "packet-receiver.hpp"
@@ -45,7 +47,8 @@ namespace ashk {
                                  pcpp::IPv4Address forward_to_ip);
         void start_arp_poison_detection(pcpp::IPv4Address iface_ip);
         void start_mitm_forwarding(pcpp::IPv4Address iface_ip,pcpp::IPv4Address victim,pcpp::IPv4Address gateway);
-        void start_vlan_hopping(pcpp::IPv4Address iface_ip,int vlan_id);
+        void start_vlan_hopping(pcpp::IPv4Address iface_ip,int outer_id,int inner_id);
+        void start_dtp_negotiation(pcpp::IPv4Address iface_ip,const std::string& domain_name);
 
         void add_logger_method(const std::function<void(const std::string &)> &method);
         void end_task(int id);

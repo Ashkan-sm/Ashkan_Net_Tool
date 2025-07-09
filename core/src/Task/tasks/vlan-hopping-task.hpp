@@ -31,14 +31,16 @@ class VlanHoppingTask : public Task {
 public:
     explicit VlanHoppingTask(pcpp::PcapLiveDevice *dev,
                              pcpp::IPv4Address iface_ip,
-                             int vlan_id,
+                             int outer_id,
+                             int inner_id,
                              int last_task_id);
 private:
     void exec() override;
     pcpp::PcapLiveDevice *dev_ = nullptr;
     pcpp::IPv4Address iface_ip;
     CaptureWrapper &capture_wrapper = CaptureWrapper::getInstance();
-    int vlan_id;
+    int outer_id;
+    int inner_id;
     int last_task_id;
 };
 

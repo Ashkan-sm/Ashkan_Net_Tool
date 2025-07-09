@@ -60,15 +60,15 @@ void ashk::PacketReceiver::onPacketArrivesVlanHopping(pcpp::RawPacket *rawPacket
     pcpp::Packet new_packet(rawPacket->getRawDataLen()+100);
     pcpp::EthLayer new_ethlayer(srcMac,dstMac,PCPP_ETHERTYPE_VLAN);
 
-    pcpp::VlanLayer outerVlan(2,    // VLAN ID
+    pcpp::VlanLayer outerVlan(data->outer_id,    // VLAN ID
                         0,      // Priority
                         0,      // DEI
                         PCPP_ETHERTYPE_VLAN);
-    pcpp::VlanLayer innerVlan(1,    // Target VLAN ID
+    pcpp::VlanLayer innerVlan(data->inner_id,    // Target VLAN ID
                         0,      // Priority
                         0,      // DEI
                               ntohs(ethLayer->getEthHeader()->etherType));
-//std::cout<< ntohs(ethLayer->getEthHeader()->etherType)<<","<<PCPP_ETHERTYPE_IP<<std::endl;
+
     new_packet.addLayer(&new_ethlayer);
     new_packet.addLayer(&outerVlan);
     new_packet.addLayer(&innerVlan);

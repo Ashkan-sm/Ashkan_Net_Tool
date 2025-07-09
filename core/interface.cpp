@@ -83,22 +83,6 @@ void ModelInterface::send_arp_req(const std::string& iface_ip_str, const std::st
     }
     core_.send_arp_req(iface,ip);
 }
-
-    void ModelInterface::start_vlan_hopping(std::string iface_ip_str, std::string vlan_id_str) {
-        pcpp::IPv4Address iface;
-        int vlan_id;
-        try {
-            iface = pcpp::IPv4Address(iface_ip_str);
-            vlan_id=std::stoi(vlan_id_str);
-
-        }
-        catch (const std::exception &) {
-            logger_.log("invalid inputs\n");
-            return;
-        }
-        core_.start_vlan_hopping(iface,vlan_id);
-    }
-
     void ModelInterface::start_mitm_forwarding(const std::string& iface_ip_str,std::string victim_ip, std::string gateway_ip) {
         pcpp::IPv4Address iface;
         pcpp::IPv4Address victim;
@@ -115,6 +99,36 @@ void ModelInterface::send_arp_req(const std::string& iface_ip_str, const std::st
             return;
         }
         core_.start_mitm_forwarding(iface,victim,gateway);
+    }
+
+    void ModelInterface::start_vlan_hopping(std::string iface_ip_str, std::string outer_str, std::string inner_str) {
+        pcpp::IPv4Address iface;
+        int outer_tag;
+        int inner_tag;
+        try {
+            iface = pcpp::IPv4Address(iface_ip_str);
+            outer_tag=std::stoi(outer_str);
+            inner_tag=std::stoi(inner_str);
+
+        }
+        catch (const std::exception &) {
+            logger_.log("invalid inputs\n");
+            return;
+        }
+        core_.start_vlan_hopping(iface,outer_tag,inner_tag);
+    }
+
+    void ModelInterface::start_dtp_negotiation(std::string iface_ip_str,const std::string& domain_name) {
+        pcpp::IPv4Address iface;
+        try {
+            iface = pcpp::IPv4Address(iface_ip_str);
+        }
+        catch (const std::exception &) {
+            logger_.log("invalid inputs\n");
+            return;
+        }
+        core_.start_dtp_negotiation(iface,domain_name);
+
     }
 
 }

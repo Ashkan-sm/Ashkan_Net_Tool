@@ -66,7 +66,7 @@ void ashk::tasks::ArpPoisoningTask::exec() {
     victimArpReply.computeCalculateFields();
 
     logger.log("Sending ARP replies to victim and to gateway every 5 seconds...\n");
-    while (m.test()) {
+    while (is_running()) {
         dev_->sendPacket(&gwArpReply);
         dev_->sendPacket(&victimArpReply);
 

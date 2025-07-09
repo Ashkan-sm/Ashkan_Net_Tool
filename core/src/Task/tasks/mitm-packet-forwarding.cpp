@@ -45,7 +45,7 @@ void ashk::tasks::MITMPacketForwarding::exec() {
 
     if (!capture_wrapper.start_capture(dev_, PacketReceiver::onPacketArrivesMITMForwarding, &cookie,last_task_id))
         return;
-    while (m.test()) {
+    while (is_running()) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
     capture_wrapper.stop_capture(dev_);

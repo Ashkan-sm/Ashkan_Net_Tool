@@ -21,7 +21,11 @@ namespace ashk {
     }
 
     bool Task::is_running() {
-        return m.test();
+        if(m.test_and_set()){
+            return true;
+        }
+        m.clear();
+        return false;
     }
 }
 

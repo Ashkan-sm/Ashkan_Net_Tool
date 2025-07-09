@@ -102,14 +102,21 @@ pcpp::MacAddress Net_core::arp(pcpp::IPv4Address ip) {
     return NetUtils::arp(ip,dev_);
 }
 
-void Net_core::start_vlan_hopping(pcpp::IPv4Address iface_ip, int vlan_id) {
-    tasks[last_added_task_id]=std::make_unique<tasks::VlanHoppingTask>(dev_,iface_ip,vlan_id,last_added_task_id);
-    tasks[last_added_task_id]->start();
-    last_added_task_id++;
-}
 
     void Net_core::start_mitm_forwarding(pcpp::IPv4Address iface_ip, pcpp::IPv4Address victim, pcpp::IPv4Address gateway) {
         tasks[last_added_task_id]=std::make_unique<tasks::MITMPacketForwarding>(iface_ip,victim,gateway,last_added_task_id);
+        tasks[last_added_task_id]->start();
+        last_added_task_id++;
+    }
+
+    void Net_core::start_vlan_hopping(pcpp::IPv4Address iface_ip, int outer_id, int inner_id) {
+        tasks[last_added_task_id]=std::make_unique<tasks::VlanHoppingTask>(dev_,iface_ip,outer_id,inner_id,last_added_task_id);
+        tasks[last_added_task_id]->start();
+        last_added_task_id++;
+    }
+
+    void Net_core::start_dtp_negotiation(pcpp::IPv4Address iface_ip, const std::string &domain_name) {
+        tasks[last_added_task_id]=std::make_unique<tasks::DTPNegotiation>(dev_,iface_ip,domain_name,last_added_task_id);
         tasks[last_added_task_id]->start();
         last_added_task_id++;
     }

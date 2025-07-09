@@ -1,5 +1,10 @@
-cmake_minimum_required(VERSION 3.30)
-
+cmake_minimum_required(VERSION 3.18)
+if(NOT CMAKE_FIND_LIBRARY_SUFFIXES)
+    set(CMAKE_FIND_LIBRARY_SUFFIXES .so .a)
+endif ()
+if(NOT CMAKE_FIND_LIBRARY_PREFIXES)
+    set(CMAKE_FIND_LIBRARY_PREFIXES "lib")
+endif ()
 set(IMGUI_DIR libs/imgui)
 add_library(imgui
         ${IMGUI_DIR}/imgui.cpp
