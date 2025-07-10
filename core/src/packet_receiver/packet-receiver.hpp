@@ -22,7 +22,11 @@
 #include "VlanLayer.h"
 #include "PayloadLayer.h"
 #include "IpAddress.h"
+#include "../task/task.hpp"
 #include <netinet/in.h>
+#include <EthDot3Layer.h>
+#include <LLCLayer.h>
+
 
 namespace ashk {
 
@@ -41,11 +45,16 @@ namespace ashk {
         pcpp::IPv4Address gateway_ip;
         pcpp::MacAddress gateway_mac;
     };
+    struct DTPDomainExtractionCookie {
+        char* buffer= nullptr;
+        Task* task= nullptr;
+    };
     class PacketReceiver {
     public:
         static void onPacketArrivesArpPoisoningDetection(pcpp::RawPacket *raw_packet, pcpp::PcapLiveDevice *dev, void *cookie);
         static void onPacketArrivesVlanHopping(pcpp::RawPacket *raw_packet, pcpp::PcapLiveDevice *dev, void *cookie);
         static void onPacketArrivesMITMForwarding(pcpp::RawPacket *raw_packet, pcpp::PcapLiveDevice *dev, void *cookie);
+        static void onPacketArrivesDTPDomainExtraction(pcpp::RawPacket *raw_packet, pcpp::PcapLiveDevice *dev, void *cookie);
     };
 
 

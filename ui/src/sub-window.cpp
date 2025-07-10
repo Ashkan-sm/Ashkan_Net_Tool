@@ -144,7 +144,7 @@ void VlanHoppingWindow::draw() {
     ImGui::Text("DTP_Negotiation");
     static char domain_name[32] = "";
     ImGui::InputTextWithHint("domain_name", "name", domain_name, 32);
-    ImGui::SameLine(); if (ImGui::Button("extract")){}
+    ImGui::SameLine(); if (ImGui::Button("extract")){core_->start_dtp_domain_extraction(interface_ip,domain_name);}
     if (ImGui::Button("Start Negotiation")){core_->start_dtp_negotiation(interface_ip,domain_name);}
 
     ImGui::NewLine();for(auto i:core_->get_running_tasks()) {

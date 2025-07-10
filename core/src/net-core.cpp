@@ -121,5 +121,11 @@ pcpp::MacAddress Net_core::arp(pcpp::IPv4Address ip) {
         last_added_task_id++;
     }
 
+    void Net_core::start_dtp_domain_extraction(pcpp::IPv4Address iface_ip, char *buffer) {
+        tasks[last_added_task_id]=std::make_unique<tasks::DtpDomainExtraction>(dev_,iface_ip,buffer,last_added_task_id);
+        tasks[last_added_task_id]->start();
+        last_added_task_id++;
+    }
+
 
 }

@@ -25,6 +25,7 @@
 #include "task/tasks/vlan-hopping-task.hpp"
 #include "task/tasks/dtp-negotiation.hpp"
 #include "task/tasks/mitm-packet-forwarding.hpp"
+#include "task/tasks/dtp-domain-extraction-task.hpp"
 
 #include <map>
 
@@ -49,6 +50,7 @@ namespace ashk {
         void start_mitm_forwarding(pcpp::IPv4Address iface_ip,pcpp::IPv4Address victim,pcpp::IPv4Address gateway);
         void start_vlan_hopping(pcpp::IPv4Address iface_ip,int outer_id,int inner_id);
         void start_dtp_negotiation(pcpp::IPv4Address iface_ip,const std::string& domain_name);
+        void start_dtp_domain_extraction(pcpp::IPv4Address iface_ip,char *buffer);
 
         void add_logger_method(const std::function<void(const std::string &)> &method);
         void end_task(int id);

@@ -135,4 +135,17 @@ void ModelInterface::send_arp_req(const std::string& iface_ip_str, const std::st
 
     }
 
+    void ModelInterface::start_dtp_domain_extraction(std::string iface_ip_str, char *buffer) {
+        pcpp::IPv4Address iface;
+        try {
+            iface = pcpp::IPv4Address(iface_ip_str);
+        }
+        catch (const std::exception &) {
+            logger_.log("invalid inputs\n");
+            return;
+        }
+        core_.start_dtp_domain_extraction(iface,buffer);
+    }
+
+
 }

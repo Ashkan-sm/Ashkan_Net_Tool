@@ -61,3 +61,4 @@ void ashk::PacketReceiver::onPacketArrivesVlanHopping(pcpp::RawPacket *rawPacket
     new_packet.computeCalculateFields();
     dev->sendPacket(&new_packet);
 }
+

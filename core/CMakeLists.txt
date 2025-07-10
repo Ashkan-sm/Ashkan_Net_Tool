@@ -24,12 +24,13 @@ add_library(AshkanTool-Core
         src/task/tasks/mitm-packet-forwarding.hpp
         src/task/tasks/dtp-negotiation.cpp
         src/task/tasks/dtp-negotiation.hpp
-        src/task/tasks/dtp-domain-extraction.cpp
-        src/task/tasks/dtp-domain-extraction.hpp
+        src/task/tasks/dtp-domain-extraction-task.cpp
+        src/task/tasks/dtp-domain-extraction-task.hpp
         "src/task/tasks/task-headers.hpp"
         src/packet_receiver/recievers/mitm-forwarding.cpp
         src/packet_receiver/recievers/arp-poison-detection.cpp
         src/packet_receiver/recievers/vlan-hopping.cpp
+        src/packet_receiver/recievers/dtp-domain-extraction.cpp
 )
 target_link_libraries(AshkanTool-Core
         PUBLIC
