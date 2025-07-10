@@ -103,12 +103,16 @@ void ModelInterface::send_arp_req(const std::string& iface_ip_str, const std::st
 
     void ModelInterface::start_vlan_hopping(std::string iface_ip_str, std::string outer_str, std::string inner_str) {
         pcpp::IPv4Address iface;
-        int outer_tag;
-        int inner_tag;
+        int outer_tag=0;
+        int inner_tag=0;
         try {
             iface = pcpp::IPv4Address(iface_ip_str);
-            outer_tag=std::stoi(outer_str);
-            inner_tag=std::stoi(inner_str);
+            if(!outer_str.empty()) {
+                outer_tag = std::stoi(outer_str);
+            }
+            if(!inner_str.empty()) {
+                inner_tag = std::stoi(inner_str);
+            }
 
         }
         catch (const std::exception &) {

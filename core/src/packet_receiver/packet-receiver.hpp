@@ -18,10 +18,12 @@
 #include "IPLayer.h"
 #include "Packet.h"
 #include <map>
-#include "../../utils/logger.hpp"
+#include "../../../utils/logger.hpp"
 #include "VlanLayer.h"
 #include "PayloadLayer.h"
-#include <IpAddress.h>
+#include "IpAddress.h"
+#include <netinet/in.h>
+
 namespace ashk {
 
     struct ArpPoisoningDetectionCookie {
@@ -30,6 +32,7 @@ namespace ashk {
     struct VlanHoppingCookie {
         int inner_id;
         int outer_id;
+
 
     };
     struct MITMForwardingCookie {

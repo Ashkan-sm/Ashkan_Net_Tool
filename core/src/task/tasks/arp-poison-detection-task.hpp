@@ -5,23 +5,8 @@
 #ifndef ASHKANTOOL_ARP_POISON_DETECTION_TASK_HPP
 #define ASHKANTOOL_ARP_POISON_DETECTION_TASK_HPP
 
-#include "../task.hpp"
-#include <iostream>
-#include "MacAddress.h"
-#include "IpAddress.h"
-#include "Logger.h"
-#include "PcapPlusPlusVersion.h"
-#include "PcapLiveDeviceList.h"
-#include "PcapLiveDevice.h"
-#include "NetworkUtils.h"
-#include <getopt.h>
-#include "SystemUtils.h"
-#include "EthLayer.h"
-#include "Packet.h"
-#include <map>
-#include "../../../../utils/net-utils.hpp"
-#include "../../packet-receiver.hpp"
-#include "../../capture-wrapper.hpp"
+#include "task-headers.hpp"
+
 namespace ashk::tasks {
     class ArpPoisonDetectionTask : public Task {
     public:

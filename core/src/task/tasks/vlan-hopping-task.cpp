@@ -4,7 +4,6 @@
 
 #include "vlan-hopping-task.hpp"
 
-
 ashk::tasks::VlanHoppingTask::VlanHoppingTask(pcpp::PcapLiveDevice *dev,
                                               pcpp::IPv4Address iface_ip,
                                               int outer_id,

@@ -44,7 +44,7 @@ void ashk::tasks::DTPNegotiation::exec() {
     uint8_t LLC_layer[]={
             0xaa,0xaa,0x03,0x00,0x00,0x0c,0x20,0x04 //llc for dtp
     };
-    uint8_t ieee_eth_layer[14]={0x01,0x00,0x0c,0xcc,0xcc,0xcc };//detmac
+    uint8_t ieee_eth_layer[14]={0x01,0x00,0x0c,0xcc,0xcc,0xcc };//dest mac
     dev_->getMacAddress().copyTo(ieee_eth_layer+6);
     uint16_t eth_payload_size=htons(sizeof(LLC_layer)+sizeof(dtp_layer));
     memcpy(ieee_eth_layer+12,&eth_payload_size,2);

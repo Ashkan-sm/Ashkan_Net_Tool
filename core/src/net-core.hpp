@@ -19,16 +19,16 @@
 #include "Packet.h"
 #include "../../utils/logger.hpp"
 #include "../../utils/net-utils.hpp"
-#include "Task/task.hpp"
-#include "Task/tasks/arp-poisoning-task.hpp"
-#include "Task/tasks/arp-poison-detection-task.hpp"
-#include "Task/tasks/vlan-hopping-task.hpp"
-#include "Task/tasks/dtp-negotiation.hpp"
-#include "Task/tasks/mitm-packet-forwarding.hpp"
+#include "task/task.hpp"
+#include "task/tasks/arp-poisoning-task.hpp"
+#include "task/tasks/arp-poison-detection-task.hpp"
+#include "task/tasks/vlan-hopping-task.hpp"
+#include "task/tasks/dtp-negotiation.hpp"
+#include "task/tasks/mitm-packet-forwarding.hpp"
 
 #include <map>
 
-#include "packet-receiver.hpp"
+#include "packet_receiver/packet-receiver.hpp"
 #include "capture-wrapper.hpp"
 namespace ashk {
     class Net_core {
