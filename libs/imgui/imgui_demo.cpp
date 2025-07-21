@@ -10042,7 +10042,7 @@ static void ShowExampleAppCustomRendering(bool* p_open)
 // [SECTION] Example App: Documents Handling / ShowExampleAppDocuments()
 //-----------------------------------------------------------------------------
 
-// Simplified structure to mimic a Document core
+// Simplified structure to mimic a Document model
 struct MyDocument
 {
     char        Name[32];   // Document title

@@ -164,24 +164,34 @@ void MITMWindow::draw() {
     draw_base("ManInTheMiddleWindow");
     static ImGuiInputTextFlags input_text_ip_flag = ImGuiInputTextFlags_CharsDecimal;
 
-    static char interface_ip[16] = "";
+    static char interface_ip[17] = "";
     ImGui::InputTextWithHint("interface(ip)", "0.0.0.0", interface_ip, IM_ARRAYSIZE(interface_ip),input_text_ip_flag);
     ImGui::SameLine(); if (ImGui::Button("discover")){
         std::string ip=core_->get_interface_ip();
         std::memcpy(interface_ip,ip.c_str(),ip.size());
     }
+    static char victim_ip[17] = "";
+    ImGui::InputTextWithHint("victim(ip)", "0.0.0.0", victim_ip, IM_ARRAYSIZE(victim_ip));
 
-    static char victim_mac[17] = "";
+    static char gateway_ip[17] = "";
+    ImGui::InputTextWithHint("gateway(ip)", "0.0.0.0", gateway_ip, IM_ARRAYSIZE(gateway_ip));
+
+    static char victim_mac[18] = "";
     ImGui::InputTextWithHint("victim(mac)", "00:00:00:00:00:00", victim_mac, IM_ARRAYSIZE(victim_mac));
 
-    static char gateway_mac[17] = "";
+    static char gateway_mac[18] = "";
     ImGui::InputTextWithHint("gateway(mac)", "00:00:00:00:00:00", gateway_mac, IM_ARRAYSIZE(gateway_mac));
 
     static char task_id[2] = "";
-    ImGui::InputTextWithHint("task id", "0", interface_ip, IM_ARRAYSIZE(interface_ip),input_text_ip_flag);
-    ImGui::SameLine(); if (ImGui::Button("get from arpSpoofing")){}
+    ImGui::InputTextWithHint("task id", "0", task_id, IM_ARRAYSIZE(task_id),input_text_ip_flag);
+    ImGui::SameLine(); if (ImGui::Button("get_data from arpSpoofing")){
+        std::string vic_mac_str=core_->get_task_data(task_id,ashk::tasks_data_id::VICTIM_SRC_MAC);
+        std::string gate_mac_str=core_->get_task_data(task_id,ashk::tasks_data_id::VICTIM_DST_MAC);
+        std::memcpy(victim_mac,vic_mac_str.c_str(),vic_mac_str.size());
+        std::memcpy(gateway_mac,gate_mac_str.c_str(),gate_mac_str.size());
+    }
 
-    ImGui::NewLine();if (ImGui::Button("start forwarding")){core_->start_mitm_forwarding(interface_ip,victim_mac,gateway_mac);}
+    ImGui::NewLine();if (ImGui::Button("start forwarding")){core_->start_mitm_forwarding(interface_ip,victim_ip,gateway_ip,victim_mac,gateway_mac);}
 
 
     for(auto i:core_->get_running_tasks()) {

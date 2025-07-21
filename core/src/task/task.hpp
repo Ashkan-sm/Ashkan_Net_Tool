@@ -9,17 +9,23 @@
 #include <thread>
 #include <atomic>
 #include "../../../utils/logger.hpp"
+#include <set>
+
 namespace ashk {
+    enum tasks_data_id{VICTIM_DST_MAC,VICTIM_SRC_MAC};
     class Task {
+
     public:
         void start();
         void end();
         bool is_running();
+        virtual std::string get_data(tasks_data_id data_id)=0;
     protected:
         virtual void exec() = 0;
         utils::Logger &logger= utils::Logger::getInstance();
         std::shared_ptr<std::thread> thread_;
         std::atomic_flag m = ATOMIC_FLAG_INIT;
+        std::set<tasks_data_id> extractable_data;
 
     };
 

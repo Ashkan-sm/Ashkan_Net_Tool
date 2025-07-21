@@ -41,3 +41,11 @@ void ashk::tasks::VlanHoppingTask::exec() {
     capture_wrapper.stop_capture(dev_);
     logger.log("vlan hopping task finished.\n");
 }
+std::string ashk::tasks::VlanHoppingTask::get_data(tasks_data_id data_id) {
+    if(!extractable_data.count(data_id))
+        return "";
+    switch (data_id) {
+        default:
+            return "";
+    }
+}

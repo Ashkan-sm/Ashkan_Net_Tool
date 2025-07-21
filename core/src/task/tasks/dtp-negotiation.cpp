@@ -75,3 +75,11 @@ void ashk::tasks::DTPNegotiation::exec() {
 
     logger.log("dtp negotiation finished.\n");
 }
+std::string ashk::tasks::DTPNegotiation::get_data(tasks_data_id data_id) {
+    if(!extractable_data.count(data_id))
+        return "";
+    switch (data_id) {
+        default:
+            return "";
+    }
+}

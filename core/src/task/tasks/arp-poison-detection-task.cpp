@@ -30,3 +30,12 @@ void ashk::tasks::ArpPoisonDetectionTask::exec() {
 ashk::tasks::ArpPoisonDetectionTask::ArpPoisonDetectionTask(pcpp::IPv4Address iface_ip,int last_task_id):iface_ip(iface_ip),last_task_id(last_task_id) {
 
 }
+
+std::string ashk::tasks::ArpPoisonDetectionTask::get_data(tasks_data_id data_id) {
+    if(!extractable_data.count(data_id))
+        return "";
+    switch (data_id) {
+        default:
+            return "";
+    }
+}

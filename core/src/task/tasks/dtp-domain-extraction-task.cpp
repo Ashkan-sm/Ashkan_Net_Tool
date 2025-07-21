@@ -34,3 +34,11 @@ void ashk::tasks::DtpDomainExtraction::exec() {
     capture_wrapper.stop_capture(dev_);
     logger.log("dtp domain extraction finished.\n");
 }
+std::string ashk::tasks::DtpDomainExtraction::get_data(tasks_data_id data_id) {
+    if(!extractable_data.count(data_id))
+        return "";
+    switch (data_id) {
+        default:
+            return "";
+    }
+}

@@ -17,7 +17,7 @@ void ashk::tasks::ArpPoisoningTask::exec() {
     }
 
     pcpp::MacAddress iface_mac = dev_->getMacAddress();
-    pcpp::MacAddress vic_src_mac;
+
     if (vic_src_ip == iface_ip) {
         vic_src_mac = iface_mac;
     } else {
@@ -27,7 +27,7 @@ void ashk::tasks::ArpPoisoningTask::exec() {
             return;
         }
     }
-    pcpp::MacAddress vic_dst_mac;
+
     if (vic_dst_ip == iface_ip) {
         vic_dst_mac = iface_mac;
     } else {
@@ -74,6 +74,18 @@ void ashk::tasks::ArpPoisoningTask::exec() {
     }
     logger.log("ArpPoisoning task finished\n");
 
+}
+std::string ashk::tasks::ArpPoisoningTask::get_data(tasks_data_id data_id) {
+    if(!extractable_data.count(data_id))
+        return "";
+    switch (data_id) {
+        case VICTIM_DST_MAC:
+            return vic_dst_mac.toString();
+        case VICTIM_SRC_MAC:
+            return vic_src_mac.toString();
+        default:
+            return "";
+    }
 }
 
 ashk::tasks::ArpPoisoningTask::ArpPoisoningTask(pcpp::PcapLiveDevice *dev,

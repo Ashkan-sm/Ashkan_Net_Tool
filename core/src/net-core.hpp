@@ -47,7 +47,7 @@ namespace ashk {
         void start_arp_poisoning(pcpp::IPv4Address iface_ip, pcpp::IPv4Address vic_src_ip, pcpp::IPv4Address vic_dst_ip,
                                  pcpp::IPv4Address forward_to_ip);
         void start_arp_poison_detection(pcpp::IPv4Address iface_ip);
-        void start_mitm_forwarding(pcpp::IPv4Address iface_ip,pcpp::IPv4Address victim,pcpp::IPv4Address gateway);
+        void start_mitm_forwarding(pcpp::IPv4Address iface_ip,  pcpp::IPv4Address victim_ip, pcpp::IPv4Address gateway_ip,pcpp::MacAddress victim_mac, pcpp::MacAddress gateway_mac) ;
         void start_vlan_hopping(pcpp::IPv4Address iface_ip,int outer_id,int inner_id);
         void start_dtp_negotiation(pcpp::IPv4Address iface_ip,const std::string& domain_name);
         void start_dtp_domain_extraction(pcpp::IPv4Address iface_ip,char *buffer);

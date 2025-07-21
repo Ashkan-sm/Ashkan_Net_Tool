@@ -83,17 +83,24 @@ void ModelInterface::send_arp_req(const std::string& iface_ip_str, const std::st
     }
     core_.send_arp_req(iface,ip);
 }
-    void ModelInterface::start_mitm_forwarding(const std::string& iface_ip_str,std::string victim_mac, std::string gateway_mac) {
+    void ModelInterface::start_mitm_forwarding(const std::string& iface_ip_str,std::string victim_ip_str, std::string gateway_ip_str,std::string victim_mac_str, std::string gateway_mac_str) {
         pcpp::IPv4Address iface;
-
+        pcpp::MacAddress victim_mac;
+        pcpp::MacAddress gateway_mac;
+        pcpp::IPv4Address victim_ip;
+        pcpp::IPv4Address gateway_ip;
         try {
             iface = pcpp::IPv4Address(iface_ip_str);
+            victim_mac=pcpp::MacAddress(victim_mac_str);
+            gateway_mac=pcpp::MacAddress(gateway_mac_str);
+            victim_ip=pcpp::IPv4Address(victim_ip_str);
+            gateway_ip=pcpp::IPv4Address(gateway_ip_str);
         }
         catch (const std::exception &) {
             logger_.log("invalid ip inputs\n");
             return;
         }
-        core_.start_mitm_forwarding(iface,victim_mac,gateway_mac);
+        core_.start_mitm_forwarding(iface,victim_ip,gateway_ip,victim_mac,gateway_mac);
     }
 
     void ModelInterface::start_vlan_hopping(std::string iface_ip_str, std::string outer_str, std::string inner_str) {
@@ -143,4 +150,16 @@ void ModelInterface::send_arp_req(const std::string& iface_ip_str, const std::st
     }
 
 
+}
+std::string ashk::ModelInterface::get_task_data(std::string task_id, tasks_data_id data_id) {
+    int task_id_int=0;
+    try {
+        task_id_int = std::stoi(task_id);
+    }catch (const std::exception &) {
+        logger_.log("invalid inputs\n");
+        return "";
+    }
+    if (!core_.tasks.count(task_id_int))
+        return "";
+    return core_.tasks[task_id_int]->get_data(data_id);
 }

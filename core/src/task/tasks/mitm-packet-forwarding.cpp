@@ -16,30 +16,10 @@ void ashk::tasks::MITMPacketForwarding::exec() {
 
     }
     pcpp::MacAddress iface_mac = dev_->getMacAddress();
-    pcpp::MacAddress victim_mac;
-    pcpp::MacAddress gateway_mac;
-    if (victim == iface_ip) {
-        victim_mac = iface_mac;
-    } else {
-        victim_mac = NetUtils::arp(victim,dev_);
-        if (victim_mac == pcpp::MacAddress::Zero) {
-            logger.log("didnt receive arp reply from " + victim.toString() + "\n");
-            return;
-        }
-    }
-    if (gateway == iface_ip) {
-        gateway_mac = iface_mac;
-    } else {
-        gateway_mac = NetUtils::arp(gateway,dev_);
-        if (gateway_mac == pcpp::MacAddress::Zero) {
-            logger.log("didnt receive arp reply from " + gateway.toString() + "\n");
-            return;
-        }
-    }
-
     MITMForwardingCookie cookie;
-    cookie.gateway_ip=gateway;
-    cookie.victim_ip=victim;
+
+    cookie.gateway_ip=gateway_ip;
+    cookie.victim_ip=victim_ip;
     cookie.victim_mac=victim_mac;
     cookie.gateway_mac=gateway_mac;
 
@@ -51,9 +31,18 @@ void ashk::tasks::MITMPacketForwarding::exec() {
     capture_wrapper.stop_capture(dev_);
     logger.log("mitm forwarding stopped.\n");
 }
-ashk::tasks::MITMPacketForwarding::MITMPacketForwarding(pcpp::IPv4Address iface_ip, pcpp::IPv4Address victim,
-                                                        pcpp::IPv4Address gateway,
-                                                        int last_task_id) : iface_ip(iface_ip),victim(victim),
-                                                        gateway(gateway),last_task_id(last_task_id) {
+ashk::tasks::MITMPacketForwarding::MITMPacketForwarding(pcpp::IPv4Address iface_ip, pcpp::IPv4Address victim_ip,
+                                                        pcpp::IPv4Address gateway_ip, pcpp::MacAddress victim_mac,
+                                                        pcpp::MacAddress gateway_mac, int last_task_id) : iface_ip(iface_ip),victim_mac(victim_mac),
+                                                        gateway_mac(gateway_mac),victim_ip(victim_ip),gateway_ip(gateway_ip),last_task_id(last_task_id) {
 
 }
+std::string ashk::tasks::MITMPacketForwarding::get_data(tasks_data_id data_id) {
+    if(!extractable_data.count(data_id))
+        return "";
+    switch (data_id) {
+        default:
+            return "";
+    }
+}
+

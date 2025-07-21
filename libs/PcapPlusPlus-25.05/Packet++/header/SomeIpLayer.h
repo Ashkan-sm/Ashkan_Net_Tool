@@ -263,7 +263,7 @@ namespace pcpp
 		/// @return The string representation of the SOME/IP layer
 		virtual std::string toString() const override;
 
-		/// @return The OSI core layer of this layer
+		/// @return The OSI model layer of this layer
 		OsiModelLayer getOsiModelLayer() const override
 		{
 			return OsiModelApplicationLayer;

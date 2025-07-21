@@ -14,6 +14,7 @@ namespace ashk::tasks {
                                   pcpp::IPv4Address vic_dst_ip,
                                   pcpp::IPv4Address forward_to_ip,
                                   pcpp::IPv4Address iface_ip);
+        std::string get_data(tasks_data_id data_id) override;
     private:
         void exec() override;
         pcpp::PcapLiveDevice *dev_ = nullptr;
@@ -21,8 +22,13 @@ namespace ashk::tasks {
         pcpp::IPv4Address vic_dst_ip;
         pcpp::IPv4Address forward_to_ip;
         pcpp::IPv4Address iface_ip;
+        pcpp::MacAddress vic_dst_mac;
+        pcpp::MacAddress vic_src_mac;
 
-
+        std::set<tasks_data_id> extractable_data{
+                VICTIM_DST_MAC,
+                VICTIM_SRC_MAC
+        };
     };
 }
 

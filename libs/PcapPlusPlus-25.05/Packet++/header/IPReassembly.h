@@ -346,7 +346,7 @@ namespace pcpp
 		/// which doesn't include the IP-Layer will result in IPReassembly not finding the IP-Layer and thus failing to
 		/// work properly. Default value is ::UnknownProtocol which means don't take this parameter into account
 		/// @param[in] parseUntilLayer Optional parameter. Parse the reassembled packet until you reach a certain layer
-		/// in the OSI core (inclusive). Can be useful for cases when you need to parse only up to a certain OSI layer
+		/// in the OSI model (inclusive). Can be useful for cases when you need to parse only up to a certain OSI layer
 		/// (for example transport layer) and want to avoid the performance impact and memory consumption of parsing the
 		/// whole packet. Note that setting this value to OsiModelPhysicalLayer will result in IPReassembly not finding
 		/// the IP-layer and thus failing to work properly. Default value is ::OsiModelLayerUnknown which means don't
@@ -385,7 +385,7 @@ namespace pcpp
 		/// failing to work properly. Default value is ::UnknownProtocol which means don't take this parameter into
 		/// account
 		/// @param[in] parseUntilLayer Optional parameter. Parse the raw and reassembled packets until you reach a
-		/// certain layer in the OSI core (inclusive). Can be useful for cases when you need to parse only up to a
+		/// certain layer in the OSI model (inclusive). Can be useful for cases when you need to parse only up to a
 		/// certain OSI layer (for example transport layer) and want to avoid the performance impact and memory
 		/// consumption of parsing the whole packet. Note that setting this value to OsiModelPhysicalLayer will result
 		/// in IPReassembly not finding the IP-layer and thus failing to work properly. Default value is

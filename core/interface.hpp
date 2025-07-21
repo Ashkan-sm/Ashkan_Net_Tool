@@ -25,11 +25,14 @@ public:
     void start_vlan_hopping(std::string iface_ip_str,std::string outer_str,std::string inner_str);
     void start_dtp_negotiation(std::string iface_ip_str,const std::string &domain_name);
     void start_dtp_domain_extraction(std::string iface_ip_str,char buffer[32]);
-    void start_mitm_forwarding(const std::string& iface_ip_str,std::string victim_mac,std::string gateway_mac);
+    void start_mitm_forwarding(const std::string& iface_ip_str,std::string victim_ip_str, std::string gateway_ip_str,std::string victim_mac_str, std::string gateway_mac_str);
 
     void add_logger_method(std::function<void(const std::string &)> method);
     std::vector<int> get_running_tasks();
     void end_task(int id);
+
+    std::string get_task_data(std::string task_id,tasks_data_id data_id);
+
 
 private:
     Net_core core_;

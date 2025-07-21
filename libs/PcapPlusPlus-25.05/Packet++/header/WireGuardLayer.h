@@ -110,7 +110,7 @@ namespace pcpp
 		/// @return String representation of the WireGuard layer
 		std::string toString() const override;
 
-		/// @return OSI core layer corresponding to the Network layer
+		/// @return OSI model layer corresponding to the Network layer
 		OsiModelLayer getOsiModelLayer() const override
 		{
 			return OsiModelNetworkLayer;

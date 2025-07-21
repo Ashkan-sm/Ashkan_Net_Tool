@@ -220,7 +220,7 @@ namespace pcpp
 	/// Cisco HDLC protocol
 	const ProtocolType CiscoHDLC = 58;
 
-	/// An enum representing OSI core layers
+	/// An enum representing OSI model layers
 	enum OsiModelLayer
 	{
 		/// Physical layer (layer 1)

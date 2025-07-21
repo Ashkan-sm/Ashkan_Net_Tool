@@ -62,7 +62,7 @@ namespace pcpp
 		/// impact and memory consumption of parsing the whole packet. Default value is ::UnknownProtocol which means
 		/// don't take this parameter into account
 		/// @param[in] parseUntilLayer Optional parameter. Parse the packet until you reach a certain layer in the OSI
-		/// core (inclusive). Can be useful for cases when you need to parse only up to a certain OSI layer (for
+		/// model (inclusive). Can be useful for cases when you need to parse only up to a certain OSI layer (for
 		/// example transport layer) and want to avoid the performance impact and memory consumption of parsing the
 		/// whole packet. Default value is ::OsiModelLayerUnknown which means don't take this parameter into account
 		explicit Packet(RawPacket* rawPacket, bool freeRawPacket = false, ProtocolType parseUntil = UnknownProtocol,
@@ -95,10 +95,10 @@ namespace pcpp
 		/// copied) and the RawPacket is parsed, meaning all layers are created and linked to each other in the right
 		/// order. In this overload of the constructor the user can specify whether to free the instance of raw packet
 		/// when the Packet is free or not. This constructor should be used to parse the packet up to a certain layer in
-		/// the OSI core
+		/// the OSI model
 		/// @param[in] rawPacket A pointer to the raw packet
 		/// @param[in] parseUntilLayer Optional parameter. Parse the packet until you reach a certain layer in the OSI
-		/// core (inclusive). Can be useful for cases when you need to parse only up to a certain OSI layer (for
+		/// model (inclusive). Can be useful for cases when you need to parse only up to a certain OSI layer (for
 		/// example transport layer) and want to avoid the performance impact and memory consumption of parsing the
 		/// whole packet
 		explicit Packet(RawPacket* rawPacket, OsiModelLayer parseUntilLayer);
@@ -143,7 +143,7 @@ namespace pcpp
 		/// to parse only up to a certain layer and want to avoid the performance impact and memory consumption of
 		/// parsing the whole packet. Default value is ::UnknownProtocol which means don't take this parameter into
 		/// account
-		/// @param[in] parseUntilLayer Parse the packet until certain layer in OSI core. Can be useful for cases when
+		/// @param[in] parseUntilLayer Parse the packet until certain layer in OSI model. Can be useful for cases when
 		/// you need to parse only up to a certain layer and want to avoid the performance impact and memory consumption
 		/// of parsing the whole packet. Default value is ::OsiModelLayerUnknown which means don't take this parameter
 		/// into account

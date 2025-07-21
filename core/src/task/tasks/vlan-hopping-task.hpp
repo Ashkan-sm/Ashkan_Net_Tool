@@ -15,6 +15,7 @@ public:
                              int outer_id,
                              int inner_id,
                              int last_task_id);
+    std::string get_data(tasks_data_id data_id) override;
 private:
     void exec() override;
     pcpp::PcapLiveDevice *dev_ = nullptr;
