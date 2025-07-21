@@ -36,8 +36,6 @@ namespace ashk {
     struct VlanHoppingCookie {
         int inner_id;
         int outer_id;
-
-
     };
     struct MITMForwardingCookie {
         pcpp::IPv4Address victim_ip;

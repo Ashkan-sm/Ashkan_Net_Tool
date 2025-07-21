@@ -24,6 +24,8 @@ namespace ashk {
 class CaptureWrapper {
 public:
     static CaptureWrapper &getInstance();
+    CaptureWrapper(const CaptureWrapper &) = delete;
+    CaptureWrapper &operator=(const CaptureWrapper &) = delete;
 
     bool start_capture(pcpp::PcapLiveDevice *dev, pcpp::OnPacketArrivesCallback onPacketArrives,
                        void *onPacketArrivesUserCookie, int id);
@@ -32,10 +34,6 @@ public:
 
 private:
     CaptureWrapper();
-
-    CaptureWrapper(const CaptureWrapper &) = delete;
-
-    CaptureWrapper &operator=(const CaptureWrapper &) = default;
 
     std::mutex m_is_capturing;
     bool is_capturing = false;

@@ -4,8 +4,9 @@
 
 #include "dtp-negotiation.hpp"
 
-ashk::tasks::DTPNegotiation::DTPNegotiation(pcpp::PcapLiveDevice *dev, pcpp::IPv4Address iface_ip,std::string domain_name, int last_task_id):dev_(dev),iface_ip(iface_ip),
-domain_name(domain_name){
+ashk::tasks::DTPNegotiation::DTPNegotiation(pcpp::PcapLiveDevice *dev, pcpp::IPv4Address iface_ip,
+                                            std::string domain_name, int last_task_id): dev_(dev), iface_ip(iface_ip),
+                                                                                               domain_name(std::move(domain_name)),last_task_id(last_task_id){
 
 }
 
@@ -50,8 +51,8 @@ void ashk::tasks::DTPNegotiation::exec() {
     memcpy(ieee_eth_layer+12,&eth_payload_size,2);
 
 
-    const size_t totalLen = sizeof(ieee_eth_layer) + sizeof(LLC_layer) + sizeof(dtp_layer);
-    uint8_t* fullPacket = new uint8_t[totalLen];
+    const uint16_t totalLen = sizeof(ieee_eth_layer) + sizeof(LLC_layer) + sizeof(dtp_layer);
+    auto * fullPacket = new uint8_t[totalLen];
     size_t offset = 0;
 
     memcpy(fullPacket + offset, ieee_eth_layer, sizeof(ieee_eth_layer));

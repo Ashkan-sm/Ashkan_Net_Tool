@@ -31,15 +31,15 @@ void ashk::PacketReceiver::onPacketArrivesVlanHopping(pcpp::RawPacket *rawPacket
     new_packet.addLayer(&new_ethlayer);
     int id=data->outer_id | data->inner_id;
     pcpp::VlanLayer Vlan(id,    // VLAN ID
-                         0,      // Priority
+                         false,      // Priority
                          0,      // DEI
                          ntohs(ethLayer->getEthHeader()->etherType));
     pcpp::VlanLayer outerVlan(data->outer_id,    // VLAN ID
-                              0,      // Priority
+                              false,      // Priority
                               0,      // DEI
                               PCPP_ETHERTYPE_VLAN);
     pcpp::VlanLayer innerVlan(data->inner_id,    // Target VLAN ID
-                              0,      // Priority
+                              false,      // Priority
                               0,      // DEI
                               ntohs(ethLayer->getEthHeader()->etherType));
     if(data->outer_id==0 | data->inner_id==0){

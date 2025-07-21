@@ -30,9 +30,10 @@ void ashk::tasks::VlanHoppingTask::exec() {
         return;
     }
 
-    VlanHoppingCookie cookie;
-    cookie.inner_id=inner_id;
-    cookie.outer_id=outer_id;
+    VlanHoppingCookie cookie{
+    cookie.inner_id=inner_id,
+    cookie.outer_id=outer_id
+    };
     if (!capture_wrapper.start_capture(dev_, PacketReceiver::onPacketArrivesVlanHopping, &cookie,last_task_id))
         return;
     while (is_running()) {

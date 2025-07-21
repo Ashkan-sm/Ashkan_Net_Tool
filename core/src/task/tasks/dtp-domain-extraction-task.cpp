@@ -5,7 +5,7 @@
 #include "dtp-domain-extraction-task.hpp"
 
 ashk::tasks::DtpDomainExtraction::DtpDomainExtraction(pcpp::PcapLiveDevice *dev, pcpp::IPv4Address iface_ip,char buffer[32],
-                                                      int last_task_id):dev_(dev),iface_ip(iface_ip),buffer(buffer) {
+                                                      int last_task_id):dev_(dev),iface_ip(iface_ip),buffer(buffer),last_task_id(last_task_id) {
 
 }
 
@@ -34,7 +34,8 @@ void ashk::tasks::DtpDomainExtraction::exec() {
     capture_wrapper.stop_capture(dev_);
     logger.log("dtp domain extraction finished.\n");
 }
-std::string ashk::tasks::DtpDomainExtraction::get_data(tasks_data_id data_id) {
+
+std::string ashk::tasks::DtpDomainExtraction::get_data(ashk::tasks_data_id data_id) {
     if(!extractable_data.count(data_id))
         return "";
     switch (data_id) {
@@ -42,3 +43,5 @@ std::string ashk::tasks::DtpDomainExtraction::get_data(tasks_data_id data_id) {
             return "";
     }
 }
+
+
