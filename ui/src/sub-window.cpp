@@ -171,14 +171,17 @@ void MITMWindow::draw() {
         std::memcpy(interface_ip,ip.c_str(),ip.size());
     }
 
-    static char victim_ip[16] = "";
-    ImGui::InputTextWithHint("victim(ip)", "0.0.0.0", victim_ip, IM_ARRAYSIZE(victim_ip),input_text_ip_flag);
+    static char victim_mac[17] = "";
+    ImGui::InputTextWithHint("victim(mac)", "00:00:00:00:00:00", victim_mac, IM_ARRAYSIZE(victim_mac));
 
-    static char gateway_ip[16] = "";
-    ImGui::InputTextWithHint("gateway(ip)", "0.0.0.0", gateway_ip, IM_ARRAYSIZE(gateway_ip),input_text_ip_flag);
+    static char gateway_mac[17] = "";
+    ImGui::InputTextWithHint("gateway(mac)", "00:00:00:00:00:00", gateway_mac, IM_ARRAYSIZE(gateway_mac));
 
+    static char task_id[2] = "";
+    ImGui::InputTextWithHint("task id", "0", interface_ip, IM_ARRAYSIZE(interface_ip),input_text_ip_flag);
+    ImGui::SameLine(); if (ImGui::Button("get from arpSpoofing")){}
 
-    ImGui::NewLine();if (ImGui::Button("start forwarding")){core_->start_mitm_forwarding(interface_ip,victim_ip,gateway_ip);}
+    ImGui::NewLine();if (ImGui::Button("start forwarding")){core_->start_mitm_forwarding(interface_ip,victim_mac,gateway_mac);}
 
 
     for(auto i:core_->get_running_tasks()) {

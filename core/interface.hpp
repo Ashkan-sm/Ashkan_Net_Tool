@@ -25,7 +25,7 @@ public:
     void start_vlan_hopping(std::string iface_ip_str,std::string outer_str,std::string inner_str);
     void start_dtp_negotiation(std::string iface_ip_str,const std::string &domain_name);
     void start_dtp_domain_extraction(std::string iface_ip_str,char buffer[32]);
-    void start_mitm_forwarding(const std::string& iface_ip_str,std::string victim_ip,std::string gateway_ip);
+    void start_mitm_forwarding(const std::string& iface_ip_str,std::string victim_mac,std::string gateway_mac);
 
     void add_logger_method(std::function<void(const std::string &)> method);
     std::vector<int> get_running_tasks();
