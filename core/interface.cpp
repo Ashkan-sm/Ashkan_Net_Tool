@@ -161,3 +161,16 @@ std::string ashk::ModelInterface::get_task_data(const std::string& task_id, task
         return "";
     return core_.tasks[task_id_int]->get_data(data_id);
 }
+
+void ashk::ModelInterface::start_detecting_networks(const std::string& iface_ip_str,std::vector<WifiAp> &ap_list) {
+    pcpp::IPv4Address iface;
+    try {
+        iface = pcpp::IPv4Address(iface_ip_str);
+    }
+    catch (const std::exception &) {
+        logger_.log("invalid inputs\n");
+        return;
+    }
+    core_.start_detecting_networks(iface,ap_list);
+
+}

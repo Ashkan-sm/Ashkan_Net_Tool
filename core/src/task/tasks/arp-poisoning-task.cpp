@@ -72,6 +72,7 @@ void ashk::tasks::ArpPoisoningTask::exec() {
 
         std::this_thread::sleep_for(std::chrono::seconds(5));
     }
+    end();
     logger.log("ArpPoisoning task finished\n");
 
 }

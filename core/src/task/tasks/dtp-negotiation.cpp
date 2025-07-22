@@ -73,7 +73,7 @@ void ashk::tasks::DTPNegotiation::exec() {
         dev_->sendPacket(&new_packet);
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
-
+    end();
     logger.log("dtp negotiation finished.\n");
 }
 std::string ashk::tasks::DTPNegotiation::get_data(tasks_data_id data_id) {

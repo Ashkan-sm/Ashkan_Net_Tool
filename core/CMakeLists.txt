@@ -31,6 +31,14 @@ add_library(AshkanTool-Core
         src/packet_receiver/recievers/arp-poison-detection.cpp
         src/packet_receiver/recievers/vlan-hopping.cpp
         src/packet_receiver/recievers/dtp-domain-extraction.cpp
+        src/data_holders/wifi-ap.hpp
+        src/task/tasks/wifi-ap-scanning-task.cpp
+        src/task/tasks/wifi-ap-scanning-task.hpp
+        src/packet_receiver/recievers/wifi-scanning.cpp
+)
+target_include_directories(AshkanTool-Core
+        PUBLIC
+        src/data_holders
 )
 target_link_libraries(AshkanTool-Core
         PUBLIC

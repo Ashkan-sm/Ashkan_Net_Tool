@@ -32,6 +32,7 @@ void ashk::tasks::DtpDomainExtraction::exec() {
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
     capture_wrapper.stop_capture(dev_);
+    end();
     logger.log("dtp domain extraction finished.\n");
 }
 

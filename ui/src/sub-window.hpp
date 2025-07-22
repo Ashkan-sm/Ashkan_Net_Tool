@@ -8,6 +8,7 @@
 #include "config.h"
 #include "../../core/interface.hpp"
 #include <EthDot3Layer.h>
+#include "wifi-ap.hpp"
 
 class ISubWindow {
 public:
@@ -50,6 +51,10 @@ public:
     explicit MITMWindow(ashk::ModelInterface *core);
     void draw() override;
 };
-
+class WIFIAttackWindow  : public ISubWindow{
+public:
+    explicit WIFIAttackWindow(ashk::ModelInterface *core);
+    void draw() override;
+};
 
 #endif //ASHKANTOOL_SUB_WINDOW_HPP

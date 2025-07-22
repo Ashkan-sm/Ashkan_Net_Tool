@@ -8,6 +8,7 @@
 #include "src/net-core.hpp"
 #include <string>
 #include "../utils/logger.hpp"
+#include "wifi-ap.hpp"
 namespace ashk {
 
 class ModelInterface {
@@ -26,7 +27,7 @@ public:
     void start_dtp_negotiation(const std::string& iface_ip_str,const std::string &domain_name);
     void start_dtp_domain_extraction(const std::string& iface_ip_str,char buffer[32]);
     void start_mitm_forwarding(const std::string& iface_ip_str,const std::string& victim_ip_str, const std::string& gateway_ip_str,const std::string& victim_mac_str, const std::string& gateway_mac_str);
-
+    void start_detecting_networks(const std::string& iface_ip_str,std::vector<WifiAp> &ap_list);
     void add_logger_method(const std::function<void(const std::string &)>& method);
     std::vector<int> get_running_tasks();
     void end_task(int id);

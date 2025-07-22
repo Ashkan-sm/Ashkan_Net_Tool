@@ -44,7 +44,8 @@ void Net_core::add_logger_method(const std::function<void(const std::string &)> 
 
 void Net_core::end_task(int id) {
     tasks[id]->end();
-    logger_.log("stopped task" + std::to_string(id) + " .\n");
+    utils::Logger::getInstance().log("Sent end signal to task\n");
+
 }
 
 std::vector<int> Net_core::get_running_tasks() {
@@ -123,6 +124,12 @@ pcpp::MacAddress Net_core::arp(pcpp::IPv4Address ip) {
 
     void Net_core::start_dtp_domain_extraction(pcpp::IPv4Address iface_ip, char *buffer) {
         tasks[last_added_task_id]=std::make_unique<tasks::DtpDomainExtraction>(dev_,iface_ip,buffer,last_added_task_id);
+        tasks[last_added_task_id]->start();
+        last_added_task_id++;
+    }
+
+    void Net_core::start_detecting_networks(pcpp::IPv4Address iface_ip,std::vector<WifiAp> &ap_list) {
+        tasks[last_added_task_id]=std::make_unique<tasks::WifiApScanningTask>(dev_,iface_ip,ap_list,last_added_task_id);
         tasks[last_added_task_id]->start();
         last_added_task_id++;
     }

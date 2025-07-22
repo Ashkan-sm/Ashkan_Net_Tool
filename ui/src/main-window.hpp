@@ -29,6 +29,7 @@ private:
     std::shared_ptr<ISubWindow> send_arp_request_window;
     std::shared_ptr<ISubWindow> vlan_hopping_window;
     std::shared_ptr<ISubWindow> man_in_the_middle_window;
+    std::shared_ptr<ISubWindow> wifi_attack_window;
 
     void draw_main_toolbar();
     void draw_log_window();

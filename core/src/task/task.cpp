@@ -17,7 +17,7 @@ namespace ashk {
 
     void Task::end() {
         m.clear();
-        utils::Logger::getInstance().log("Sent end signal to task");
+
     }
 
     bool Task::is_running() {

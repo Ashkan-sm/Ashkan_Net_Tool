@@ -201,3 +201,49 @@ void MITMWindow::draw() {
     }
     ImGui::End();
 }
+
+WIFIAttackWindow::WIFIAttackWindow(ashk::ModelInterface *core) : ISubWindow(core) {
+
+}
+
+void WIFIAttackWindow::draw() {
+    draw_base("WIFIAttackWindow");
+    static ImGuiInputTextFlags input_text_ip_flag = ImGuiInputTextFlags_CharsDecimal;
+
+    static char interface_ip[17] = "";
+    ImGui::InputTextWithHint("interface(ip)", "0.0.0.0", interface_ip, IM_ARRAYSIZE(interface_ip),input_text_ip_flag);
+    ImGui::SameLine(); if (ImGui::Button("discover")){
+        std::string ip=core_->get_interface_ip();
+        std::memcpy(interface_ip,ip.c_str(),ip.size());
+    }
+
+    static std::vector<WifiAp> ap_list;
+    if (ImGui::Button("detect networks")){core_->start_detecting_networks(interface_ip,ap_list);}
+
+
+    static auto selectedAp=new WifiAp("None");
+    ImGuiWindowFlags window_flags = ImGuiWindowFlags_None;
+//    window_flags |= ImGuiWindowFlags_MenuBar;
+    ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
+    ImGui::BeginChild("ApListWindow", ImVec2(0, 260), ImGuiChildFlags_Borders, window_flags);
+
+    for(auto &i :ap_list){
+        if (ImGui::Button((" "+i.e_ssid).c_str())) {
+            selectedAp=&i;
+        }
+    }
+    ImGui::EndChild();
+    ImGui::PopStyleVar();
+
+
+    ImGui::Text("selected access point: %s", selectedAp->e_ssid.c_str());
+
+
+    ImGui::NewLine();
+    for(auto i:core_->get_running_tasks()) {
+        if (ImGui::Button(("kill thread " + std::to_string(i)).c_str())) {
+            core_->end_task(i);
+        }
+    }
+    ImGui::End();
+}

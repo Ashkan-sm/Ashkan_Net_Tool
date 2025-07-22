@@ -10,6 +10,7 @@ MainWindow::MainWindow(ashk::ModelInterface *core) :core_(core){
     send_arp_request_window=std::make_shared<SendArpRequestWindow>(core_);
     vlan_hopping_window=std::make_shared<VlanHoppingWindow>(core_);
     man_in_the_middle_window=std::make_shared<MITMWindow>(core_);
+    wifi_attack_window=std::make_shared<WIFIAttackWindow>(core_);
 
     sub_window_=default_window;
 
@@ -63,6 +64,10 @@ void MainWindow::draw_main_toolbar() {
     if (ImGui::Button("MITMPacketForwarding", ImVec2(conf::toolbar_width-16, conf::toolbar_button_height)))
     {
         sub_window_=man_in_the_middle_window;
+    }
+    if (ImGui::Button("WIFIAttackWindow", ImVec2(conf::toolbar_width-16, conf::toolbar_button_height)))
+    {
+        sub_window_=wifi_attack_window;
     }
     ImGui::End();
 }

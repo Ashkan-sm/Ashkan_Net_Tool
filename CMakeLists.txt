@@ -25,6 +25,8 @@ target_include_directories(imgui
         ${IMGUI_DIR}
         ${IMGUI_DIR}/backends
 )
+
+
 set(CMAKE_CXX_STANDARD 20)
 add_subdirectory(libs/PcapPlusPlus-25.05)
 
@@ -40,6 +42,10 @@ target_link_libraries(AshkanTool
         AshkanTool-Core
 
         Pcap++ Packet++ Common++
+)
+target_include_directories(AshkanTool
+        PUBLIC
+        core/src/data_holders
 )
 set(RESOURCE_SRC_DIR "${CMAKE_SOURCE_DIR}/ui/resource")
 set(RESOURCE_DST_DIR "${CMAKE_BINARY_DIR}/ui-resource")

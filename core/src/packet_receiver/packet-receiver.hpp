@@ -26,8 +26,8 @@
 #include <netinet/in.h>
 #include <EthDot3Layer.h>
 #include <LLCLayer.h>
-
-
+#include "wifi-ap.hpp"
+#
 namespace ashk {
 
     struct ArpPoisoningDetectionCookie {
@@ -36,6 +36,9 @@ namespace ashk {
     struct VlanHoppingCookie {
         int inner_id;
         int outer_id;
+    };
+    struct WifiScanningCookie {
+        std::vector<WifiAp> *ap_list;
     };
     struct MITMForwardingCookie {
         pcpp::IPv4Address victim_ip;
@@ -53,6 +56,7 @@ namespace ashk {
         static void onPacketArrivesVlanHopping(pcpp::RawPacket *raw_packet, pcpp::PcapLiveDevice *dev, void *cookie);
         static void onPacketArrivesMITMForwarding(pcpp::RawPacket *raw_packet, pcpp::PcapLiveDevice *dev, void *cookie);
         static void onPacketArrivesDTPDomainExtraction(pcpp::RawPacket *raw_packet, pcpp::PcapLiveDevice *dev, void *cookie);
+        static void onPacketArrivesWifiScanning(pcpp::RawPacket *raw_packet, pcpp::PcapLiveDevice *dev, void *cookie);
     };
 
 

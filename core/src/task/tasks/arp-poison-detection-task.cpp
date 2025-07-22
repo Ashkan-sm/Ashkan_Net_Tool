@@ -24,6 +24,7 @@ void ashk::tasks::ArpPoisonDetectionTask::exec() {
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
     capture_wrapper.stop_capture(dev_);
+    end();
     logger.log("ArpPoisonDetection task finished.\n");
 }
 

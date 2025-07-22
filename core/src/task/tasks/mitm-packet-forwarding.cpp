@@ -29,6 +29,7 @@ void ashk::tasks::MITMPacketForwarding::exec() {
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
     capture_wrapper.stop_capture(dev_);
+    end();
     logger.log("mitm forwarding stopped.\n");
 }
 ashk::tasks::MITMPacketForwarding::MITMPacketForwarding(pcpp::IPv4Address iface_ip, pcpp::IPv4Address victim_ip,
