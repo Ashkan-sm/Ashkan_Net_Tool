@@ -22,7 +22,9 @@ int Net_core::discover_interface() {
 
     return 0;
 }
-
+std::vector<pcpp::PcapLiveDevice *> Net_core::discover_interfaces() {
+    return pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDevicesList();
+}
 pcpp::IPv4Address Net_core::interface_ip() {
     discover_interface();
     return dev_->getIPv4Address();
@@ -128,11 +130,34 @@ pcpp::MacAddress Net_core::arp(pcpp::IPv4Address ip) {
         last_added_task_id++;
     }
 
-    void Net_core::start_detecting_networks(pcpp::IPv4Address iface_ip,std::vector<WifiAp> &ap_list) {
-        tasks[last_added_task_id]=std::make_unique<tasks::WifiApScanningTask>(dev_,iface_ip,ap_list,last_added_task_id);
+    void Net_core::start_detecting_wifi_aps(std::string iface_name_or_ip,std::vector<WifiAp> &ap_list) {
+        tasks[last_added_task_id]=std::make_unique<tasks::WifiApScanningTask>(dev_,iface_name_or_ip,ap_list,last_added_task_id);
         tasks[last_added_task_id]->start();
         last_added_task_id++;
     }
+
+    std::string Net_core::interface_name() {
+        discover_interface();
+        return dev_->getName();
+    }
+
+    void Net_core::start_detecting_wifi_hosts(const std::string &iface_ip_name_str,
+                                              std::vector<std::shared_ptr<WifiHost>> &host_list) {
+        tasks[last_added_task_id]=std::make_unique<tasks::WifiHostScanningTask>(dev_,iface_ip_name_str,host_list,last_added_task_id);
+        tasks[last_added_task_id]->start();
+        last_added_task_id++;
+
+    }
+
+    void Net_core::start_sending_deauth_packets(const std::string &iface_ip_name_str,
+                        WifiAp* wifi_ap,
+                        std::vector<std::shared_ptr<WifiHost>> &host_list) {
+        tasks[last_added_task_id]=std::make_unique<tasks::DeauthPacketSendingTask>(dev_,iface_ip_name_str,*wifi_ap,host_list,last_added_task_id);
+        tasks[last_added_task_id]->start();
+        last_added_task_id++;
+    }
+
+
 
 
 }

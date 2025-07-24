@@ -37,40 +37,61 @@ void MainWindow::draw_main_toolbar() {
                                      ImGuiWindowFlags_NoScrollbar |
                                      ImGuiWindowFlags_NoSavedSettings;
 
+
     float toolbar_height = io.DisplaySize.y;
+    float threads_child_height = 180.0f;
+    float top_child_height = toolbar_height - threads_child_height ;
 
     ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x - conf::toolbar_width, 0));
     ImGui::SetNextWindowSize(ImVec2(conf::toolbar_width, toolbar_height));
+    ImVec2 old_padding = ImGui::GetStyle().FramePadding;
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, old_padding.y));
+    ImGui::Begin("Tools", nullptr, toolbar_flags|
+                                   ImGuiWindowFlags_NoScrollWithMouse);
+    float padding=30;
+    // Top child occupies everything above the bottom child
+    ImGui::BeginChild("Tools_Top", ImVec2(conf::toolbar_width, top_child_height-35),toolbar_flags);
+// Reduce horizontal padding
 
-    ImGui::Begin("Tools", nullptr, toolbar_flags);
+    if (ImGui::Button("ArpSpoof", ImVec2(conf::toolbar_width-padding, conf::toolbar_button_height))) {
+        sub_window_ = arp_spoof_window;
+    }
+    if (ImGui::Button("ArpPoisoningDetection", ImVec2(conf::toolbar_width-padding, conf::toolbar_button_height))) {
+        sub_window_ = arp_poison_detection_window;
+    }
+    if (ImGui::Button("SendArpRequest", ImVec2(conf::toolbar_width-padding, conf::toolbar_button_height))) {
+        sub_window_ = send_arp_request_window;
+    }
+    if (ImGui::Button("VlanHopping", ImVec2(conf::toolbar_width -padding, conf::toolbar_button_height))) {
+        sub_window_ = vlan_hopping_window;
+    }
+    if (ImGui::Button("MITMPacketForwarding", ImVec2(conf::toolbar_width -padding, conf::toolbar_button_height))) {
+        sub_window_ = man_in_the_middle_window;
+    }
+    if (ImGui::Button("WIFIAttackWindow", ImVec2(conf::toolbar_width-padding , conf::toolbar_button_height))) {
+        sub_window_ = wifi_attack_window;
+    }
+    ImGui::PopStyleVar();
 
-    if (ImGui::Button("ArpSpoof", ImVec2(conf::toolbar_width-16, conf::toolbar_button_height)))
-    {
-        sub_window_=arp_spoof_window;
-    }
+    ImGui::EndChild();
 
-    if (ImGui::Button("ArpPoisoningDetection", ImVec2(conf::toolbar_width-16, conf::toolbar_button_height)))
-    {
-        sub_window_=arp_poison_detection_window;
+    // Move to the bottom of the main window to draw the Threads panel
+    ImGui::SetCursorPosY(toolbar_height - threads_child_height);
+
+    ImGuiWindowFlags window_flags = ImGuiWindowFlags_None;
+    ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
+    ImGui::BeginChild("Threads", ImVec2(0, threads_child_height), ImGuiChildFlags_Borders, window_flags);
+    for (auto i : core_->get_running_tasks()) {
+        if (ImGui::Button(("kill thread " + std::to_string(i)).c_str())) {
+            core_->end_task(i);
+        }
     }
-    if (ImGui::Button("SendArpRequest", ImVec2(conf::toolbar_width-16, conf::toolbar_button_height)))
-    {
-        sub_window_=send_arp_request_window;
-    }
-    if (ImGui::Button("VlanHopping", ImVec2(conf::toolbar_width-16, conf::toolbar_button_height)))
-    {
-        sub_window_=vlan_hopping_window;
-    }
-    if (ImGui::Button("MITMPacketForwarding", ImVec2(conf::toolbar_width-16, conf::toolbar_button_height)))
-    {
-        sub_window_=man_in_the_middle_window;
-    }
-    if (ImGui::Button("WIFIAttackWindow", ImVec2(conf::toolbar_width-16, conf::toolbar_button_height)))
-    {
-        sub_window_=wifi_attack_window;
-    }
+    ImGui::EndChild();
+    ImGui::PopStyleVar();
+
     ImGui::End();
 }
+
 
 void MainWindow::draw_log_window() {
     ImGui::PushStyleColor(ImGuiCol_WindowBg, IM_COL32(0, 0, 0, 255));

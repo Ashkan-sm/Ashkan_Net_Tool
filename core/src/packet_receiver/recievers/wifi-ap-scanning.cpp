@@ -4,10 +4,10 @@ struct TagData {
     uint8_t* data;
     uint8_t length;
 };
-void ashk::PacketReceiver::onPacketArrivesWifiScanning(pcpp::RawPacket *rawPcapPacket, pcpp::PcapLiveDevice *dev, void *cookie) {
-    auto *data = static_cast<WifiScanningCookie *>(cookie);
+void ashk::PacketReceiver::onPacketArrivesWifiApScanning(pcpp::RawPacket *raw_pcap_packet, pcpp::PcapLiveDevice *dev, void *cookie) {
+    auto *data = static_cast<WifiApScanningCookie *>(cookie);
 //    data->ap_list->push_back({"yoo"});
-    const uint8_t* raw_packet=rawPcapPacket->getRawData();
+    const uint8_t* raw_packet=raw_pcap_packet->getRawData();
 
     const uint8_t* wifi_layer;
     if(htonl(*reinterpret_cast<const uint32_t *>(raw_packet))==0x44000000){//parism header
@@ -25,7 +25,7 @@ void ashk::PacketReceiver::onPacketArrivesWifiScanning(pcpp::RawPacket *rawPcapP
 
 
     uint16_t wifi_layer_type= htons(*reinterpret_cast<const uint16_t *>(wifi_layer));
-    if (wifi_layer_type!=0x8000)//beacon packet
+    if (wifi_layer_type!=0x8000 && wifi_layer_type!=0x5000)//beacon packet or probe respounce
         return;
     uint8_t ap_mac_adr[6];
     memcpy(ap_mac_adr,wifi_layer+16,6);
@@ -34,7 +34,7 @@ void ashk::PacketReceiver::onPacketArrivesWifiScanning(pcpp::RawPacket *rawPcapP
     const uint8_t*  variable_tags=fixed_params+12;
     std::map<uint8_t,TagData> tags;
     int i=0;
-    while(variable_tags+i<raw_packet+rawPcapPacket->getRawDataLen()){
+    while(variable_tags+i< raw_packet + raw_pcap_packet->getRawDataLen()){
         uint8_t id=variable_tags[i];
         i++;
         uint8_t length=variable_tags[i];
@@ -45,7 +45,7 @@ void ashk::PacketReceiver::onPacketArrivesWifiScanning(pcpp::RawPacket *rawPcapP
         i+=length;
     }
     WifiAp out(std::string(reinterpret_cast<char*>(tags[0].data), tags[0].length));
-
+    out.b_ssid=pcpp::MacAddress(ap_mac_adr);
     if(std::find(data->ap_list->begin(), data->ap_list->end(),out)==data->ap_list->end())
         data->ap_list->push_back(out);
 

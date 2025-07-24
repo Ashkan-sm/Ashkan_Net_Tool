@@ -65,7 +65,7 @@ void ashk::tasks::DTPNegotiation::exec() {
 
     // --- Create RawPacket ---
     timeval ts = {0, 0};
-    pcpp::RawPacket raw(fullPacket, totalLen, ts, false);
+    pcpp::RawPacket raw(fullPacket, totalLen, ts, true);
     pcpp::Packet new_packet(&raw);
     new_packet.computeCalculateFields();
 

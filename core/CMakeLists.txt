@@ -34,7 +34,12 @@ add_library(AshkanTool-Core
         src/data_holders/wifi-ap.hpp
         src/task/tasks/wifi-ap-scanning-task.cpp
         src/task/tasks/wifi-ap-scanning-task.hpp
-        src/packet_receiver/recievers/wifi-scanning.cpp
+        src/packet_receiver/recievers/wifi-ap-scanning.cpp
+        src/task/tasks/wifi-host-scanning-task.cpp
+        src/task/tasks/wifi-host-scanning-task.hpp
+        src/packet_receiver/recievers/wifi-host-scanning.cpp
+        src/task/tasks/deauth-packet-sending.cpp
+        src/task/tasks/deauth-packet-sending.hpp
 )
 target_include_directories(AshkanTool-Core
         PUBLIC

@@ -46,6 +46,7 @@ target_link_libraries(AshkanTool
 target_include_directories(AshkanTool
         PUBLIC
         core/src/data_holders
+        ./
 )
 set(RESOURCE_SRC_DIR "${CMAKE_SOURCE_DIR}/ui/resource")
 set(RESOURCE_DST_DIR "${CMAKE_BINARY_DIR}/ui-resource")

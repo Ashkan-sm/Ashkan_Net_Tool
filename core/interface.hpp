@@ -19,6 +19,8 @@ public:
     void send_arp_req(const std::string &iface_ip_str, const std::string &ip_str);
 
     std::string get_interface_ip();
+    std::vector<pcpp::PcapLiveDevice*> get_interfaces();
+    std::string get_interface_nmae();
 
     void start_arp_poison(const std::string& iface_ip, const std::string& vic_src_ip, const std::string& vic_dst_ip,
                           const std::string& forward_to_ip);
@@ -27,7 +29,9 @@ public:
     void start_dtp_negotiation(const std::string& iface_ip_str,const std::string &domain_name);
     void start_dtp_domain_extraction(const std::string& iface_ip_str,char buffer[32]);
     void start_mitm_forwarding(const std::string& iface_ip_str,const std::string& victim_ip_str, const std::string& gateway_ip_str,const std::string& victim_mac_str, const std::string& gateway_mac_str);
-    void start_detecting_networks(const std::string& iface_ip_str,std::vector<WifiAp> &ap_list);
+    void start_detecting_wifi_aps(const std::string& iface_ip_str,std::vector<WifiAp> &ap_list);
+    void start_detecting_wifi_hosts(const std::string& iface_ip_name_str, std::vector<std::shared_ptr<WifiHost>>&host_list);
+    void start_sending_deauth_packets(const std::string& iface_ip_name_str,WifiAp* wifi_ap, std::vector<std::shared_ptr<WifiHost>>&host_list);
     void add_logger_method(const std::function<void(const std::string &)>& method);
     std::vector<int> get_running_tasks();
     void end_task(int id);

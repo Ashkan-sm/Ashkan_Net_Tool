@@ -9,7 +9,7 @@
 #include "../../core/interface.hpp"
 #include <EthDot3Layer.h>
 #include "wifi-ap.hpp"
-
+#include "utils/logger.hpp"
 class ISubWindow {
 public:
     explicit ISubWindow(ashk::ModelInterface *core);
@@ -17,6 +17,7 @@ public:
 protected:
     ashk::ModelInterface *core_;
     void draw_base(const std::string &name);
+    pcpp::PcapLiveDevice * draw_interface_widget();
 private:
 };
 class DefaultWindow :public ISubWindow{

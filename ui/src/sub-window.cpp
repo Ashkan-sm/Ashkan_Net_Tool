@@ -6,7 +6,40 @@
 ISubWindow::ISubWindow(ashk::ModelInterface *core) :core_(core){
 
 }
+pcpp::PcapLiveDevice * ISubWindow::draw_interface_widget(){
+    static std::vector<pcpp::PcapLiveDevice *> devices=core_->get_interfaces();
+    static int item_selected_idx = 0;
+    const std::string &combo_preview_value = devices[item_selected_idx]->getName();
+    if(devices.empty()){
+        ashk::utils::Logger::getInstance().log("No network device found\n");
+    }
+    else{
+        if (ImGui::BeginCombo("interface",combo_preview_value.c_str()))
+        {
+            static ImGuiTextFilter filter;
+            if (ImGui::IsWindowAppearing())
+            {
+                ImGui::SetKeyboardFocusHere();
+                filter.Clear();
+            }
+            ImGui::SetNextItemShortcut(ImGuiMod_Ctrl | ImGuiKey_F);
+            filter.Draw("##Filter", -FLT_MIN);
 
+            for (int n = 0; n < devices.size(); n++)
+            {
+                const bool is_selected = (item_selected_idx == n);
+                if (filter.PassFilter(devices[n]->getName().c_str()))
+                    if (ImGui::Selectable((devices[n]->getName()+" "+devices[n]->getIPv4Address().toString()).c_str(), is_selected))
+                        item_selected_idx = n;
+            }
+            ImGui::EndCombo();
+        }
+    }
+    ImGui::SameLine(); if (ImGui::Button("discover")){
+        devices=core_->get_interfaces();
+    }
+    return devices[item_selected_idx];
+}
 void ISubWindow::draw_base(const std::string &name) {
     ImVec2 avail(ImGui::GetMainViewport()->Size.x-ImGui::FindWindowByName("Tools")->Size.x,ImGui::GetMainViewport()->Size.y-ImGui::FindWindowByName("Log")->Size.y);
     static ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoResize |
@@ -25,13 +58,7 @@ ArpSpoofWindow::ArpSpoofWindow(ashk::ModelInterface *core) : ISubWindow(core) {
 void ArpSpoofWindow::draw() {
     draw_base("ArpSpoofingWindow");
     static ImGuiInputTextFlags input_text_ip_flag = ImGuiInputTextFlags_CharsDecimal;
-
-    static char interface_ip[16] = "";
-    ImGui::InputTextWithHint("interface(ip)", "0.0.0.0", interface_ip, IM_ARRAYSIZE(interface_ip),input_text_ip_flag);
-    ImGui::SameLine(); if (ImGui::Button("discover")){
-        std::string ip=core_->get_interface_ip();
-        std::memcpy(interface_ip,ip.c_str(),ip.size());
-    }
+    pcpp::PcapLiveDevice * device=draw_interface_widget();
 
     static char victim_src_ip[16] = "";
     ImGui::InputTextWithHint("victim_src(ip)", "0.0.0.0", victim_src_ip, IM_ARRAYSIZE(victim_src_ip),input_text_ip_flag);
@@ -42,14 +69,9 @@ void ArpSpoofWindow::draw() {
     static char forward_to_ip[16] = "";
     ImGui::InputTextWithHint("forward_to(ip)", "0.0.0.0", forward_to_ip, IM_ARRAYSIZE(forward_to_ip),input_text_ip_flag);
 
-    ImGui::NewLine();if (ImGui::Button("start poisoning")){core_->start_arp_poison(interface_ip,victim_src_ip,victim_dst_ip,forward_to_ip);}
+    ImGui::NewLine();if (ImGui::Button("start poisoning")){core_->start_arp_poison(device->getIPv4Address().toString(),victim_src_ip,victim_dst_ip,forward_to_ip);}
 
 
-    for(auto i:core_->get_running_tasks()) {
-        if (ImGui::Button(("kill thread " + std::to_string(i)).c_str())) {
-            core_->end_task(i);
-        }
-    }
     ImGui::End();
 }
 
@@ -65,22 +87,12 @@ void ArpPoisonDetectionWindow::draw() {
     draw_base("ArpPoisonDetectionWindow");
 
     static ImGuiInputTextFlags input_text_ip_flag = ImGuiInputTextFlags_CharsDecimal;
-    static char interface_ip[16] = "";
-    ImGui::InputTextWithHint("interface(ip)", "0.0.0.0", interface_ip, IM_ARRAYSIZE(interface_ip),input_text_ip_flag);
-    ImGui::SameLine(); if (ImGui::Button("discover")){
-        std::string ip=core_->get_interface_ip();
-        std::memcpy(interface_ip,ip.c_str(),ip.size());
-    }
+
+    pcpp::PcapLiveDevice * device=draw_interface_widget();
 
 
-    ImGui::NewLine();if (ImGui::Button("start detection")){core_->start_arp_poison_detection(interface_ip);}
+    ImGui::NewLine();if (ImGui::Button("start detection")){core_->start_arp_poison_detection(device->getIPv4Address().toString());}
 
-
-    for(auto i:core_->get_running_tasks()) {
-        if (ImGui::Button(("kill thread " + std::to_string(i)).c_str())) {
-            core_->end_task(i);
-        }
-    }
 
     ImGui::End();
 }
@@ -97,21 +109,10 @@ void SendArpRequestWindow::draw() {
     draw_base("SendArpRequestWindow");
 
     static ImGuiInputTextFlags input_text_ip_flag = ImGuiInputTextFlags_CharsDecimal;
-    static char interface_ip[16] = "";
-    ImGui::InputTextWithHint("interface(ip)", "0.0.0.0", interface_ip, IM_ARRAYSIZE(interface_ip),input_text_ip_flag);
-    ImGui::SameLine(); if (ImGui::Button("discover")){
-        std::string ip=core_->get_interface_ip();
-        std::memcpy(interface_ip,ip.c_str(),ip.size());
-    }
+    pcpp::PcapLiveDevice * device=draw_interface_widget();
     static char dst_ip[16] = "";
-    ImGui::InputTextWithHint("arp(ip)", "0.0.0.0", dst_ip, IM_ARRAYSIZE(interface_ip),input_text_ip_flag);
-    ImGui::NewLine();if (ImGui::Button("send")){core_->send_arp_req(interface_ip,dst_ip);}
-
-    for(auto i:core_->get_running_tasks()) {
-        if (ImGui::Button(("kill thread " + std::to_string(i)).c_str())) {
-            core_->end_task(i);
-        }
-    }
+    ImGui::InputTextWithHint("arp(ip)", "0.0.0.0", dst_ip, IM_ARRAYSIZE(dst_ip),input_text_ip_flag);
+    ImGui::NewLine();if (ImGui::Button("send")){core_->send_arp_req(device->getIPv4Address().toString(),dst_ip);}
 
     ImGui::End();
 }
@@ -125,33 +126,23 @@ void VlanHoppingWindow::draw() {
 
     static ImGuiInputTextFlags input_text_ip_flag = ImGuiInputTextFlags_CharsDecimal;
 
-    static char interface_ip[16] = "";
-    ImGui::InputTextWithHint("interface(ip)", "0.0.0.0", interface_ip, IM_ARRAYSIZE(interface_ip),input_text_ip_flag);
-    ImGui::SameLine(); if (ImGui::Button("discover")){
-        std::string ip=core_->get_interface_ip();
-        std::memcpy(interface_ip,ip.c_str(),ip.size());
-    }
+    pcpp::PcapLiveDevice * device=draw_interface_widget();
 
     ImGui::NewLine();
     ImGui::Text("Double_Tagging");
     static char outer_tag[16] = "";
     static char inner_tag[16] = "";
-    ImGui::InputTextWithHint("outer_tag", "0", outer_tag, IM_ARRAYSIZE(interface_ip),input_text_ip_flag);
-    ImGui::InputTextWithHint("inner_tag", "0", inner_tag, IM_ARRAYSIZE(interface_ip),input_text_ip_flag);
-    if (ImGui::Button("Start Hopping")){core_->start_vlan_hopping(interface_ip,outer_tag,inner_tag);}
+    ImGui::InputTextWithHint("outer_tag", "0", outer_tag, IM_ARRAYSIZE(outer_tag),input_text_ip_flag);
+    ImGui::InputTextWithHint("inner_tag", "0", inner_tag, IM_ARRAYSIZE(inner_tag),input_text_ip_flag);
+    if (ImGui::Button("Start Hopping")){core_->start_vlan_hopping(device->getIPv4Address().toString(),outer_tag,inner_tag);}
 
     ImGui::NewLine();
     ImGui::Text("DTP_Negotiation");
     static char domain_name[32] = "";
     ImGui::InputTextWithHint("domain_name", "name", domain_name, 32);
-    ImGui::SameLine(); if (ImGui::Button("extract")){core_->start_dtp_domain_extraction(interface_ip,domain_name);}
-    if (ImGui::Button("Start Negotiation")){core_->start_dtp_negotiation(interface_ip,domain_name);}
+    ImGui::SameLine(); if (ImGui::Button("extract")){core_->start_dtp_domain_extraction(device->getIPv4Address().toString(),domain_name);}
+    if (ImGui::Button("Start Negotiation")){core_->start_dtp_negotiation(device->getIPv4Address().toString(),domain_name);}
 
-    ImGui::NewLine();for(auto i:core_->get_running_tasks()) {
-        if (ImGui::Button(("kill thread " + std::to_string(i)).c_str())) {
-            core_->end_task(i);
-        }
-    }
 
     ImGui::End();
 }
@@ -164,12 +155,7 @@ void MITMWindow::draw() {
     draw_base("ManInTheMiddleWindow");
     static ImGuiInputTextFlags input_text_ip_flag = ImGuiInputTextFlags_CharsDecimal;
 
-    static char interface_ip[17] = "";
-    ImGui::InputTextWithHint("interface(ip)", "0.0.0.0", interface_ip, IM_ARRAYSIZE(interface_ip),input_text_ip_flag);
-    ImGui::SameLine(); if (ImGui::Button("discover")){
-        std::string ip=core_->get_interface_ip();
-        std::memcpy(interface_ip,ip.c_str(),ip.size());
-    }
+    pcpp::PcapLiveDevice * device=draw_interface_widget();
     static char victim_ip[17] = "";
     ImGui::InputTextWithHint("victim(ip)", "0.0.0.0", victim_ip, IM_ARRAYSIZE(victim_ip));
 
@@ -191,14 +177,9 @@ void MITMWindow::draw() {
         std::memcpy(gateway_mac,gate_mac_str.c_str(),gate_mac_str.size());
     }
 
-    ImGui::NewLine();if (ImGui::Button("start forwarding")){core_->start_mitm_forwarding(interface_ip,victim_ip,gateway_ip,victim_mac,gateway_mac);}
+    ImGui::NewLine();if (ImGui::Button("start forwarding")){core_->start_mitm_forwarding(device->getIPv4Address().toString(),victim_ip,gateway_ip,victim_mac,gateway_mac);}
 
 
-    for(auto i:core_->get_running_tasks()) {
-        if (ImGui::Button(("kill thread " + std::to_string(i)).c_str())) {
-            core_->end_task(i);
-        }
-    }
     ImGui::End();
 }
 
@@ -210,22 +191,16 @@ void WIFIAttackWindow::draw() {
     draw_base("WIFIAttackWindow");
     static ImGuiInputTextFlags input_text_ip_flag = ImGuiInputTextFlags_CharsDecimal;
 
-    static char interface_ip[17] = "";
-    ImGui::InputTextWithHint("interface(ip)", "0.0.0.0", interface_ip, IM_ARRAYSIZE(interface_ip),input_text_ip_flag);
-    ImGui::SameLine(); if (ImGui::Button("discover")){
-        std::string ip=core_->get_interface_ip();
-        std::memcpy(interface_ip,ip.c_str(),ip.size());
-    }
+    pcpp::PcapLiveDevice * device=draw_interface_widget();
 
     static std::vector<WifiAp> ap_list;
-    if (ImGui::Button("detect networks")){core_->start_detecting_networks(interface_ip,ap_list);}
-
+    if (ImGui::Button("detect networks")){core_->start_detecting_wifi_aps(device->getName(),ap_list);}
 
     static auto selectedAp=new WifiAp("None");
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_None;
 //    window_flags |= ImGuiWindowFlags_MenuBar;
     ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
-    ImGui::BeginChild("ApListWindow", ImVec2(0, 260), ImGuiChildFlags_Borders, window_flags);
+    ImGui::BeginChild("ApListChildWindow", ImVec2(0, 180), ImGuiChildFlags_Borders, window_flags);
 
     for(auto &i :ap_list){
         if (ImGui::Button((" "+i.e_ssid).c_str())) {
@@ -239,11 +214,28 @@ void WIFIAttackWindow::draw() {
     ImGui::Text("selected access point: %s", selectedAp->e_ssid.c_str());
 
 
-    ImGui::NewLine();
-    for(auto i:core_->get_running_tasks()) {
-        if (ImGui::Button(("kill thread " + std::to_string(i)).c_str())) {
-            core_->end_task(i);
+    static std::vector<std::shared_ptr<WifiHost>> host_list{std::make_unique<WifiHost>(pcpp::MacAddress::Broadcast)};
+    if (ImGui::Button("detect hosts")){
+        core_->start_detecting_wifi_hosts(device->getName(),host_list);
+    }
+    ImGui::SameLine();
+    if(ImGui::Button("Select All")){
+        for(auto &i:host_list){
+            i->is_selected= true;
         }
+    };
+
+    ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
+    ImGui::BeginChild("ApHostsChildWindow", ImVec2(0, 180), ImGuiChildFlags_Borders, window_flags);
+
+    for(auto &i :host_list){
+        ImGui::Checkbox(i->mac.toString().c_str(),&i->is_selected);
+    }
+    ImGui::EndChild();
+    ImGui::PopStyleVar();
+
+    if (ImGui::Button("Start Deauthentication")){
+        core_->start_sending_deauth_packets(device->getName(),selectedAp,host_list);
     }
     ImGui::End();
 }

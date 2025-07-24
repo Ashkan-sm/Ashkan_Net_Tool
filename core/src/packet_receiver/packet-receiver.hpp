@@ -37,8 +37,11 @@ namespace ashk {
         int inner_id;
         int outer_id;
     };
-    struct WifiScanningCookie {
+    struct WifiApScanningCookie {
         std::vector<WifiAp> *ap_list;
+    };
+    struct WifiHostScanningCookie {
+        std::vector<std::shared_ptr<WifiHost>> *host_list;
     };
     struct MITMForwardingCookie {
         pcpp::IPv4Address victim_ip;
@@ -56,7 +59,8 @@ namespace ashk {
         static void onPacketArrivesVlanHopping(pcpp::RawPacket *raw_packet, pcpp::PcapLiveDevice *dev, void *cookie);
         static void onPacketArrivesMITMForwarding(pcpp::RawPacket *raw_packet, pcpp::PcapLiveDevice *dev, void *cookie);
         static void onPacketArrivesDTPDomainExtraction(pcpp::RawPacket *raw_packet, pcpp::PcapLiveDevice *dev, void *cookie);
-        static void onPacketArrivesWifiScanning(pcpp::RawPacket *raw_packet, pcpp::PcapLiveDevice *dev, void *cookie);
+        static void onPacketArrivesWifiApScanning(pcpp::RawPacket *raw_pcap_packet, pcpp::PcapLiveDevice *dev, void *cookie);
+        static void onPacketArrivesWifiHostScanning(pcpp::RawPacket *raw_pcap_packet, pcpp::PcapLiveDevice *dev, void *cookie);
     };
 
 

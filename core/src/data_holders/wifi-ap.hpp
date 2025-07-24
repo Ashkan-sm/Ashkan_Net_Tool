@@ -26,4 +26,10 @@ struct WifiAp{
         return e_ssid==b.e_ssid && b_ssid==b.b_ssid && enc==b.enc;
     }
 };
+
+struct WifiHost{
+    pcpp::MacAddress mac;
+    bool is_selected=false;
+
+};
 #endif //ASHKANTOOL_WIFI_AP_HPP

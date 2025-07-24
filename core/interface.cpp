@@ -10,8 +10,12 @@ namespace ashk {
 std::string ModelInterface::get_interface_ip() {
     return core_.interface_ip().toString();
 }
+std::vector<pcpp::PcapLiveDevice *> ashk::ModelInterface::get_interfaces() {
+    return core_.discover_interfaces();
+}
 
-std::string ModelInterface::arp(const std::string &ip) {
+
+    std::string ModelInterface::arp(const std::string &ip) {
     return core_.arp(pcpp::IPv4Address(ip)).toString();
 }
 
@@ -162,15 +166,25 @@ std::string ashk::ModelInterface::get_task_data(const std::string& task_id, task
     return core_.tasks[task_id_int]->get_data(data_id);
 }
 
-void ashk::ModelInterface::start_detecting_networks(const std::string& iface_ip_str,std::vector<WifiAp> &ap_list) {
-    pcpp::IPv4Address iface;
-    try {
-        iface = pcpp::IPv4Address(iface_ip_str);
-    }
-    catch (const std::exception &) {
-        logger_.log("invalid inputs\n");
-        return;
-    }
-    core_.start_detecting_networks(iface,ap_list);
+void ashk::ModelInterface::start_detecting_wifi_aps(const std::string& iface_name_str,std::vector<WifiAp> &ap_list) {
+
+    core_.start_detecting_wifi_aps(iface_name_str,ap_list);
 
 }
+
+void ashk::ModelInterface::start_detecting_wifi_hosts(const std::string &iface_ip_name_str,
+                                                      std::vector<std::shared_ptr<WifiHost>> &host_list) {
+    core_.start_detecting_wifi_hosts(iface_ip_name_str,host_list);
+}
+
+std::string ashk::ModelInterface::get_interface_nmae() {
+    return core_.interface_name();
+}
+
+void ashk::ModelInterface::start_sending_deauth_packets(const std::string &iface_ip_name_str,
+                                                        WifiAp* wifi_ap,
+                                                        std::vector<std::shared_ptr<WifiHost>> &host_list) {
+    return core_.start_sending_deauth_packets(iface_ip_name_str,wifi_ap,host_list);
+}
+
+
