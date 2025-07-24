@@ -203,7 +203,7 @@ void WIFIAttackWindow::draw() {
     ImGui::BeginChild("ApListChildWindow", ImVec2(0, 180), ImGuiChildFlags_Borders, window_flags);
 
     for(auto &i :ap_list){
-        if (ImGui::Button((" "+i.e_ssid).c_str())) {
+        if (ImGui::Button((i.e_ssid+" ("+i.b_ssid.toString()+")").c_str())) {
             selectedAp=&i;
         }
     }
