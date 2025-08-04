@@ -26,7 +26,6 @@ namespace ashk::tasks {
         pcpp::MacAddress victim_mac;
         pcpp::MacAddress gateway_mac;
         CaptureWrapper &capture_wrapper = CaptureWrapper::getInstance();
-        int last_task_id;
 
     };
 }

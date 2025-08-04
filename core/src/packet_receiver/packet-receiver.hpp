@@ -26,8 +26,9 @@
 #include <netinet/in.h>
 #include <EthDot3Layer.h>
 #include <LLCLayer.h>
-#include "wifi-ap.hpp"
-#
+#include "wifi.hpp"
+
+
 namespace ashk {
 
     struct ArpPoisoningDetectionCookie {
@@ -53,6 +54,10 @@ namespace ashk {
         char* buffer= nullptr;
         Task* task= nullptr;
     };
+    struct WPA2HandShakeCapturingCookie {
+        std::shared_ptr<HandShakeData> hand_shake_data= nullptr;
+        Task* task= nullptr;
+    };
     class PacketReceiver {
     public:
         static void onPacketArrivesArpPoisoningDetection(pcpp::RawPacket *raw_packet, pcpp::PcapLiveDevice *dev, void *cookie);
@@ -61,6 +66,7 @@ namespace ashk {
         static void onPacketArrivesDTPDomainExtraction(pcpp::RawPacket *raw_packet, pcpp::PcapLiveDevice *dev, void *cookie);
         static void onPacketArrivesWifiApScanning(pcpp::RawPacket *raw_pcap_packet, pcpp::PcapLiveDevice *dev, void *cookie);
         static void onPacketArrivesWifiHostScanning(pcpp::RawPacket *raw_pcap_packet, pcpp::PcapLiveDevice *dev, void *cookie);
+        static void onPacketArrivesWPA2HandShakeCapturing(pcpp::RawPacket *raw_pcap_packet, pcpp::PcapLiveDevice *dev, void *cookie);
     };
 
 

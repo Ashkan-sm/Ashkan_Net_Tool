@@ -8,7 +8,7 @@ ashk::tasks::WifiHostScanningTask::WifiHostScanningTask(pcpp::PcapLiveDevice *de
                                                         std::vector<std::shared_ptr<WifiHost>> &host_list, int last_task_id) :
         dev_(dev),
         iface_name_or_ip(iface_name_or_ip),
-        last_task_id(last_task_id),host_list(&host_list) {
+        Task(last_task_id),host_list(&host_list) {
 
 }
 

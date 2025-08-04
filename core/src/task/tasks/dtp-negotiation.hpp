@@ -19,7 +19,7 @@ namespace ashk::tasks{
         pcpp::PcapLiveDevice *dev_ = nullptr;
         pcpp::IPv4Address iface_ip;
         std::string domain_name;
-        int last_task_id;
+
     };
 
 }

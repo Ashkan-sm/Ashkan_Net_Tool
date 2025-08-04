@@ -13,7 +13,7 @@ ashk::tasks::VlanHoppingTask::VlanHoppingTask(pcpp::PcapLiveDevice *dev,
                                               iface_ip(iface_ip),
                                               outer_id(outer_id),
                                               inner_id(inner_id),
-                                              last_task_id(last_task_id){
+                                              Task(last_task_id){
 
 
 }

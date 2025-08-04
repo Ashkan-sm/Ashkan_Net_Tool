@@ -8,7 +8,7 @@
 #include "src/net-core.hpp"
 #include <string>
 #include "../utils/logger.hpp"
-#include "wifi-ap.hpp"
+#include "wifi.hpp"
 namespace ashk {
 
 class ModelInterface {
@@ -32,6 +32,10 @@ public:
     void start_detecting_wifi_aps(const std::string& iface_ip_str,std::vector<WifiAp> &ap_list);
     void start_detecting_wifi_hosts(const std::string& iface_ip_name_str, std::vector<std::shared_ptr<WifiHost>>&host_list);
     void start_sending_deauth_packets(const std::string& iface_ip_name_str,WifiAp* wifi_ap, std::vector<std::shared_ptr<WifiHost>>&host_list);
+    void start_password_cracking(const std::string& iface_ip_name_str,std::shared_ptr<HandShakeData> handshake_data);
+    void start_wpa2_handshake_capturing(const std::string& iface_ip_name_str,std::shared_ptr<HandShakeData> handshake_data);
+
+
     void add_logger_method(const std::function<void(const std::string &)>& method);
     std::vector<int> get_running_tasks();
     void end_task(int id);

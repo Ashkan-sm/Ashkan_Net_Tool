@@ -18,7 +18,7 @@ namespace ashk::tasks {
         WifiAp* wifi_ap;
         std::vector<std::shared_ptr<WifiHost>> *host_list;
         CaptureWrapper &capture_wrapper = CaptureWrapper::getInstance();
-        int last_task_id;
+
     };
 }
 

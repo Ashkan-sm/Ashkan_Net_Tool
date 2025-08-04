@@ -8,7 +8,7 @@
 #include "config.h"
 #include "../../core/interface.hpp"
 #include <EthDot3Layer.h>
-#include "wifi-ap.hpp"
+#include "wifi.hpp"
 #include "utils/logger.hpp"
 class ISubWindow {
 public:

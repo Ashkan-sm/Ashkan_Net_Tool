@@ -17,7 +17,6 @@ namespace ashk::tasks {
         pcpp::PcapLiveDevice *dev_ = nullptr;
         pcpp::IPv4Address iface_ip;
         CaptureWrapper &capture_wrapper = CaptureWrapper::getInstance();
-        int last_task_id;
 
     };
 }

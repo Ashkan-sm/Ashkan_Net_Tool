@@ -28,7 +28,7 @@ void ashk::tasks::ArpPoisonDetectionTask::exec() {
     logger.log("ArpPoisonDetection task finished.\n");
 }
 
-ashk::tasks::ArpPoisonDetectionTask::ArpPoisonDetectionTask(pcpp::IPv4Address iface_ip,int last_task_id):iface_ip(iface_ip),last_task_id(last_task_id) {
+ashk::tasks::ArpPoisonDetectionTask::ArpPoisonDetectionTask(pcpp::IPv4Address iface_ip,int last_task_id):iface_ip(iface_ip),Task(last_task_id) {
 
 }
 

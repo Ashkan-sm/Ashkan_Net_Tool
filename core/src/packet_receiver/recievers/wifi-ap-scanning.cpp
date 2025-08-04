@@ -46,6 +46,8 @@ void ashk::PacketReceiver::onPacketArrivesWifiApScanning(pcpp::RawPacket *raw_pc
     }
     WifiAp out(std::string(reinterpret_cast<char*>(tags[0].data), tags[0].length));
     out.b_ssid=pcpp::MacAddress(ap_mac_adr);
+    if(out.b_ssid==pcpp::MacAddress::Zero)
+        return;
     if(std::find(data->ap_list->begin(), data->ap_list->end(),out)==data->ap_list->end())
         data->ap_list->push_back(out);
 

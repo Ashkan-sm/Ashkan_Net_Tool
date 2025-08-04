@@ -3,6 +3,8 @@
 //
 
 #include "interface.hpp"
+
+#include <utility>
 namespace ashk {
 
 
@@ -184,7 +186,16 @@ std::string ashk::ModelInterface::get_interface_nmae() {
 void ashk::ModelInterface::start_sending_deauth_packets(const std::string &iface_ip_name_str,
                                                         WifiAp* wifi_ap,
                                                         std::vector<std::shared_ptr<WifiHost>> &host_list) {
-    return core_.start_sending_deauth_packets(iface_ip_name_str,wifi_ap,host_list);
+    core_.start_sending_deauth_packets(iface_ip_name_str,wifi_ap,host_list);
+}
+
+void ashk::ModelInterface::start_password_cracking(const std::string &iface_ip_name_str, std::shared_ptr<HandShakeData> handshake_data) {
+    core_.start_password_cracking(iface_ip_name_str,std::move(handshake_data));
+}
+
+void ashk::ModelInterface::start_wpa2_handshake_capturing(const std::string &iface_ip_name_str,
+                                                          std::shared_ptr<HandShakeData> handshake_data) {
+    core_.start_wpa2_handshake_capturing(iface_ip_name_str,std::move(handshake_data));
 }
 
 

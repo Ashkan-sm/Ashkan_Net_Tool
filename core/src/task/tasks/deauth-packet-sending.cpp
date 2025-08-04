@@ -11,7 +11,7 @@ ashk::tasks::DeauthPacketSendingTask::DeauthPacketSendingTask(pcpp::PcapLiveDevi
         dev_(dev),
         wifi_ap(&wifi_ap),
         iface_name_or_ip(iface_name_or_ip),
-        last_task_id(last_task_id),host_list(&host_list){
+        Task(last_task_id),host_list(&host_list){
 
 }
 
@@ -83,7 +83,7 @@ void ashk::tasks::DeauthPacketSendingTask::exec() {
         for (auto &i:packets) {
             dev_->sendPacket(&i);
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
     }
 
     end();

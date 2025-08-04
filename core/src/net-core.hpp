@@ -29,7 +29,10 @@
 #include "task/tasks/wifi-ap-scanning-task.hpp"
 #include "task/tasks/wifi-host-scanning-task.hpp"
 #include "task/tasks/deauth-packet-sending.hpp"
-#include "wifi-ap.hpp"
+#include "task/tasks/wpa-2-hand-shake-capture-task.hpp"
+#include "task/tasks/wifi-password-cracking-task.hpp"
+
+#include "wifi.hpp"
 
 #include <map>
 
@@ -60,6 +63,8 @@ namespace ashk {
         void start_detecting_wifi_aps(std::string iface_name_or_ip,std::vector<WifiAp> &ap_list);
         void start_detecting_wifi_hosts(const std::string& iface_ip_name_str, std::vector<std::shared_ptr<WifiHost>>&host_list);
         void start_sending_deauth_packets(const std::string& iface_ip_name_str,WifiAp* wifi_ap, std::vector<std::shared_ptr<WifiHost>>&host_list);
+        void start_password_cracking(const std::string& iface_ip_name_str,std::shared_ptr<HandShakeData> handshake_data);
+        void start_wpa2_handshake_capturing(const std::string& iface_ip_name_str,std::shared_ptr<HandShakeData> handshake_data);
 
         void add_logger_method(const std::function<void(const std::string &)> &method);
         void end_task(int id);

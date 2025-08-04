@@ -91,9 +91,9 @@ std::string ashk::tasks::ArpPoisoningTask::get_data(tasks_data_id data_id) {
 
 ashk::tasks::ArpPoisoningTask::ArpPoisoningTask(pcpp::PcapLiveDevice *dev,
                                                 pcpp::IPv4Address vic_src_ip, pcpp::IPv4Address vic_dst_ip,
-                                                pcpp::IPv4Address forward_to_ip, pcpp::IPv4Address iface_ip) :
+                                                pcpp::IPv4Address forward_to_ip, pcpp::IPv4Address iface_ip,int last_task_id):
                                                 dev_(dev),vic_dst_ip(vic_dst_ip),vic_src_ip(vic_src_ip),
-                                                iface_ip(iface_ip),forward_to_ip(forward_to_ip)
+                                                iface_ip(iface_ip),forward_to_ip(forward_to_ip), Task(last_task_id)
                                                 {
 
 

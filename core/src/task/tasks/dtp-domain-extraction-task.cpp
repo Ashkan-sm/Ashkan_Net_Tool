@@ -5,7 +5,7 @@
 #include "dtp-domain-extraction-task.hpp"
 
 ashk::tasks::DtpDomainExtraction::DtpDomainExtraction(pcpp::PcapLiveDevice *dev, pcpp::IPv4Address iface_ip,char buffer[32],
-                                                      int last_task_id):dev_(dev),iface_ip(iface_ip),buffer(buffer),last_task_id(last_task_id) {
+                                                      int last_task_id):dev_(dev),iface_ip(iface_ip),buffer(buffer),Task(last_task_id) {
 
 }
 

@@ -34,7 +34,7 @@ void Net_core::start_arp_poisoning(pcpp::IPv4Address iface_ip, pcpp::IPv4Address
                                    pcpp::IPv4Address vic_dst_ip,
                                    pcpp::IPv4Address forward_to_ip) {
 
-    tasks[last_added_task_id] = std::make_unique<tasks::ArpPoisoningTask>(dev_,vic_src_ip,vic_dst_ip,forward_to_ip,iface_ip);
+    tasks[last_added_task_id] = std::make_unique<tasks::ArpPoisoningTask>(dev_,vic_src_ip,vic_dst_ip,forward_to_ip,iface_ip,last_added_task_id);
     tasks[last_added_task_id]->start();
     last_added_task_id++;
 }
@@ -157,7 +157,16 @@ pcpp::MacAddress Net_core::arp(pcpp::IPv4Address ip) {
         last_added_task_id++;
     }
 
+    void Net_core::start_password_cracking(const std::string &iface_ip_name_str, std::shared_ptr<HandShakeData> handshake_data) {
+        tasks[last_added_task_id]=std::make_unique<tasks::WifiPasswordCrackingTask>(dev_,iface_ip_name_str,handshake_data,last_added_task_id);
+        tasks[last_added_task_id]->start();
+        last_added_task_id++;
+    }
 
-
+    void Net_core::start_wpa2_handshake_capturing(const std::string &iface_ip_name_str, std::shared_ptr<HandShakeData> handshake_data) {
+        tasks[last_added_task_id]=std::make_unique<tasks::WPA2HandShakeCaptureTask>(dev_,iface_ip_name_str,handshake_data,last_added_task_id);
+        tasks[last_added_task_id]->start();
+        last_added_task_id++;
+    }
 
 }

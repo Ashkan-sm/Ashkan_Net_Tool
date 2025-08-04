@@ -18,7 +18,7 @@ namespace ashk::tasks {
         CaptureWrapper &capture_wrapper = CaptureWrapper::getInstance();
         pcpp::IPv4Address iface_ip;
         char *buffer;
-        int last_task_id;
+
     };
 }
 

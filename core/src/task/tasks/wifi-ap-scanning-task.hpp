@@ -6,7 +6,7 @@
 #define ASHKANTOOL_WIFI_AP_SCANNING_TASK_HPP
 
 #include "task-headers.hpp"
-#include "wifi-ap.hpp"
+#include "wifi.hpp"
 namespace ashk::tasks {
     class WifiApScanningTask:public Task{
     public:
@@ -21,7 +21,7 @@ namespace ashk::tasks {
         std::string iface_name_or_ip;
         std::vector<WifiAp> *ap_list;
         CaptureWrapper &capture_wrapper = CaptureWrapper::getInstance();
-        int last_task_id;
+
     };
 }
 

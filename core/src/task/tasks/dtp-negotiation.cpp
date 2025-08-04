@@ -6,7 +6,7 @@
 
 ashk::tasks::DTPNegotiation::DTPNegotiation(pcpp::PcapLiveDevice *dev, pcpp::IPv4Address iface_ip,
                                             std::string domain_name, int last_task_id): dev_(dev), iface_ip(iface_ip),
-                                                                                               domain_name(std::move(domain_name)),last_task_id(last_task_id){
+                                                                                               domain_name(std::move(domain_name)),Task(last_task_id){
 
 }
 

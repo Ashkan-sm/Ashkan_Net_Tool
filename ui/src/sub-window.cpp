@@ -239,5 +239,25 @@ void WIFIAttackWindow::draw() {
     if (ImGui::Button("Start Deauthentication")){
         core_->start_sending_deauth_packets(device->getName(),selectedAp,host_list);
     }
+    static std::shared_ptr<HandShakeData> hand_shake_data;
+    if (ImGui::Button("Capture WPA2 Handshake")){
+        if(selectedAp->e_ssid== "None"){
+            ashk::utils::Logger::getInstance().log("no AP selected\n");
+        }
+        else {
+            hand_shake_data = std::make_unique<HandShakeData>(selectedAp);
+            core_->start_wpa2_handshake_capturing(device->getName(), hand_shake_data);
+        }
+    }
+    if (ImGui::Button("CRACK PASSWORD")){
+        if(hand_shake_data && hand_shake_data->got_msg_2){
+            core_->start_password_cracking(device->getName(),hand_shake_data);
+        }
+        else{
+            ashk::utils::Logger::getInstance().log("no HandShake data available\n");
+        }
+
+    }
+
     ImGui::End();
 }

@@ -12,7 +12,7 @@ ashk::tasks::WifiApScanningTask::WifiApScanningTask(pcpp::PcapLiveDevice *dev,
                                                     int last_task_id):
         dev_(dev),
         iface_name_or_ip(iface_name_or_ip),
-        last_task_id(last_task_id),ap_list(&ap_list) {
+        Task(last_task_id),ap_list(&ap_list) {
 
 }
 

@@ -23,7 +23,7 @@ private:
     CaptureWrapper &capture_wrapper = CaptureWrapper::getInstance();
     int outer_id;
     int inner_id;
-    int last_task_id;
+
 };
 
 }
