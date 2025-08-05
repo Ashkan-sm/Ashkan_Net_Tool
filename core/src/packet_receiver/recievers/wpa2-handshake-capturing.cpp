@@ -62,7 +62,7 @@ void ashk::PacketReceiver::onPacketArrivesWPA2HandShakeCapturing(pcpp::RawPacket
             return;
         }
         memcpy(data->hand_shake_data->SNonce,wpa2_layer+17,32);
-        memcpy(data->hand_shake_data->MIC,wpa2_layer+81,16);
+//        memcpy(data->hand_shake_data->MIC,wpa2_layer+81,16);
         data->hand_shake_data->eapol_size=htons(*reinterpret_cast<const uint16_t *>(wpa2_layer+2))+4;
 
         memcpy(data->hand_shake_data->eapol,wpa2_layer,data->hand_shake_data->eapol_size);
