@@ -20,7 +20,8 @@ void ashk::PacketReceiver::onPacketArrivesWPA2HandShakeCapturing(pcpp::RawPacket
     } else {
         return;
     }
-    uint16_t wifi_layer_type = htons(*reinterpret_cast<const uint16_t *>(wifi_layer));
+    uint8_t wifi_layer_version = *reinterpret_cast<const uint8_t *>(wifi_layer);
+    uint8_t wifi_layer_type = *reinterpret_cast<const uint8_t *>(wifi_layer+1);
     uint8_t transmitter_mac[6];
     if (wifi_layer+16<=raw_packet + raw_pcap_packet->getRawDataLen()) {
         memcpy(transmitter_mac, wifi_layer + 10, 6);
@@ -29,10 +30,19 @@ void ashk::PacketReceiver::onPacketArrivesWPA2HandShakeCapturing(pcpp::RawPacket
     if (wifi_layer+10<=raw_packet + raw_pcap_packet->getRawDataLen()) {
         memcpy(destination_mac, wifi_layer + 4, 6);
     } else return;
-    if (wifi_layer_type == 0x8802) {//from ap to station
+    int wifi_layer_length;
+    if(wifi_layer_version==0x88){
+        wifi_layer_length=26;
+    }else if(wifi_layer_version==0x08){
+        wifi_layer_length=24;
+    }else{
+        return;
+    }
+    const uint8_t *llc_layer=wifi_layer+wifi_layer_length;
+    if (wifi_layer_type == 0x02) {//from ap to station
         if(data->hand_shake_data->selected_ap->b_ssid!=pcpp::MacAddress(transmitter_mac))
             return;
-        const uint8_t *llc_layer=wifi_layer+26;
+
         static const uint8_t expected_llc_layer[]={0xaa,0xaa,0x03,0x00,0x00,0x00,0x88,0x8e};
         if(memcmp(llc_layer,expected_llc_layer,8)!=0){
             return;
@@ -47,10 +57,9 @@ void ashk::PacketReceiver::onPacketArrivesWPA2HandShakeCapturing(pcpp::RawPacket
         data->hand_shake_data->station_mac=pcpp::MacAddress(destination_mac);
         data->hand_shake_data->got_msg_1= true;
         return;
-    } else if (wifi_layer_type == 0x8801 && data->hand_shake_data->got_msg_1){//from station to ap
+    } else if ((wifi_layer_type == 0x01) && data->hand_shake_data->got_msg_1){//from station to ap
         if(data->hand_shake_data->selected_ap->b_ssid!=pcpp::MacAddress(destination_mac) || data->hand_shake_data->station_mac!=pcpp::MacAddress(transmitter_mac))
             return;
-        const uint8_t *llc_layer=wifi_layer+26;
         static const uint8_t expected_llc_layer[]={0xaa,0xaa,0x03,0x00,0x00,0x00,0x88,0x8e};
         if(memcmp(llc_layer,expected_llc_layer,8)!=0){
             return;
