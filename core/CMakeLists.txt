@@ -46,6 +46,8 @@ add_library(AshkanTool-Core
         src/packet_receiver/recievers/wpa2-handshake-capturing.cpp
         src/task/tasks/wifi-password-cracking-task.cpp
         src/task/tasks/wifi-password-cracking-task.hpp
+        src/task/tasks/wpa-2-cracking-thread.cpp
+        src/task/tasks/wpa-2-cracking-thread.hpp
 )
 
 

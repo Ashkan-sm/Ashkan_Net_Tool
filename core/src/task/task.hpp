@@ -12,7 +12,7 @@
 #include <set>
 
 namespace ashk {
-    enum tasks_data_id{VICTIM_DST_MAC,VICTIM_SRC_MAC};
+    enum tasks_data_id{VICTIM_DST_MAC,VICTIM_SRC_MAC,WPA2_CRACK_T};
     class Task {
 
     public:

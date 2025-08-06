@@ -5,10 +5,7 @@
 #ifndef ASHKANTOOL_WIFI_PASSWORD_CRACKING_TASK_HPP
 #define ASHKANTOOL_WIFI_PASSWORD_CRACKING_TASK_HPP
 #include "task-headers.hpp"
-#include <openssl/hmac.h>
-#include <openssl/cmac.h>
-#include <openssl/evp.h>
-#include <openssl/sha.h>
+#include "wpa-2-cracking-thread.hpp"
 
 namespace ashk::tasks {
     class WifiPasswordCrackingTask :public Task{
@@ -23,6 +20,7 @@ namespace ashk::tasks {
         CaptureWrapper &capture_wrapper = CaptureWrapper::getInstance();
         std::string iface_name_or_ip;
         std::shared_ptr<HandShakeData> handshake_data;
+
 
     };
 }

