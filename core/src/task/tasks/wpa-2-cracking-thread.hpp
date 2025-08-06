@@ -13,13 +13,13 @@
 namespace ashk::tasks {
     class WPA2CrackingThread : public Task{
     public:
-        explicit WPA2CrackingThread(int start_idx,int end_idx,int epol_ofset,unsigned char * seed,
+        explicit WPA2CrackingThread(long long int start_idx,long long int end_idx,long long int epol_ofset,unsigned char * seed,
                                     std::shared_ptr<HandShakeData> handshake_data,int last_task_id);
         std::string get_data(tasks_data_id data_id) override;
         int t=0;
     private:
         void exec() override;
-        int start_idx,end_idx;
+        long long int start_idx,end_idx;
         std::shared_ptr<HandShakeData> handshake_data;
         unsigned char * seed;
         int epol_ofset;
@@ -27,7 +27,7 @@ namespace ashk::tasks {
                 const std::string& label,
                 const unsigned char* data, int data_len,
                 unsigned char* output, int output_len = 64);
-        static std::string num_to_pass(int n);
+        static std::string num_to_pass(long long int n);
 
     };
 }

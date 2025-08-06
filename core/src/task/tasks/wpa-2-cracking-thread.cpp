@@ -6,7 +6,7 @@
 
 #include <utility>
 
-ashk::tasks::WPA2CrackingThread::WPA2CrackingThread(int start_idx, int end_idx, int epol_ofset, unsigned char *seed,
+ashk::tasks::WPA2CrackingThread::WPA2CrackingThread(long long int start_idx, long long int end_idx,long long int epol_ofset, unsigned char *seed,
                                                     std::shared_ptr<HandShakeData> handshake_data, int last_task_id): Task(last_task_id),start_idx(start_idx),end_idx(end_idx)
                                                     ,epol_ofset(epol_ofset)
                                                     ,seed(seed)
@@ -16,16 +16,16 @@ ashk::tasks::WPA2CrackingThread::WPA2CrackingThread(int start_idx, int end_idx, 
                                                     }
 
 const char chars[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-std::string ashk::tasks::WPA2CrackingThread::num_to_pass(int n) {
+std::string ashk::tasks::WPA2CrackingThread::num_to_pass(long long int n) {
 
     int num=10;
 
     std::string out;
-    while(n>=0){
+    do{
         out+=chars[n%num];
         n=n/num;
-    }
-    std::cout<<out<<std::endl;
+    } while (n>0);
+
     return std::move(out);
 }
 
@@ -69,10 +69,12 @@ void ashk::tasks::WPA2CrackingThread::exec() {
     uint8_t mic[20];
     uint8_t ptk[64];
     std::string password;
-    for(int i=start_idx;i<end_idx && is_running();i++) {
+
+    for(long long int i=start_idx;i<end_idx && is_running();i++) {
         t++;
+
         password= num_to_pass(i);
-        std::cout<<i<<" "<<password<<std::endl;
+
         PKCS5_PBKDF2_HMAC_SHA1(password.c_str(), 8,
                                (uint8_t *) handshake_data->selected_ap->e_ssid.c_str(),
                                handshake_data->selected_ap->e_ssid.length(),
@@ -90,6 +92,7 @@ void ashk::tasks::WPA2CrackingThread::exec() {
             break;
         }
     }
+
 }
 
 

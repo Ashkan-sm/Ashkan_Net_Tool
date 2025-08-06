@@ -106,7 +106,9 @@ pcpp::MacAddress Net_core::arp(pcpp::IPv4Address ip) {
 }
 
 
-    void Net_core::start_mitm_forwarding(pcpp::IPv4Address iface_ip, pcpp::IPv4Address victim_ip, pcpp::IPv4Address gateway_ip, pcpp::MacAddress victim_mac, pcpp::MacAddress gateway_mac) {
+    void Net_core::start_mitm_forwarding(pcpp::IPv4Address iface_ip
+                                         , pcpp::IPv4Address victim_ip
+                                         , pcpp::IPv4Address gateway_ip, pcpp::MacAddress victim_mac, pcpp::MacAddress gateway_mac) {
         tasks[last_added_task_id]=std::make_unique<tasks::MITMPacketForwarding>(iface_ip,victim_ip,gateway_ip,victim_mac,gateway_mac,last_added_task_id);
         tasks[last_added_task_id]->start();
         last_added_task_id++;

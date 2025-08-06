@@ -19,12 +19,6 @@ std::string ashk::tasks::WifiPasswordCrackingTask::get_data(ashk::tasks_data_id 
 
 
 
-
-
-
-
-
-
 #include <fstream>
 void ashk::tasks::WifiPasswordCrackingTask::exec() {
     logger.log("start password cracking\n");
@@ -76,9 +70,9 @@ void ashk::tasks::WifiPasswordCrackingTask::exec() {
     uint8_t mic[20];
     uint8_t ptk[64];
 
-    int total_number_of_passwords=10000000;
-    int number_of_threads= (int)sysconf(_SC_NPROCESSORS_ONLN)-1;
-    int pass_range=total_number_of_passwords/number_of_threads;
+    long long int total_number_of_passwords=100000000;
+    int number_of_threads= (int)sysconf(_SC_NPROCESSORS_ONLN);
+    long long int pass_range=total_number_of_passwords/number_of_threads;
     std::vector<WPA2CrackingThread*> threads;
 
     for (int i=0;i<number_of_threads;i++){
@@ -95,5 +89,9 @@ void ashk::tasks::WifiPasswordCrackingTask::exec() {
         }
         logger.log(std::to_string((float)tested/total_number_of_passwords)+"%\n");
     }
+    for(auto i:threads){
+        i->end();
+    }
+
     ashk::Task::end();
 }

@@ -58,7 +58,6 @@ target_include_directories(AshkanTool-Core
 )
 target_link_libraries(AshkanTool-Core
         PUBLIC
-
         Pcap++ Packet++ Common++
         OpenSSL::Crypto
 )
