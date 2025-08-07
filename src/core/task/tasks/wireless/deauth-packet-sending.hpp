@@ -16,14 +16,14 @@ class DeauthPacketSendingTask : public Task {
                                    WifiAp &wifi_ap,
                                    std::vector<std::shared_ptr<WifiHost>> &host_list,
                                    int last_task_id);
-  std::string get_data(tasks_data_id data_id) override;
+  std::string GetData(tasks_data_id data_id) override;
  private:
-  void exec() override;
+  void Exec_() override;
   pcpp::PcapLiveDevice *dev_ = nullptr;
-  std::string iface_name_or_ip;
-  WifiAp *wifi_ap;
-  std::vector<std::shared_ptr<WifiHost>> *host_list;
-  CaptureWrapper &capture_wrapper = CaptureWrapper::getInstance();
+  std::string iface_name_or_ip_;
+  WifiAp *wifi_ap_;
+  std::vector<std::shared_ptr<WifiHost>> *host_list_;
+  CaptureWrapper &capture_wrapper_ = CaptureWrapper::getInstance();
 
 };
 }

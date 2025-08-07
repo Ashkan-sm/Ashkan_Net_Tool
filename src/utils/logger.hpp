@@ -16,12 +16,12 @@ class Logger {
   Logger(const Logger &) = delete;
   Logger &operator=(const Logger &) = delete;
 
-  void log(const std::string &log);
-  void add_log_method(const std::function<void(const std::string &)> &method);
+  void Log(const std::string &log);
+  void AddLogMethod(const std::function<void(const std::string &)> &method);
 
  private:
   Logger();
-  std::vector<std::function<void(const std::string &)>> log_methods;
+  std::vector<std::function<void(const std::string &)>> log_methods_;
 };
 }
 

@@ -9,36 +9,36 @@ ashk::tasks::WifiHostScanningTask::WifiHostScanningTask(pcpp::PcapLiveDevice *de
                                                         std::vector<std::shared_ptr<WifiHost>> &host_list,
                                                         int last_task_id) :
     dev_(dev),
-    iface_name_or_ip(iface_name_or_ip),
-    Task(last_task_id), host_list(&host_list) {
+    iface_name_or_ip_(iface_name_or_ip),
+    Task(last_task_id), host_list_(&host_list) {
 
 }
 
-std::string ashk::tasks::WifiHostScanningTask::get_data(ashk::tasks_data_id data_id) {
+std::string ashk::tasks::WifiHostScanningTask::GetData(tasks_data_id data_id) {
   return std::string();
 }
 
-void ashk::tasks::WifiHostScanningTask::exec() {
-  logger.log("starting wifi host scanning . . .\n");
-  dev_ = pcpp::PcapLiveDeviceList::getInstance().getDeviceByIpOrName(iface_name_or_ip);
+void ashk::tasks::WifiHostScanningTask::Exec_() {
+  logger_.Log("starting wifi host scanning . . .\n");
+  dev_ = pcpp::PcapLiveDeviceList::getInstance().getDeviceByIpOrName(iface_name_or_ip_);
   if (dev_ == nullptr) {
-    logger.log("couldn't find device\n");
+    logger_.Log("couldn't find device\n");
     return;
   }
   if (!dev_->open()) {
-    logger.log("couldn't open device");
+    logger_.Log("couldn't open device");
     return;
   }
   WifiHostScanningCookie cookie{
-      host_list
+      host_list_
   };
-  if (!capture_wrapper.start_capture(dev_, PacketReceiver::onPacketArrivesWifiHostScanning, &cookie, last_task_id))
+  if (!capture_wrapper_.StartCapture(dev_, PacketReceiver::onPacketArrivesWifiHostScanning, &cookie, last_task_id_))
     return;
-  while (is_running()) {
+  while (IsRunning()) {
     std::this_thread::sleep_for(std::chrono::seconds(1));
   }
-  capture_wrapper.stop_capture(dev_);
-  end();
-  logger.log("wifi scanning finished\n");
+  capture_wrapper_.StopCapture(dev_);
+  End();
+  logger_.Log("wifi scanning finished\n");
 
 }

@@ -17,11 +17,11 @@ class DtpDomainExtraction : public Task {
   explicit DtpDomainExtraction(pcpp::PcapLiveDevice *dev,
                                pcpp::IPv4Address iface_ip, char buffer[32],
                                int last_task_id);
-  std::string get_data(tasks_data_id data_id) override;
+  std::string GetData(tasks_data_id data_id) override;
  private:
-  void exec() override;
+  void Exec_() override;
   pcpp::PcapLiveDevice *dev_ = nullptr;
-  CaptureWrapper &capture_wrapper = CaptureWrapper::getInstance();
+  CaptureWrapper &capture_wrapper_ = CaptureWrapper::getInstance();
   pcpp::IPv4Address iface_ip;
   char *buffer;
 

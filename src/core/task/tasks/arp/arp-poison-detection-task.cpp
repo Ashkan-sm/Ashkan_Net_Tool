@@ -4,37 +4,37 @@
 
 #include "arp-poison-detection-task.hpp"
 
-void ashk::tasks::ArpPoisonDetectionTask::exec() {
-  logger.log("starting arp poison detection . . .\n");
-  dev_ = pcpp::PcapLiveDeviceList::getInstance().getDeviceByIp(iface_ip);
+void ashk::tasks::ArpPoisonDetectionTask::Exec_() {
+  logger_.Log("starting arp poison detection . . .\n");
+  dev_ = pcpp::PcapLiveDeviceList::getInstance().getDeviceByIp(iface_ip_);
   if (dev_ == nullptr) {
-    logger.log("couldn't find device\n");
+    logger_.Log("couldn't find device\n");
     return;
   }
   if (!dev_->open()) {
-    logger.log("couldn't open device");
+    logger_.Log("couldn't open device");
     return;
   }
 
   ArpPoisoningDetectionCookie cookie;
-  if (!capture_wrapper.start_capture(dev_, PacketReceiver::onPacketArrivesArpPoisoningDetection, &cookie,
-                                     last_task_id))
+  if (!capture_wrapper_.StartCapture(dev_, PacketReceiver::onPacketArrivesArpPoisoningDetection, &cookie,
+                                     last_task_id_))
     return;
-  while (is_running()) {
+  while (IsRunning()) {
     std::this_thread::sleep_for(std::chrono::seconds(1));
   }
-  capture_wrapper.stop_capture(dev_);
-  end();
-  logger.log("ArpPoisonDetection task finished.\n");
+  capture_wrapper_.StopCapture(dev_);
+  End();
+  logger_.Log("ArpPoisonDetection task finished.\n");
 }
 
-ashk::tasks::ArpPoisonDetectionTask::ArpPoisonDetectionTask(pcpp::IPv4Address iface_ip, int last_task_id) : iface_ip(
+ashk::tasks::ArpPoisonDetectionTask::ArpPoisonDetectionTask(pcpp::IPv4Address iface_ip, int last_task_id) : iface_ip_(
     iface_ip), Task(last_task_id) {
 
 }
 
-std::string ashk::tasks::ArpPoisonDetectionTask::get_data(tasks_data_id data_id) {
-  if (!extractable_data.count(data_id))
+std::string ashk::tasks::ArpPoisonDetectionTask::GetData(tasks_data_id data_id) {
+  if (!extractable_data_.count(data_id))
     return "";
   switch (data_id) {
     default:return "";

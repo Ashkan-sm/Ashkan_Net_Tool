@@ -12,28 +12,28 @@ CaptureWrapper &CaptureWrapper::getInstance() {
 
 CaptureWrapper::CaptureWrapper() = default;
 
-bool CaptureWrapper::start_capture(pcpp::PcapLiveDevice *dev, pcpp::OnPacketArrivesCallback onPacketArrives,
-                                   void *onPacketArrivesUserCookie, int id) {
-    m_is_capturing.lock();
-    if (!is_capturing) {
+bool CaptureWrapper::StartCapture(pcpp::PcapLiveDevice *dev, pcpp::OnPacketArrivesCallback onPacketArrives,
+                                  void *onPacketArrivesUserCookie, int id) {
+    m_is_capturing_.lock();
+    if (!is_capturing_) {
         dev->startCapture(std::move(onPacketArrives), onPacketArrivesUserCookie);
-        capturing_thread_id = id;
-        is_capturing = true;
-        m_is_capturing.unlock();
+      capturing_thread_id_ = id;
+      is_capturing_ = true;
+        m_is_capturing_.unlock();
         return true;
     } else {
-        logger.log("capture is busy by thread : " + std::to_string(capturing_thread_id) + ".\n");
-        m_is_capturing.unlock();
+      logger_.Log("capture is busy by thread : " + std::to_string(capturing_thread_id_) + ".\n");
+        m_is_capturing_.unlock();
         return false;
     }
 
 }
 
-void CaptureWrapper::stop_capture(pcpp::PcapLiveDevice *dev) {
+void CaptureWrapper::StopCapture(pcpp::PcapLiveDevice *dev) {
     dev->stopCapture();
-    m_is_capturing.lock();
-    is_capturing = false;
-    m_is_capturing.unlock();
+    m_is_capturing_.lock();
+  is_capturing_ = false;
+    m_is_capturing_.unlock();
 }
 
 

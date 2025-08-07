@@ -17,18 +17,18 @@ enum tasks_data_id { VICTIM_DST_MAC, VICTIM_SRC_MAC, WPA2_CRACK_T };
 class Task {
 
  public:
-  void start();
-  void end();
-  bool is_running();
-  virtual std::string get_data(tasks_data_id data_id) = 0;
+  void Start();
+  void End();
+  bool IsRunning();
+  virtual std::string GetData(tasks_data_id data_id) = 0;
  protected:
-  virtual void exec() = 0;
-  explicit Task(int last_task_id) : last_task_id(last_task_id) {}
-  utils::Logger &logger = utils::Logger::getInstance();
+  virtual void Exec_() = 0;
+  explicit Task(int last_task_id) : last_task_id_(last_task_id) {}
+  utils::Logger &logger_ = utils::Logger::getInstance();
   std::shared_ptr<std::thread> thread_;
-  std::atomic_flag m = ATOMIC_FLAG_INIT;
-  std::set<tasks_data_id> extractable_data;
-  int last_task_id;
+  std::atomic_flag m_ = ATOMIC_FLAG_INIT;
+  std::set<tasks_data_id> extractable_data_;
+  int last_task_id_;
 };
 
 }

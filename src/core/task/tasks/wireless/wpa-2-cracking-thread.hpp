@@ -24,20 +24,20 @@ class WPA2CrackingThread : public Task {
                               std::shared_ptr<HandShakeData> handshake_data,
                               Task *parent_task,
                               int last_task_id);
-  std::string get_data(tasks_data_id data_id) override;
+  std::string GetData(tasks_data_id data_id) override;
   int t = 0;
  private:
-  Task *parent_task;
-  void exec() override;
-  long long int start_idx, end_idx;
-  std::shared_ptr<HandShakeData> handshake_data;
-  unsigned char *seed;
-  int epol_ofset;
-  static void prf_512(const unsigned char *key, int key_len,
-                      const std::string &label,
-                      const unsigned char *data, int data_len,
-                      unsigned char *output, int output_len = 64);
-  static std::string num_to_pass(long long int n);
+  Task *parent_task_;
+  void Exec_() override;
+  long long int start_idx_, end_idx_;
+  std::shared_ptr<HandShakeData> handshake_data_;
+  unsigned char *seed_;
+  int eapol_offset_;
+  static void Prf512(const unsigned char *key, int key_len,
+                     const std::string &label,
+                     const unsigned char *data, int data_len,
+                     unsigned char *output, int output_len = 64);
+  static std::string NumToPass(long long int n);
 
 };
 }

@@ -8,6 +8,6 @@ int main(int, char **) {
 
   ashk::ModelInterface system;
   ImguiUi ui(&system);
-  return ui.exec();
+  return ui.Exec();
 
 }

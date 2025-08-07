@@ -28,7 +28,7 @@ void ashk::PacketReceiver::onPacketArrivesArpPoisoningDetection(pcpp::RawPacket 
   if (data->ip_mac_map.count(arp_sender_ip)) {
     if (!data->ip_mac_map[arp_sender_ip].empty() &&
         arp_sender_mac != data->ip_mac_map[arp_sender_ip][0]) {
-      utils::Logger::getInstance().log(
+      utils::Logger::getInstance().Log(
           "found 2 or more mac addresses for " + arp_sender_ip.toString() + "\n.");
     } else {
       data->ip_mac_map[arp_sender_ip].push_back(arp_layer->getSenderMacAddress());

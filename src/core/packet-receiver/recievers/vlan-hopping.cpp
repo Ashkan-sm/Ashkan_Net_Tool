@@ -32,23 +32,23 @@ void ashk::PacketReceiver::onPacketArrivesVlanHopping(pcpp::RawPacket *rawPacket
   pcpp::EthLayer new_ethlayer(srcMac, dstMac, PCPP_ETHERTYPE_VLAN);
   new_packet.addLayer(&new_ethlayer);
   int id = data->outer_id | data->inner_id;
-  pcpp::VlanLayer Vlan(id,    // VLAN ID
+  pcpp::VlanLayer vlan(id,    // VLAN ID
                        false,      // Priority
                        0,      // DEI
                        ntohs(ethLayer->getEthHeader()->etherType));
-  pcpp::VlanLayer outerVlan(data->outer_id,    // VLAN ID
+  pcpp::VlanLayer outer_vlan(data->outer_id,    // VLAN ID
                             false,      // Priority
                             0,      // DEI
                             PCPP_ETHERTYPE_VLAN);
-  pcpp::VlanLayer innerVlan(data->inner_id,    // Target VLAN ID
+  pcpp::VlanLayer inner_vlan(data->inner_id,    // Target VLAN ID
                             false,      // Priority
                             0,      // DEI
                             ntohs(ethLayer->getEthHeader()->etherType));
   if (data->outer_id == 0 | data->inner_id == 0) {
-    new_packet.addLayer(&Vlan);
+    new_packet.addLayer(&vlan);
   } else {
-    new_packet.addLayer(&outerVlan);
-    new_packet.addLayer(&innerVlan);
+    new_packet.addLayer(&outer_vlan);
+    new_packet.addLayer(&inner_vlan);
   }
 
   pcpp::Layer *layer = ethLayer->getNextLayer();

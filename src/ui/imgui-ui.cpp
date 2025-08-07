@@ -8,7 +8,7 @@ ImguiUi::ImguiUi(ashk::ModelInterface *core) : core_(core) {
 
 }
 
-int ImguiUi::exec() {
+int ImguiUi::Exec() {
   glfwSetErrorCallback(glfw_error_callback);
   if (!glfwInit())
     return 1;
@@ -124,7 +124,7 @@ int ImguiUi::exec() {
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    main_Window.draw();
+    main_Window.Draw();
 
 
     // Rendering

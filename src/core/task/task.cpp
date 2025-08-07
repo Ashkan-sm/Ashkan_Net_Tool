@@ -5,27 +5,27 @@
 #include "core/task/task.hpp"
 
 namespace ashk {
-void Task::start() {
-  if (!m.test_and_set()) {
+void Task::Start() {
+  if (!m_.test_and_set()) {
     thread_ = std::make_unique<std::thread>([this]() {
-      exec();
+      Exec_();
     });
     thread_->detach();
     return;
   }
-  utils::Logger::getInstance().log("Unable to start task");
+  utils::Logger::getInstance().Log("Unable to start task");
 }
 
-void Task::end() {
-  m.clear();
+void Task::End() {
+  m_.clear();
 
 }
 
-bool Task::is_running() {
-  if (m.test_and_set()) {
+bool Task::IsRunning() {
+  if (m_.test_and_set()) {
     return true;
   }
-  m.clear();
+  m_.clear();
   return false;
 }
 

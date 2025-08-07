@@ -17,7 +17,7 @@
 namespace ashk {
 class NetUtils {
  public:
-  static pcpp::MacAddress arp(pcpp::IPv4Address ip, pcpp::PcapLiveDevice *dev);
+  static pcpp::MacAddress Arp(pcpp::IPv4Address ip, pcpp::PcapLiveDevice *dev);
 };
 }
 

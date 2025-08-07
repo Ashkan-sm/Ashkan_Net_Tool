@@ -9,7 +9,6 @@
 
 #include "wpa-2-cracking-thread.hpp"
 #include "core/task/task.hpp"
-#include "core/capture-wrapper.hpp"
 
 namespace ashk::tasks {
 class WifiPasswordCrackingTask : public Task {
@@ -17,13 +16,12 @@ class WifiPasswordCrackingTask : public Task {
   explicit WifiPasswordCrackingTask(pcpp::PcapLiveDevice *dev,
                                     std::string iface_name_or_ip, std::shared_ptr<HandShakeData> handshake_data,
                                     int last_task_id);
-  std::string get_data(tasks_data_id data_id) override;
+  std::string GetData(tasks_data_id data_id) override;
  private:
-  void exec() override;
+  void Exec_() override;
   pcpp::PcapLiveDevice *dev_ = nullptr;
-  CaptureWrapper &capture_wrapper = CaptureWrapper::getInstance();
-  std::string iface_name_or_ip;
-  std::shared_ptr<HandShakeData> handshake_data;
+  std::string iface_name_or_ip_;
+  std::shared_ptr<HandShakeData> handshake_data_;
 
 };
 }

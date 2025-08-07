@@ -21,16 +21,16 @@ class MITMPacketForwarding : public Task {
                                 pcpp::MacAddress victim_mac,
                                 pcpp::MacAddress gateway_mac,
                                 int last_task_id);
-  std::string get_data(tasks_data_id data_id) override;
+  std::string GetData(tasks_data_id data_id) override;
  private:
-  void exec() override;
+  void Exec_() override;
   pcpp::PcapLiveDevice *dev_ = nullptr;
-  pcpp::IPv4Address iface_ip;
-  pcpp::IPv4Address victim_ip;
-  pcpp::IPv4Address gateway_ip;
-  pcpp::MacAddress victim_mac;
-  pcpp::MacAddress gateway_mac;
-  CaptureWrapper &capture_wrapper = CaptureWrapper::getInstance();
+  pcpp::IPv4Address iface_ip_;
+  pcpp::IPv4Address victim_ip_;
+  pcpp::IPv4Address gateway_ip_;
+  pcpp::MacAddress victim_mac_;
+  pcpp::MacAddress gateway_mac_;
+  CaptureWrapper &capture_wrapper_ = CaptureWrapper::getInstance();
 
 };
 }

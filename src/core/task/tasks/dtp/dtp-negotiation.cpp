@@ -6,26 +6,26 @@
 
 ashk::tasks::DTPNegotiation::DTPNegotiation(pcpp::PcapLiveDevice *dev, pcpp::IPv4Address iface_ip,
                                             std::string domain_name, int last_task_id) : dev_(dev),
-                                                                                         iface_ip(iface_ip),
-                                                                                         domain_name(std::move(
+                                                                                         iface_ip_(iface_ip),
+                                                                                         domain_name_(std::move(
                                                                                              domain_name)),
                                                                                          Task(last_task_id) {
 
 }
 
-void ashk::tasks::DTPNegotiation::exec() {
-  logger.log("start dtp negotiation . . .\n");
-  dev_ = pcpp::PcapLiveDeviceList::getInstance().getDeviceByIp(iface_ip);
+void ashk::tasks::DTPNegotiation::Exec_() {
+  logger_.Log("start dtp negotiation . . .\n");
+  dev_ = pcpp::PcapLiveDeviceList::getInstance().getDeviceByIp(iface_ip_);
   if (dev_ == nullptr) {
-    logger.log("couldn't find device\n");
+    logger_.Log("couldn't find device\n");
     return;
   }
   if (!dev_->open()) {
-    logger.log("couldn't open device");
+    logger_.Log("couldn't open device");
     return;
   };
   //create dtp trunk desirable packet
-  uint16_t domain_lenght = htons(domain_name.size() + 5);
+  uint16_t domain_lenght = htons(domain_name_.size() + 5);
   uint8_t base_dtp_layer[] = {0x01, //version
                               0x00, 0x01, //domain type
                               0x00, 0x00, //domain length
@@ -37,10 +37,10 @@ void ashk::tasks::DTPNegotiation::exec() {
                               0, 0, 0, 0, 0, 0 //id
   };
   memcpy(base_dtp_layer + 3, &domain_lenght, 2);
-  uint8_t dtp_layer[sizeof(base_dtp_layer) + domain_name.size()];
+  uint8_t dtp_layer[sizeof(base_dtp_layer) + domain_name_.size()];
   memcpy(dtp_layer, base_dtp_layer, 5);
-  memcpy(dtp_layer + 5, domain_name.c_str(), domain_name.size());
-  memcpy(dtp_layer + 5 + domain_name.size(), base_dtp_layer + 5, sizeof(base_dtp_layer) - 5);
+  memcpy(dtp_layer + 5, domain_name_.c_str(), domain_name_.size());
+  memcpy(dtp_layer + 5 + domain_name_.size(), base_dtp_layer + 5, sizeof(base_dtp_layer) - 5);
 
   dev_->getMacAddress().copyTo(dtp_layer + sizeof(dtp_layer) - 6);
 
@@ -70,15 +70,15 @@ void ashk::tasks::DTPNegotiation::exec() {
   pcpp::Packet new_packet(&raw);
   new_packet.computeCalculateFields();
 
-  while (is_running()) {
+  while (IsRunning()) {
     dev_->sendPacket(&new_packet);
     std::this_thread::sleep_for(std::chrono::seconds(1));
   }
-  end();
-  logger.log("dtp negotiation finished.\n");
+  End();
+  logger_.Log("dtp negotiation finished.\n");
 }
-std::string ashk::tasks::DTPNegotiation::get_data(tasks_data_id data_id) {
-  if (!extractable_data.count(data_id))
+std::string ashk::tasks::DTPNegotiation::GetData(tasks_data_id data_id) {
+  if (!extractable_data_.count(data_id))
     return "";
   switch (data_id) {
     default:return "";

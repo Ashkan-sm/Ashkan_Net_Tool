@@ -6,7 +6,7 @@ void ashk::PacketReceiver::onPacketArrivesWPA2HandShakeCapturing(pcpp::RawPacket
                                                                  void *cookie) {
 
   auto *data = static_cast<WPA2HandShakeCapturingCookie *>(cookie);
-  if (!data->task->is_running())
+  if (!data->task->IsRunning())
     return;
 
   const uint8_t *raw_packet = raw_pcap_packet->getRawData();
@@ -79,8 +79,8 @@ void ashk::PacketReceiver::onPacketArrivesWPA2HandShakeCapturing(pcpp::RawPacket
     memcpy(data->hand_shake_data->eapol, wpa2_layer, data->hand_shake_data->eapol_size);
 
     data->hand_shake_data->got_msg_2 = true;
-    utils::Logger::getInstance().log("captured handshake\n");
-    data->task->end();
+    utils::Logger::getInstance().Log("captured handshake\n");
+    data->task->End();
     return;
 
   } else

@@ -9,59 +9,59 @@ ashk::tasks::WifiPasswordCrackingTask::WifiPasswordCrackingTask(pcpp::PcapLiveDe
                                                                 std::string iface_name_or_ip,
                                                                 std::shared_ptr<HandShakeData> handshake_data,
                                                                 int last_task_id)
-    : Task(last_task_id), iface_name_or_ip(std::move(iface_name_or_ip)), handshake_data(std::move(handshake_data)) {
+    : Task(last_task_id), iface_name_or_ip_(std::move(iface_name_or_ip)), handshake_data_(std::move(handshake_data)) {
 
 }
 
-std::string ashk::tasks::WifiPasswordCrackingTask::get_data(ashk::tasks_data_id data_id) {
+std::string ashk::tasks::WifiPasswordCrackingTask::GetData(tasks_data_id data_id) {
   return std::string();
 }
 
 #include <fstream>
-void ashk::tasks::WifiPasswordCrackingTask::exec() {
-  logger.log("start password cracking\n");
+void ashk::tasks::WifiPasswordCrackingTask::Exec_() {
+  logger_.Log("start password cracking\n");
 
-  uint8_t key_descriptor_version = handshake_data->eapol[6] & 0b111;
+  uint8_t key_descriptor_version = handshake_data_->eapol[6] & 0b111;
 
-  int mac_cmp = memcmp(handshake_data->selected_ap->b_ssid.getRawData(),
-                       handshake_data->station_mac.getRawData(), 6);
-  int nonce_cmp = memcmp(handshake_data->ANonce, handshake_data->SNonce, 32);
+  int mac_cmp = memcmp(handshake_data_->selected_ap->b_ssid.getRawData(),
+                       handshake_data_->station_mac.getRawData(), 6);
+  int nonce_cmp = memcmp(handshake_data_->ANonce, handshake_data_->SNonce, 32);
 
   const uint8_t *mac1 = (mac_cmp < 0)
-                        ? handshake_data->selected_ap->b_ssid.getRawData()
-                        : handshake_data->station_mac.getRawData();
+                        ? handshake_data_->selected_ap->b_ssid.getRawData()
+                        : handshake_data_->station_mac.getRawData();
 
-  const uint8_t *mac2 = (mac1 == handshake_data->selected_ap->b_ssid.getRawData())
-                        ? handshake_data->station_mac.getRawData()
-                        : handshake_data->selected_ap->b_ssid.getRawData();
+  const uint8_t *mac2 = (mac1 == handshake_data_->selected_ap->b_ssid.getRawData())
+                        ? handshake_data_->station_mac.getRawData()
+                        : handshake_data_->selected_ap->b_ssid.getRawData();
 
   const uint8_t *nonce1 = (nonce_cmp < 0)
-                          ? handshake_data->ANonce
-                          : handshake_data->SNonce;
+                          ? handshake_data_->ANonce
+                          : handshake_data_->SNonce;
 
-  const uint8_t *nonce2 = (nonce1 == handshake_data->ANonce)
-                          ? handshake_data->SNonce
-                          : handshake_data->ANonce;
+  const uint8_t *nonce2 = (nonce1 == handshake_data_->ANonce)
+                          ? handshake_data_->SNonce
+                          : handshake_data_->ANonce;
   uint8_t seed[100];
   memcpy(seed, mac1, 6);
   memcpy(seed + 6, mac2, 6);
   memcpy(seed + 12, nonce1, 32);
   memcpy(seed + 44, nonce2, 32);
   int epol_ofset = 81;
-  if (handshake_data->eapol[0] == 0x01 && handshake_data->eapol[1] == 0x03 &&
-      handshake_data->eapol[4] == 0x02 && handshake_data->eapol[5] == 0x01) {
+  if (handshake_data_->eapol[0] == 0x01 && handshake_data_->eapol[1] == 0x03 &&
+      handshake_data_->eapol[4] == 0x02 && handshake_data_->eapol[5] == 0x01) {
     epol_ofset = 81;
-  } else if (handshake_data->eapol[0] == 0x02 && handshake_data->eapol[1] == 0x03 &&
-      handshake_data->eapol[4] == 0x02 && handshake_data->eapol[5] == 0x01) {
+  } else if (handshake_data_->eapol[0] == 0x02 && handshake_data_->eapol[1] == 0x03 &&
+      handshake_data_->eapol[4] == 0x02 && handshake_data_->eapol[5] == 0x01) {
     epol_ofset = 81;
   } else {
 
-    logger.log("bad packet\n");
+    logger_.Log("bad packet\n");
   }
-  memcpy(handshake_data->MIC, handshake_data->eapol + epol_ofset, 16);
+  memcpy(handshake_data_->MIC, handshake_data_->eapol + epol_ofset, 16);
 
-  if (handshake_data->eapol_size < epol_ofset + 16) {
-    logger.log("ERROR: EAPOL frame too small (needs at least 97 bytes)\n");
+  if (handshake_data_->eapol_size < epol_ofset + 16) {
+    logger_.Log("ERROR: EAPOL frame too small (needs at least 97 bytes)\n");
     return;
   }
   uint8_t pmk[32];
@@ -78,24 +78,24 @@ void ashk::tasks::WifiPasswordCrackingTask::exec() {
                                              (i + 1) * pass_range,
                                              epol_ofset,
                                              seed,
-                                             handshake_data,
+                                             handshake_data_,
                                              this,
                                              i));
   }
   for (auto i : threads) {
-    i->start();
+    i->Start();
   }
-  while (is_running()) {
+  while (IsRunning()) {
     std::this_thread::sleep_for(std::chrono::seconds(1));
     int tested = 0;
     for (auto &i : threads) {
       tested += i->t;
     }
-    logger.log(std::to_string(100 * (float) tested / total_number_of_passwords) + "%\n");
+    logger_.Log(std::to_string(100 * (float) tested / total_number_of_passwords) + "%\n");
   }
   for (auto i : threads) {
-    i->end();
+    i->End();
   }
 
-  ashk::Task::end();
+  ashk::Task::End();
 }

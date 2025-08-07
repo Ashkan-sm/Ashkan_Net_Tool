@@ -35,7 +35,7 @@ static void glfw_error_callback(int error, const char *description) {
 class ImguiUi {
  public:
   ImguiUi(ashk::ModelInterface *core);
-  int exec();
+  int Exec();
  private:
   ashk::ModelInterface *core_;
 };

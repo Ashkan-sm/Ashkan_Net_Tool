@@ -13,14 +13,14 @@ Logger &Logger::getInstance() {
 
 Logger::Logger() = default;
 
-void Logger::log(const std::string &log) {
-  for (const auto &i : log_methods) {
+void Logger::Log(const std::string &log) {
+  for (const auto &i : log_methods_) {
     i(log);
   }
 }
 
-void Logger::add_log_method(const std::function<void(const std::string &)> &method) {
-  log_methods.push_back(method);
+void Logger::AddLogMethod(const std::function<void(const std::string &)> &method) {
+  log_methods_.push_back(method);
 }
 
 }

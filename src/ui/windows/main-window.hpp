@@ -25,20 +25,20 @@ enum class SelectedWindow{
 class MainWindow{
 public:
     MainWindow(ashk::ModelInterface *core);
-    void draw();
+    void Draw();
 
 private:
     ashk::ModelInterface *core_;
-    std::shared_ptr<ISubWindow> default_window;
-    std::shared_ptr<ISubWindow> arp_spoof_window;
-    std::shared_ptr<ISubWindow> arp_poison_detection_window;
-    std::shared_ptr<ISubWindow> send_arp_request_window;
-    std::shared_ptr<ISubWindow> vlan_hopping_window;
-    std::shared_ptr<ISubWindow> man_in_the_middle_window;
-    std::shared_ptr<ISubWindow> wifi_attack_window;
+    std::shared_ptr<ISubWindow> default_window_;
+    std::shared_ptr<ISubWindow> arp_spoof_window_;
+    std::shared_ptr<ISubWindow> arp_poison_detection_window_;
+    std::shared_ptr<ISubWindow> send_arp_request_window_;
+    std::shared_ptr<ISubWindow> vlan_hopping_window_;
+    std::shared_ptr<ISubWindow> man_in_the_middle_window_;
+    std::shared_ptr<ISubWindow> wifi_attack_window_;
 
-    void draw_main_toolbar();
-    void draw_log_window();
+    void DrawMainToolbar();
+    void DrawLogWindow();
     std::shared_ptr<ISubWindow> sub_window_;
 
     char log_buffer_[1024]="";

