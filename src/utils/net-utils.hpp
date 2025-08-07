@@ -14,13 +14,11 @@
 
 #include "logger.hpp"
 
-
 namespace ashk {
-    class NetUtils {
-    public:
-        static pcpp::MacAddress arp(pcpp::IPv4Address ip, pcpp::PcapLiveDevice *dev);
-    };
+class NetUtils {
+ public:
+  static pcpp::MacAddress arp(pcpp::IPv4Address ip, pcpp::PcapLiveDevice *dev);
+};
 }
-
 
 #endif //ASHKANTOOL_NET_UTILS_HPP

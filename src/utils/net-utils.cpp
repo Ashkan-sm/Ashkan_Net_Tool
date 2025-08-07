@@ -4,9 +4,9 @@
 
 #include "net-utils.hpp"
 
-pcpp::MacAddress ashk::NetUtils::arp(pcpp::IPv4Address ip,pcpp::PcapLiveDevice *dev) {
-        double arpResponseTimeMS;
-        int arpTimeOut = 2;
-        return pcpp::NetworkUtils::getInstance().getMacAddress(ip, dev, arpResponseTimeMS,
-                                                               dev->getMacAddress(), dev->getIPv4Address(),arpTimeOut);
+pcpp::MacAddress ashk::NetUtils::arp(pcpp::IPv4Address ip, pcpp::PcapLiveDevice *dev) {
+  double arpResponseTimeMS;
+  int arpTimeOut = 2;
+  return pcpp::NetworkUtils::getInstance().getMacAddress(ip, dev, arpResponseTimeMS,
+                                                         dev->getMacAddress(), dev->getIPv4Address(), arpTimeOut);
 }

@@ -15,23 +15,23 @@
 namespace ashk {
 
 class CaptureWrapper {
-public:
-    static CaptureWrapper &getInstance();
-    CaptureWrapper(const CaptureWrapper &) = delete;
-    CaptureWrapper &operator=(const CaptureWrapper &) = delete;
+ public:
+  static CaptureWrapper &getInstance();
+  CaptureWrapper(const CaptureWrapper &) = delete;
+  CaptureWrapper &operator=(const CaptureWrapper &) = delete;
 
-    bool start_capture(pcpp::PcapLiveDevice *dev, pcpp::OnPacketArrivesCallback onPacketArrives,
-                       void *onPacketArrivesUserCookie, int id);
+  bool start_capture(pcpp::PcapLiveDevice *dev, pcpp::OnPacketArrivesCallback onPacketArrives,
+                     void *onPacketArrivesUserCookie, int id);
 
-    void stop_capture(pcpp::PcapLiveDevice *dev);
+  void stop_capture(pcpp::PcapLiveDevice *dev);
 
-private:
-    CaptureWrapper();
+ private:
+  CaptureWrapper();
 
-    std::mutex m_is_capturing;
-    bool is_capturing = false;
-    int capturing_thread_id = 0;
-    utils::Logger &logger = utils::Logger::getInstance();
+  std::mutex m_is_capturing;
+  bool is_capturing = false;
+  int capturing_thread_id = 0;
+  utils::Logger &logger = utils::Logger::getInstance();
 
 };
 

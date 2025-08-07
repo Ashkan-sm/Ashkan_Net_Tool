@@ -9,7 +9,6 @@ add_library(AshkanTool-ui
         imgui-ui.cpp
         imgui-ui.hpp
         windows/main-window.cpp
-        windows/imgui-headers.hpp
         windows/main-window.hpp
         config.h
         windows/sub-window.cpp

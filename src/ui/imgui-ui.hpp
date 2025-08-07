@@ -29,18 +29,15 @@
 #include "ui/windows/main-window.hpp"
 #include "core/interface.hpp"
 
-static void glfw_error_callback(int error, const char* description)
-{
-    fprintf(stderr, "GLFW Error %d: %s\n", error, description);
+static void glfw_error_callback(int error, const char *description) {
+  fprintf(stderr, "GLFW Error %d: %s\n", error, description);
 }
 class ImguiUi {
-public:
-    ImguiUi(ashk::ModelInterface *core);
-    int exec();
-private:
-    ashk::ModelInterface *core_;
+ public:
+  ImguiUi(ashk::ModelInterface *core);
+  int exec();
+ private:
+  ashk::ModelInterface *core_;
 };
-
-
 
 #endif //ASHKANTOOL_IMGUI_UI_HPP
