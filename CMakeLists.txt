@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.18)
 set(CMAKE_CXX_STANDARD 20)
 
 find_package(PkgConfig REQUIRED)
-#pkg_search_module(GLFW REQUIRED glfw3)
+pkg_search_module(GLFW REQUIRED glfw3)
 
 if(NOT CMAKE_FIND_LIBRARY_SUFFIXES)
     set(CMAKE_FIND_LIBRARY_SUFFIXES .so .a)
