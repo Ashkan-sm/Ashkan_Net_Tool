@@ -58,12 +58,13 @@ void ashk::tasks::WifiPasswordCrackingTask::exec() {
             handshake_data->eapol[4] == 0x02 && handshake_data->eapol[5] == 0x01){
         epol_ofset=81;
     } else{
-        std::cout<<"bad packet"<<std::endl;
+
+        logger.log("bad packet\n");
     }
     memcpy(handshake_data->MIC,handshake_data->eapol+epol_ofset,16);
 
     if (handshake_data->eapol_size < epol_ofset + 16) {
-        std::cerr << "ERROR: EAPOL frame too small (needs at least 97 bytes)\n";
+        logger.log("ERROR: EAPOL frame too small (needs at least 97 bytes)\n");
         return;
     }
     uint8_t pmk[32];

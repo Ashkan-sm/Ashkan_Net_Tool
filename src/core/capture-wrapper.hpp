@@ -6,19 +6,12 @@
 #define ASHKANTOOL_CAPTURE_WRAPPER_HPP
 
 #include <iostream>
-#include "MacAddress.h"
-#include "IpAddress.h"
-#include "Logger.h"
-#include "PcapPlusPlusVersion.h"
-#include "PcapLiveDeviceList.h"
-#include "PcapLiveDevice.h"
-#include "NetworkUtils.h"
-#include <getopt.h>
-#include "SystemUtils.h"
-#include "EthLayer.h"
-#include "Packet.h"
 #include <mutex>
+
+#include "PcapLiveDevice.h"
+
 #include "utils/logger.hpp"
+
 namespace ashk {
 
 class CaptureWrapper {

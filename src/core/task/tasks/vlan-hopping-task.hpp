@@ -5,7 +5,11 @@
 #ifndef ASHKANTOOL_VLAN_HOPPING_TASK_HPP
 #define ASHKANTOOL_VLAN_HOPPING_TASK_HPP
 
-#include "task-headers.hpp"
+#include "PcapLiveDevice.h"
+
+#include "core/task/task.hpp"
+#include "core/packet-receiver/packet-receiver.hpp"
+#include "core/capture-wrapper.hpp"
 
 namespace ashk::tasks{
 class VlanHoppingTask : public Task {

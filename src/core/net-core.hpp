@@ -5,7 +5,8 @@
 #ifndef ASHKANTOOL_NET_CORE_HPP
 #define ASHKANTOOL_NET_CORE_HPP
 
-#include <iostream>
+#include <map>
+
 #include "MacAddress.h"
 #include "IpAddress.h"
 #include "Logger.h"
@@ -17,27 +18,27 @@
 #include "SystemUtils.h"
 #include "EthLayer.h"
 #include "Packet.h"
+
 #include "utils/logger.hpp"
 #include "utils/net-utils.hpp"
-#include "task/task.hpp"
-#include "task/tasks/arp-poisoning-task.hpp"
-#include "task/tasks/arp-poison-detection-task.hpp"
-#include "task/tasks/vlan-hopping-task.hpp"
-#include "task/tasks/dtp-negotiation.hpp"
-#include "task/tasks/mitm-packet-forwarding.hpp"
-#include "task/tasks/dtp-domain-extraction-task.hpp"
-#include "task/tasks/wifi-ap-scanning-task.hpp"
-#include "task/tasks/wifi-host-scanning-task.hpp"
-#include "task/tasks/deauth-packet-sending.hpp"
-#include "task/tasks/wpa-2-hand-shake-capture-task.hpp"
-#include "task/tasks/wifi-password-cracking-task.hpp"
+
+#include "core/task/task.hpp"
+#include "core/task/tasks/arp-poisoning-task.hpp"
+#include "core/task/tasks/arp-poison-detection-task.hpp"
+#include "core/task/tasks/vlan-hopping-task.hpp"
+#include "core/task/tasks/dtp-negotiation.hpp"
+#include "core/task/tasks/mitm-packet-forwarding.hpp"
+#include "core/task/tasks/dtp-domain-extraction-task.hpp"
+#include "core/task/tasks/wifi-ap-scanning-task.hpp"
+#include "core/task/tasks/wifi-host-scanning-task.hpp"
+#include "core/task/tasks/deauth-packet-sending.hpp"
+#include "core/task/tasks/wpa-2-hand-shake-capture-task.hpp"
+#include "core/task/tasks/wifi-password-cracking-task.hpp"
 
 #include "core/data-holders/wifi.hpp"
-
-#include <map>
-
 #include "core/packet-receiver/packet-receiver.hpp"
-#include "capture-wrapper.hpp"
+#include "core/capture-wrapper.hpp"
+
 namespace ashk {
     class Net_core {
     public:

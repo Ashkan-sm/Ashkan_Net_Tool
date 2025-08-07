@@ -4,10 +4,16 @@
 
 #ifndef ASHKANTOOL_WPA_2_HAND_SHAKE_CAPTURE_TASK_HPP
 #define ASHKANTOOL_WPA_2_HAND_SHAKE_CAPTURE_TASK_HPP
-#include "task-headers.hpp"
+
+#include "PcapLiveDevice.h"
+
+#include "core/task/task.hpp"
+#include "utils/logger.hpp"
+#include "core/data-holders/wifi.hpp"
+#include "core/packet-receiver/packet-receiver.hpp"
+#include "core/capture-wrapper.hpp"
 
 namespace ashk::tasks {
-
     class WPA2HandShakeCaptureTask : public Task {
     public:
         explicit WPA2HandShakeCaptureTask(pcpp::PcapLiveDevice *dev,

@@ -4,11 +4,15 @@
 
 #ifndef ASHKANTOOL_WPA_2_CRACKING_THREAD_HPP
 #define ASHKANTOOL_WPA_2_CRACKING_THREAD_HPP
-#include "task-headers.hpp"
+
 #include <openssl/hmac.h>
 #include <openssl/cmac.h>
 #include <openssl/evp.h>
 #include <openssl/sha.h>
+
+#include "core/task/task.hpp"
+#include "core/data-holders/wifi.hpp"
+
 #define SHA1_DIGEST_LENGTH 20
 namespace ashk::tasks {
     class WPA2CrackingThread : public Task{

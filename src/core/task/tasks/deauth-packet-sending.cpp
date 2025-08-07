@@ -60,10 +60,6 @@ void ashk::tasks::DeauthPacketSendingTask::exec() {
     };
 
 
-
-
-
-
     while (is_running()) {
         std::vector<pcpp::Packet>packets;
         for(auto i : *host_list){

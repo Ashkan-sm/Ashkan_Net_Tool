@@ -5,7 +5,11 @@
 #ifndef ASHKANTOOL_ARP_POISONING_TASK_HPP
 #define ASHKANTOOL_ARP_POISONING_TASK_HPP
 
-#include "task-headers.hpp"
+#include "core/task/task.hpp"
+#include "PcapLiveDevice.h"
+#include "PcapLiveDeviceList.h"
+#include "utils/net-utils.hpp"
+
 namespace ashk::tasks {
     class ArpPoisoningTask : public Task {
     public:

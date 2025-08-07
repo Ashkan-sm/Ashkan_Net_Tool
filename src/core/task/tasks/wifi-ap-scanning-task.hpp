@@ -5,8 +5,11 @@
 #ifndef ASHKANTOOL_WIFI_AP_SCANNING_TASK_HPP
 #define ASHKANTOOL_WIFI_AP_SCANNING_TASK_HPP
 
-#include "task-headers.hpp"
+#include "core/task/task.hpp"
 #include "core/data-holders/wifi.hpp"
+#include "core/capture-wrapper.hpp"
+#include "core/packet-receiver/packet-receiver.hpp"
+
 namespace ashk::tasks {
     class WifiApScanningTask:public Task{
     public:

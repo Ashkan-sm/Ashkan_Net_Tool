@@ -2,7 +2,7 @@
 // Created by dev on 7/10/25.
 //
 
-#include "../packet-receiver.hpp"
+#include "core/packet-receiver/packet-receiver.hpp"
 
 void ashk::PacketReceiver::onPacketArrivesDTPDomainExtraction(pcpp::RawPacket *raw_packet, pcpp::PcapLiveDevice *dev,
                                                               void *cookie) {

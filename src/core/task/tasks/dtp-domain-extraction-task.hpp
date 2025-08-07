@@ -4,7 +4,13 @@
 
 #ifndef ASHKANTOOL_DTP_DOMAIN_EXTRACTION_TASK_HPP
 #define ASHKANTOOL_DTP_DOMAIN_EXTRACTION_TASK_HPP
-#include "task-headers.hpp"
+
+#include "PcapLiveDevice.h"
+
+#include "core/task/task.hpp"
+#include "core/capture-wrapper.hpp"
+#include "core/packet-receiver/packet-receiver.hpp"
+
 namespace ashk::tasks {
     class DtpDomainExtraction : public Task {
     public:

@@ -8,8 +8,9 @@
 #include <memory>
 #include <thread>
 #include <atomic>
-#include "utils/logger.hpp"
 #include <set>
+
+#include "utils/logger.hpp"
 
 namespace ashk {
     enum tasks_data_id{VICTIM_DST_MAC,VICTIM_SRC_MAC,WPA2_CRACK_T};

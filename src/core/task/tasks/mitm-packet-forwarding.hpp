@@ -5,7 +5,12 @@
 #ifndef ASHKANTOOL_MITM_PACKET_FORWARDING_HPP
 #define ASHKANTOOL_MITM_PACKET_FORWARDING_HPP
 
-#include "task-headers.hpp"
+#include "PcapLiveDevice.h"
+#include "PcapLiveDeviceList.h"
+
+#include "core/task/task.hpp"
+#include "core/packet-receiver/packet-receiver.hpp"
+#include "core/capture-wrapper.hpp"
 
 namespace ashk::tasks {
     class MITMPacketForwarding : public Task{

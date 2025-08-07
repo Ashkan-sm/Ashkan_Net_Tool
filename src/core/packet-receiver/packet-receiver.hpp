@@ -4,30 +4,21 @@
 
 #ifndef ASHKANTOOL_PACKET_RECEIVER_HPP
 #define ASHKANTOOL_PACKET_RECEIVER_HPP
+
 #include <iostream>
-#include "MacAddress.h"
-#include "IpAddress.h"
-#include "Logger.h"
-#include "PcapPlusPlusVersion.h"
-#include "PcapLiveDeviceList.h"
-#include "PcapLiveDevice.h"
-#include "NetworkUtils.h"
-#include <getopt.h>
-#include "SystemUtils.h"
-#include "EthLayer.h"
-#include "IPLayer.h"
-#include "Packet.h"
 #include <map>
-#include "utils/logger.hpp"
+
+#include <netinet/in.h>
+
+#include "IPLayer.h"
+#include "EthDot3Layer.h"
+#include "LLCLayer.h"
 #include "VlanLayer.h"
 #include "PayloadLayer.h"
-#include "IpAddress.h"
-#include "../task/task.hpp"
-#include <netinet/in.h>
-#include <EthDot3Layer.h>
-#include <LLCLayer.h>
-#include "core/data-holders/wifi.hpp"
 
+#include "utils/logger.hpp"
+#include "core/task/task.hpp"
+#include "core/data-holders/wifi.hpp"
 
 namespace ashk {
 

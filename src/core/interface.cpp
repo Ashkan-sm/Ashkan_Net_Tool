@@ -5,11 +5,9 @@
 #include "interface.hpp"
 
 #include <utility>
-namespace ashk {
 
 
-
-std::string ModelInterface::get_interface_ip() {
+std::string ashk::ModelInterface::get_interface_ip() {
     return core_.interface_ip().toString();
 }
 std::vector<pcpp::PcapLiveDevice *> ashk::ModelInterface::get_interfaces() {
@@ -17,11 +15,11 @@ std::vector<pcpp::PcapLiveDevice *> ashk::ModelInterface::get_interfaces() {
 }
 
 
-    std::string ModelInterface::arp(const std::string &ip) {
+std::string ashk::ModelInterface::arp(const std::string &ip) {
     return core_.arp(pcpp::IPv4Address(ip)).toString();
 }
 
-void ModelInterface::start_arp_poison(const std::string& iface_ip, const std::string& vic_src_ip, const std::string& vic_dst_ip,
+void ashk::ModelInterface::start_arp_poison(const std::string& iface_ip, const std::string& vic_src_ip, const std::string& vic_dst_ip,
                                       const std::string& forward_to_ip) {
     pcpp::IPv4Address iface;
     pcpp::IPv4Address vic_src;
@@ -45,19 +43,19 @@ void ModelInterface::start_arp_poison(const std::string& iface_ip, const std::st
 
 }
 
-void ModelInterface::add_logger_method(const std::function<void(const std::string &)>& method) {
+void ashk::ModelInterface::add_logger_method(const std::function<void(const std::string &)>& method) {
     logger_.add_log_method(method);
 }
 
-std::vector<int> ModelInterface::get_running_tasks() {
+std::vector<int> ashk::ModelInterface::get_running_tasks() {
     return core_.get_running_tasks();
 }
 
-void ModelInterface::end_task(int id) {
+void ashk::ModelInterface::end_task(int id) {
     core_.end_task(id);
 }
 
-void ModelInterface::start_arp_poison_detection(const std::string& iface_ip) {
+void ashk::ModelInterface::start_arp_poison_detection(const std::string& iface_ip) {
     pcpp::IPv4Address iface;
 
     try {
@@ -72,7 +70,7 @@ void ModelInterface::start_arp_poison_detection(const std::string& iface_ip) {
 
 }
 
-void ModelInterface::send_arp_req(const std::string& iface_ip_str, const std::string& ip_str) {
+void ashk::ModelInterface::send_arp_req(const std::string& iface_ip_str, const std::string& ip_str) {
     pcpp::IPv4Address iface;
     pcpp::IPv4Address ip;
 
@@ -87,74 +85,73 @@ void ModelInterface::send_arp_req(const std::string& iface_ip_str, const std::st
     }
     core_.send_arp_req(iface,ip);
 }
-    void ModelInterface::start_mitm_forwarding(const std::string& iface_ip_str,const std::string& victim_ip_str, const std::string& gateway_ip_str,const std::string& victim_mac_str, const std::string& gateway_mac_str) {
-        pcpp::IPv4Address iface;
-        pcpp::MacAddress victim_mac;
-        pcpp::MacAddress gateway_mac;
-        pcpp::IPv4Address victim_ip;
-        pcpp::IPv4Address gateway_ip;
-        try {
-            iface = pcpp::IPv4Address(iface_ip_str);
-            victim_mac=pcpp::MacAddress(victim_mac_str);
-            gateway_mac=pcpp::MacAddress(gateway_mac_str);
-            victim_ip=pcpp::IPv4Address(victim_ip_str);
-            gateway_ip=pcpp::IPv4Address(gateway_ip_str);
-        }
-        catch (const std::exception &) {
-            logger_.log("invalid ip inputs\n");
-            return;
-        }
-        core_.start_mitm_forwarding(iface,victim_ip,gateway_ip,victim_mac,gateway_mac);
+void ashk::ModelInterface::start_mitm_forwarding(const std::string& iface_ip_str,const std::string& victim_ip_str, const std::string& gateway_ip_str,const std::string& victim_mac_str, const std::string& gateway_mac_str) {
+    pcpp::IPv4Address iface;
+    pcpp::MacAddress victim_mac;
+    pcpp::MacAddress gateway_mac;
+    pcpp::IPv4Address victim_ip;
+    pcpp::IPv4Address gateway_ip;
+    try {
+        iface = pcpp::IPv4Address(iface_ip_str);
+        victim_mac=pcpp::MacAddress(victim_mac_str);
+        gateway_mac=pcpp::MacAddress(gateway_mac_str);
+        victim_ip=pcpp::IPv4Address(victim_ip_str);
+        gateway_ip=pcpp::IPv4Address(gateway_ip_str);
     }
-
-    void ModelInterface::start_vlan_hopping(const std::string& iface_ip_str, const std::string& outer_str, const std::string& inner_str) {
-        pcpp::IPv4Address iface;
-        int outer_tag=0;
-        int inner_tag=0;
-        try {
-            iface = pcpp::IPv4Address(iface_ip_str);
-            if(!outer_str.empty()) {
-                outer_tag = std::stoi(outer_str);
-            }
-            if(!inner_str.empty()) {
-                inner_tag = std::stoi(inner_str);
-            }
-
-        }
-        catch (const std::exception &) {
-            logger_.log("invalid inputs\n");
-            return;
-        }
-        core_.start_vlan_hopping(iface,outer_tag,inner_tag);
+    catch (const std::exception &) {
+        logger_.log("invalid ip inputs\n");
+        return;
     }
+    core_.start_mitm_forwarding(iface,victim_ip,gateway_ip,victim_mac,gateway_mac);
+}
 
-    void ModelInterface::start_dtp_negotiation(const std::string& iface_ip_str,const std::string& domain_name) {
-        pcpp::IPv4Address iface;
-        try {
-            iface = pcpp::IPv4Address(iface_ip_str);
+void ashk::ModelInterface::start_vlan_hopping(const std::string& iface_ip_str, const std::string& outer_str, const std::string& inner_str) {
+    pcpp::IPv4Address iface;
+    int outer_tag=0;
+    int inner_tag=0;
+    try {
+        iface = pcpp::IPv4Address(iface_ip_str);
+        if(!outer_str.empty()) {
+            outer_tag = std::stoi(outer_str);
         }
-        catch (const std::exception &) {
-            logger_.log("invalid inputs\n");
-            return;
+        if(!inner_str.empty()) {
+            inner_tag = std::stoi(inner_str);
         }
-        core_.start_dtp_negotiation(iface,domain_name);
 
     }
-
-    void ModelInterface::start_dtp_domain_extraction(const std::string& iface_ip_str, char *buffer) {
-        pcpp::IPv4Address iface;
-        try {
-            iface = pcpp::IPv4Address(iface_ip_str);
-        }
-        catch (const std::exception &) {
-            logger_.log("invalid inputs\n");
-            return;
-        }
-        core_.start_dtp_domain_extraction(iface,buffer);
+    catch (const std::exception &) {
+        logger_.log("invalid inputs\n");
+        return;
     }
+    core_.start_vlan_hopping(iface,outer_tag,inner_tag);
+}
 
+void ashk::ModelInterface::start_dtp_negotiation(const std::string& iface_ip_str,const std::string& domain_name) {
+    pcpp::IPv4Address iface;
+    try {
+        iface = pcpp::IPv4Address(iface_ip_str);
+    }
+    catch (const std::exception &) {
+        logger_.log("invalid inputs\n");
+        return;
+    }
+    core_.start_dtp_negotiation(iface,domain_name);
 
 }
+
+void ashk::ModelInterface::start_dtp_domain_extraction(const std::string& iface_ip_str, char *buffer) {
+    pcpp::IPv4Address iface;
+    try {
+        iface = pcpp::IPv4Address(iface_ip_str);
+    }
+    catch (const std::exception &) {
+        logger_.log("invalid inputs\n");
+        return;
+    }
+    core_.start_dtp_domain_extraction(iface,buffer);
+}
+
+
 std::string ashk::ModelInterface::get_task_data(const std::string& task_id, tasks_data_id data_id) {
     int task_id_int=0;
     try {

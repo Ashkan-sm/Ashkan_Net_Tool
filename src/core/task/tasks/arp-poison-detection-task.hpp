@@ -5,7 +5,11 @@
 #ifndef ASHKANTOOL_ARP_POISON_DETECTION_TASK_HPP
 #define ASHKANTOOL_ARP_POISON_DETECTION_TASK_HPP
 
-#include "task-headers.hpp"
+
+
+#include "core/task/task.hpp"
+#include "core/capture-wrapper.hpp"
+#include "core/packet-receiver/packet-receiver.hpp"
 
 namespace ashk::tasks {
     class ArpPoisonDetectionTask : public Task {

@@ -4,7 +4,14 @@
 
 #ifndef ASHKANTOOL_DTP_NEGOTIATION_HPP
 #define ASHKANTOOL_DTP_NEGOTIATION_HPP
-#include "task-headers.hpp"
+
+#include <netinet/in.h>
+
+#include "PcapLiveDevice.h"
+#include "PcapLiveDeviceList.h"
+#include "Packet.h"
+
+#include "core/task/task.hpp"
 
 namespace ashk::tasks{
     class DTPNegotiation : public Task {

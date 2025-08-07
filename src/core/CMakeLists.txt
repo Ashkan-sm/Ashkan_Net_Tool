@@ -27,7 +27,6 @@ add_library(AshkanTool-Core
         task/tasks/dtp-negotiation.hpp
         task/tasks/dtp-domain-extraction-task.cpp
         task/tasks/dtp-domain-extraction-task.hpp
-        task/tasks/task-headers.hpp
 
 
         task/tasks/wifi-ap-scanning-task.cpp

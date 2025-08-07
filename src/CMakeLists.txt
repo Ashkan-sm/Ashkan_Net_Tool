@@ -16,7 +16,7 @@ add_library(imgui
         ${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp
 )
 find_package(PkgConfig REQUIRED)
-pkg_search_module(GLFW REQUIRED glfw3)
+#pkg_search_module(GLFW REQUIRED glfw3)
 
 
 target_include_directories(imgui

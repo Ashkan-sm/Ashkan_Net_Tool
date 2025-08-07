@@ -3,6 +3,7 @@
 //
 
 #include "capture-wrapper.hpp"
+
 namespace ashk {
 
 CaptureWrapper &CaptureWrapper::getInstance() {

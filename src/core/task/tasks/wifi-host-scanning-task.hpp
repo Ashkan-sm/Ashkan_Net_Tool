@@ -5,8 +5,12 @@
 #ifndef ASHKANTOOL_WIFI_HOST_SCANNING_TASK_HPP
 #define ASHKANTOOL_WIFI_HOST_SCANNING_TASK_HPP
 
+#include "PcapLiveDevice.h"
 
-#include "task-headers.hpp"
+#include "core/task/task.hpp"
+#include "core/data-holders/wifi.hpp"
+#include "core/packet-receiver/packet-receiver.hpp"
+#include "core/capture-wrapper.hpp"
 
 namespace ashk::tasks {
     class WifiHostScanningTask:public Task{

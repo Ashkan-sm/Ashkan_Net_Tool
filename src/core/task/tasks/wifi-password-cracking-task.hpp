@@ -4,8 +4,12 @@
 
 #ifndef ASHKANTOOL_WIFI_PASSWORD_CRACKING_TASK_HPP
 #define ASHKANTOOL_WIFI_PASSWORD_CRACKING_TASK_HPP
-#include "task-headers.hpp"
+
+#include "PcapLiveDevice.h"
+
 #include "wpa-2-cracking-thread.hpp"
+#include "core/task/task.hpp"
+#include "core/capture-wrapper.hpp"
 
 namespace ashk::tasks {
     class WifiPasswordCrackingTask :public Task{

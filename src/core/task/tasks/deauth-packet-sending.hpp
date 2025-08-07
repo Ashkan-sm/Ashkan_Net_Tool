@@ -1,7 +1,14 @@
 
 #ifndef ASHKANTOOL_DEAUTH_PACKET_SENDING_HPP
 #define ASHKANTOOL_DEAUTH_PACKET_SENDING_HPP
-#include "task-headers.hpp"
+
+
+#include "PcapLiveDevice.h"
+
+#include "core/task/task.hpp"
+#include "core/data-holders/wifi.hpp"
+#include "core/capture-wrapper.hpp"
+
 namespace ashk::tasks {
     class DeauthPacketSendingTask : public Task {
     public:

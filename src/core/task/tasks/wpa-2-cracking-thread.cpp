@@ -88,7 +88,6 @@ void ashk::tasks::WPA2CrackingThread::exec() {
         HMAC(EVP_sha1(), ptk, 16, handshake_data->eapol, handshake_data->eapol_size, mic, nullptr);
 
         if (memcmp(mic, handshake_data->MIC, 16) == 0) {
-            std::cout << "PASSWORD: " << password << std::endl;
             ashk::utils::Logger::getInstance().log("PASSWORD: "+password+"\n");
             parent_task->end();
             break;
