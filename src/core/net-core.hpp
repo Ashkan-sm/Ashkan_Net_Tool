@@ -42,10 +42,7 @@
 namespace ashk {
 class NetCore {
  public:
-  friend class ModelInterface;
   NetCore();
-
- private:
   pcpp::MacAddress Arp(pcpp::IPv4Address ip);
   void SendArpReq(pcpp::IPv4Address iface_ip, pcpp::IPv4Address ip);
   int DiscoverInterface();
@@ -79,6 +76,8 @@ class NetCore {
   void EndTask(int id);
 
   std::vector<int> GetRunningTasks();
+  std::map<int, std::shared_ptr<Task>> &Tasks();
+ private:
 
   pcpp::PcapLiveDevice *dev_ = nullptr;
   utils::Logger &logger_ = utils::Logger::getInstance();

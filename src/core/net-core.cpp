@@ -169,4 +169,8 @@ void ashk::NetCore::StartWpa2HandshakeCapturing(const std::string &iface_ip_name
   tasks_[last_added_task_id_]->Start();
     last_added_task_id_++;
 }
+std::map<int, std::shared_ptr<ashk::Task>> &ashk::NetCore::Tasks() {
+  return tasks_;
+}
+
 

@@ -164,9 +164,9 @@ std::string ashk::ModelInterface::GetTaskData(const std::string &task_id, tasks_
     logger_.Log("invalid inputs\n");
     return "";
   }
-  if (!core_.tasks_.count(task_id_int))
+  if (!core_.Tasks().count(task_id_int))
     return "";
-  return core_.tasks_[task_id_int]->GetData(data_id);
+  return core_.Tasks()[task_id_int]->GetData(data_id);
 }
 
 void ashk::ModelInterface::StartDetectingWifiAps(const std::string &iface_ip_str, std::vector<WifiAp> &ap_list) {
