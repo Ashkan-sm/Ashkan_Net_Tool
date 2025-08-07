@@ -8,6 +8,7 @@
 #include <functional>
 #include <vector>
 #include <string>
+
 namespace ashk::utils {
     class Logger {
     public:

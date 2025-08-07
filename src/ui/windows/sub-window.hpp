@@ -4,12 +4,19 @@
 
 #ifndef ASHKANTOOL_SUB_WINDOW_HPP
 #define ASHKANTOOL_SUB_WINDOW_HPP
-#include "imgui-headers.hpp"
+
+#include "EthDot3Layer.h"
+
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+#include "imgui_internal.h"
+
 #include "config.h"
-#include "../../core/interface.hpp"
-#include <EthDot3Layer.h>
+#include "core/interface.hpp"
 #include "core/data-holders/wifi.hpp"
 #include "utils/logger.hpp"
+
 class ISubWindow {
 public:
     explicit ISubWindow(ashk::ModelInterface *core);
