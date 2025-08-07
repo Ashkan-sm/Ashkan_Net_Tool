@@ -4,31 +4,31 @@ MainWindow::MainWindow(ashk::ModelInterface *core) :core_(core){
     ImGuiIO& io = ImGui::GetIO();
 
 
-    default_window=std::make_shared<DefaultWindow>(core_);
-    arp_spoof_window=std::make_shared<ArpSpoofWindow>(core_);
-    arp_poison_detection_window=std::make_shared<ArpPoisonDetectionWindow>(core_);
-    send_arp_request_window=std::make_shared<SendArpRequestWindow>(core_);
-    vlan_hopping_window=std::make_shared<VlanHoppingWindow>(core_);
-    man_in_the_middle_window=std::make_shared<MITMWindow>(core_);
-    wifi_attack_window=std::make_shared<WIFIAttackWindow>(core_);
+  default_window_=std::make_shared<DefaultWindow>(core_);
+  arp_spoof_window_=std::make_shared<ArpSpoofWindow>(core_);
+  arp_poison_detection_window_=std::make_shared<ArpPoisonDetectionWindow>(core_);
+  send_arp_request_window_=std::make_shared<SendArpRequestWindow>(core_);
+  vlan_hopping_window_=std::make_shared<VlanHoppingWindow>(core_);
+  man_in_the_middle_window_=std::make_shared<MITMWindow>(core_);
+  wifi_attack_window_=std::make_shared<WIFIAttackWindow>(core_);
 
-    sub_window_=default_window;
+    sub_window_=default_window_;
 
-    core_->add_logger_method([&](const std::string &a){
-        if(strlen(log_buffer_)+ strlen(log_buffer_) >= sizeof(log_buffer_)){
-            memset(log_buffer_,'\0',sizeof(log_buffer_));
-        }
-        memcpy(log_buffer_+ strlen(log_buffer_),a.c_str(),a.length());
-    });
+  core_->AddLoggerMethod([&](const std::string &a) {
+    if (strlen(log_buffer_) + strlen(log_buffer_) >= sizeof(log_buffer_)) {
+      memset(log_buffer_, '\0', sizeof(log_buffer_));
+    }
+    memcpy(log_buffer_ + strlen(log_buffer_), a.c_str(), a.length());
+  });
 }
-void MainWindow::draw(){
-    draw_main_toolbar();
-    draw_log_window();
-    sub_window_->draw();
+void MainWindow::Draw(){
+  DrawMainToolbar();
+  DrawLogWindow();
+  sub_window_->Draw();
 
 }
 
-void MainWindow::draw_main_toolbar() {
+void MainWindow::DrawMainToolbar() {
     ImGuiIO& io = ImGui::GetIO();
 
     ImGuiWindowFlags toolbar_flags = ImGuiWindowFlags_NoResize |
@@ -54,22 +54,22 @@ void MainWindow::draw_main_toolbar() {
 // Reduce horizontal padding
 
     if (ImGui::Button("ArpSpoof", ImVec2(conf::toolbar_width-padding, conf::toolbar_button_height))) {
-        sub_window_ = arp_spoof_window;
+        sub_window_ = arp_spoof_window_;
     }
     if (ImGui::Button("ArpPoisoningDetection", ImVec2(conf::toolbar_width-padding, conf::toolbar_button_height))) {
-        sub_window_ = arp_poison_detection_window;
+        sub_window_ = arp_poison_detection_window_;
     }
     if (ImGui::Button("SendArpRequest", ImVec2(conf::toolbar_width-padding, conf::toolbar_button_height))) {
-        sub_window_ = send_arp_request_window;
+        sub_window_ = send_arp_request_window_;
     }
     if (ImGui::Button("VlanHopping", ImVec2(conf::toolbar_width -padding, conf::toolbar_button_height))) {
-        sub_window_ = vlan_hopping_window;
+        sub_window_ = vlan_hopping_window_;
     }
     if (ImGui::Button("MITMPacketForwarding", ImVec2(conf::toolbar_width -padding, conf::toolbar_button_height))) {
-        sub_window_ = man_in_the_middle_window;
+        sub_window_ = man_in_the_middle_window_;
     }
     if (ImGui::Button("WIFIAttackWindow", ImVec2(conf::toolbar_width-padding , conf::toolbar_button_height))) {
-        sub_window_ = wifi_attack_window;
+        sub_window_ = wifi_attack_window_;
     }
     ImGui::PopStyleVar();
 
@@ -81,9 +81,9 @@ void MainWindow::draw_main_toolbar() {
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_None;
     ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
     ImGui::BeginChild("Threads", ImVec2(0, threads_child_height), ImGuiChildFlags_Borders, window_flags);
-    for (auto i : core_->get_running_tasks()) {
+    for (auto i : core_->GetRunningTasks()) {
         if (ImGui::Button(("kill thread " + std::to_string(i)).c_str())) {
-            core_->end_task(i);
+          core_->EndTask(i);
         }
     }
     ImGui::EndChild();
@@ -93,7 +93,7 @@ void MainWindow::draw_main_toolbar() {
 }
 
 
-void MainWindow::draw_log_window() {
+void MainWindow::DrawLogWindow() {
     ImGui::PushStyleColor(ImGuiCol_WindowBg, IM_COL32(0, 0, 0, 255));
     ImGuiIO& io = ImGui::GetIO();
     ImGuiWindowFlags log_window_flags =

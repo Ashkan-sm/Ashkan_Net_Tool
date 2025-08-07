@@ -4,12 +4,10 @@
 #include <fstream>
 #include <string>
 
+int main(int, char **) {
 
-int main(int, char**)
-{
-
-    ashk::ModelInterface system;
-    ImguiUi ui(&system);
-    return ui.exec();
+  ashk::ModelInterface system;
+  ImguiUi ui(&system);
+  return ui.Exec();
 
 }

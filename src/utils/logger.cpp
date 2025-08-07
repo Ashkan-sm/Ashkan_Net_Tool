@@ -3,24 +3,24 @@
 //
 
 #include "logger.hpp"
-namespace ashk::utils{
+namespace ashk::utils {
 
-Logger & Logger::getInstance() {
-    static Logger logger;
-    return logger;
+Logger &Logger::getInstance() {
+  static Logger logger;
+  return logger;
 
 }
 
-Logger::Logger()=default;
+Logger::Logger() = default;
 
-void Logger::log(const std::string &log) {
-    for (const auto &i: log_methods) {
-        i(log);
-    }
+void Logger::Log(const std::string &log) {
+  for (const auto &i : log_methods_) {
+    i(log);
+  }
 }
 
-void Logger::add_log_method(const std::function<void(const std::string &)> &method) {
-    log_methods.push_back(method);
+void Logger::AddLogMethod(const std::function<void(const std::string &)> &method) {
+  log_methods_.push_back(method);
 }
 
 }
