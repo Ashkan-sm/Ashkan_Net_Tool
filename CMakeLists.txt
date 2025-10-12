@@ -1,4 +1,6 @@
 cmake_minimum_required(VERSION 3.18)
+project(AshkanTool)
+
 set(CMAKE_CXX_STANDARD 20)
 
 add_compile_options(-Wno-error=restrict)
@@ -13,11 +15,11 @@ if(NOT CMAKE_FIND_LIBRARY_PREFIXES)
     set(CMAKE_FIND_LIBRARY_PREFIXES "lib")
 endif ()
 
-project(AshkanTool)
 
 add_subdirectory(src)
 
-add_executable(AshkanTool src/main.cpp)
+add_executable(AshkanTool src/main.cpp
+        src/server.cpp)
 
 target_include_directories(AshkanTool
         PUBLIC
@@ -30,6 +32,8 @@ target_link_libraries(AshkanTool
         AshkanTool-Core
         Pcap++ Packet++ Common++
         utils
+        grpc_interface
+
 )
 
 set(RESOURCE_SRC_DIR "${CMAKE_SOURCE_DIR}/resource")

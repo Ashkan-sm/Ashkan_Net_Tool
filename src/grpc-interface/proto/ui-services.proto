@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+service UiServie {
+  rpc Arp(ArpRequestType) returns (ArpResponseType) {}
+  rpc SendArpReq(SendArpReqRequestType) returns (SendArpReqResponseType) {}
+  rpc StartArpPoison(StartArpPoisonRequestType) returns (StartArpPoisonResponseType) {}
+}
+
+message ArpRequestType {
+  string ip = 1;
+}
+message ArpResponseType {
+  string ip = 1;
+}
+
+message SendArpReqRequestType {
+  string iface_ip = 1;
+  string ip = 2;
+}
+message SendArpReqResponseType {}
+
+message StartArpPoisonRequestType {
+  string iface_ip = 1;
+  string vic_src_ip = 2;
+  string vic_dst_ip = 3;
+  string forward_to_ip = 4;
+}
+message StartArpPoisonResponseType {}
