@@ -1,5 +1,5 @@
 #include "main-window.hpp"
-MainWindow::MainWindow(ashk::ModelInterface *core) :core_(core){
+MainWindow::MainWindow(ClientInterface *core) :core_(core){
 //    std::memcpy(log_buffer_,0,sizeof(log_buffer_));
     ImGuiIO& io = ImGui::GetIO();
 

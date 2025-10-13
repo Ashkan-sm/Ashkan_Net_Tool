@@ -3,13 +3,13 @@
 //
 
 #include "sub-window.hpp"
-ISubWindow::ISubWindow(ashk::ModelInterface *core) :core_(core){
+ISubWindow::ISubWindow(ClientInterface *core) :core_(core){
 
 }
-pcpp::PcapLiveDevice * ISubWindow::DrawInterfaceWidget(){
-    static std::vector<pcpp::PcapLiveDevice *> devices= core_->GetInterfaces();
+std::string ISubWindow::DrawInterfaceWidget(){
+    static std::vector<std::string> devices= core_->GetInterfaces();
     static int item_selected_idx = 0;
-    const std::string &combo_preview_value = devices[item_selected_idx]->getName();
+    const std::string &combo_preview_value = devices[item_selected_idx];
     if(devices.empty()){
       ashk::utils::Logger::getInstance().Log("No network device found\n");
     }
@@ -28,15 +28,16 @@ pcpp::PcapLiveDevice * ISubWindow::DrawInterfaceWidget(){
             for (int n = 0; n < devices.size(); n++)
             {
                 const bool is_selected = (item_selected_idx == n);
-                if (filter.PassFilter(devices[n]->getName().c_str()))
-                    if (ImGui::Selectable((devices[n]->getName()+" "+devices[n]->getIPv4Address().toString()).c_str(), is_selected))
-                        item_selected_idx = n;
+                if (filter.PassFilter(devices[n].c_str()))
+                    if (ImGui::Selectable((devices[n]+" "+devices[n]).c_str(), is_selected))
+//                       get device ip and put here;
+                      item_selected_idx = n;
             }
             ImGui::EndCombo();
         }
     }
     ImGui::SameLine(); if (ImGui::Button("discover")){
-        devices= core_->GetInterfaces();
+//        devices= core_->GetInterfaces();
     }
     return devices[item_selected_idx];
 }
@@ -52,13 +53,13 @@ void ISubWindow::DrawBase(const std::string &name) {
     ImGui::Begin(name.c_str(), nullptr, window_flags);
 }
 
-ArpSpoofWindow::ArpSpoofWindow(ashk::ModelInterface *core) : ISubWindow(core) {
+ArpSpoofWindow::ArpSpoofWindow(ClientInterface *core) : ISubWindow(core) {
 
 }
 void ArpSpoofWindow::Draw() {
   DrawBase("ArpSpoofingWindow");
     static ImGuiInputTextFlags input_text_ip_flag = ImGuiInputTextFlags_CharsDecimal;
-    pcpp::PcapLiveDevice * device= DrawInterfaceWidget();
+    std::string device= DrawInterfaceWidget();
 
     static char victim_src_ip[16] = "";
     ImGui::InputTextWithHint("victim_src(ip)", "0.0.0.0", victim_src_ip, IM_ARRAYSIZE(victim_src_ip),input_text_ip_flag);
@@ -70,7 +71,7 @@ void ArpSpoofWindow::Draw() {
     ImGui::InputTextWithHint("forward_to(ip)", "0.0.0.0", forward_to_ip, IM_ARRAYSIZE(forward_to_ip),input_text_ip_flag);
 
     ImGui::NewLine();if (ImGui::Button("start poisoning")){
-    core_->StartArpPoison(device->getIPv4Address().toString(),
+    core_->StartArpPoison(device,
                           victim_src_ip,
                           victim_dst_ip,
                           forward_to_ip);}
@@ -80,7 +81,7 @@ void ArpSpoofWindow::Draw() {
 }
 
 
-DefaultWindow::DefaultWindow(ashk::ModelInterface *core) : ISubWindow(core) {
+DefaultWindow::DefaultWindow(ClientInterface *core) : ISubWindow(core) {
 
 }
 void DefaultWindow::Draw() {
@@ -92,20 +93,20 @@ void ArpPoisonDetectionWindow::Draw() {
 
     static ImGuiInputTextFlags input_text_ip_flag = ImGuiInputTextFlags_CharsDecimal;
 
-    pcpp::PcapLiveDevice * device= DrawInterfaceWidget();
+    std::string device= DrawInterfaceWidget();
 
 
-    ImGui::NewLine();if (ImGui::Button("start detection")){ core_->StartArpPoisonDetection(device->getIPv4Address().toString());}
+    ImGui::NewLine();if (ImGui::Button("start detection")){ core_->StartArpPoisonDetection(device);}
 
 
     ImGui::End();
 }
 
-ArpPoisonDetectionWindow::ArpPoisonDetectionWindow(ashk::ModelInterface *core) : ISubWindow(core) {
+ArpPoisonDetectionWindow::ArpPoisonDetectionWindow(ClientInterface *core) : ISubWindow(core) {
 
 }
 
-SendArpRequestWindow::SendArpRequestWindow(ashk::ModelInterface *core) : ISubWindow(core) {
+SendArpRequestWindow::SendArpRequestWindow(ClientInterface *core) : ISubWindow(core) {
 
 }
 
@@ -113,15 +114,15 @@ void SendArpRequestWindow::Draw() {
   DrawBase("SendArpRequestWindow");
 
     static ImGuiInputTextFlags input_text_ip_flag = ImGuiInputTextFlags_CharsDecimal;
-    pcpp::PcapLiveDevice * device= DrawInterfaceWidget();
+    std::string device= DrawInterfaceWidget();
     static char dst_ip[16] = "";
     ImGui::InputTextWithHint("arp(ip)", "0.0.0.0", dst_ip, IM_ARRAYSIZE(dst_ip),input_text_ip_flag);
-    ImGui::NewLine();if (ImGui::Button("send")){ core_->SendArpReq(device->getIPv4Address().toString(), dst_ip);}
+    ImGui::NewLine();if (ImGui::Button("send")){ core_->SendArpReq(device, dst_ip);}
 
     ImGui::End();
 }
 
-VlanHoppingWindow::VlanHoppingWindow(ashk::ModelInterface *core) : ISubWindow(core) {
+VlanHoppingWindow::VlanHoppingWindow(ClientInterface *core) : ISubWindow(core) {
 
 }
 
@@ -130,7 +131,7 @@ void VlanHoppingWindow::Draw() {
 
     static ImGuiInputTextFlags input_text_ip_flag = ImGuiInputTextFlags_CharsDecimal;
 
-    pcpp::PcapLiveDevice * device= DrawInterfaceWidget();
+    std::string device= DrawInterfaceWidget();
 
     ImGui::NewLine();
     ImGui::Text("Double_Tagging");
@@ -139,7 +140,7 @@ void VlanHoppingWindow::Draw() {
     ImGui::InputTextWithHint("outer_tag", "0", outer_tag, IM_ARRAYSIZE(outer_tag),input_text_ip_flag);
     ImGui::InputTextWithHint("inner_tag", "0", inner_tag, IM_ARRAYSIZE(inner_tag),input_text_ip_flag);
     if (ImGui::Button("Start Hopping")){
-      core_->StartVlanHopping(device->getIPv4Address().toString(),
+      core_->StartVlanHopping(device,
                               outer_tag,
                               inner_tag);}
 
@@ -148,17 +149,17 @@ void VlanHoppingWindow::Draw() {
     static char domain_name[32] = "";
     ImGui::InputTextWithHint("domain_name", "name", domain_name, 32);
     ImGui::SameLine(); if (ImGui::Button("extract")){
-    core_->StartDtpDomainExtraction(device->getIPv4Address().toString(),
+    core_->StartDtpDomainExtraction(device,
                                     domain_name);}
     if (ImGui::Button("Start Negotiation")){
-      core_->StartDtpNegotiation(device->getIPv4Address().toString(),
+      core_->StartDtpNegotiation(device,
                                  domain_name);}
 
 
     ImGui::End();
 }
 
-MITMWindow::MITMWindow(ashk::ModelInterface *core) : ISubWindow(core) {
+MITMWindow::MITMWindow(ClientInterface *core) : ISubWindow(core) {
 
 }
 
@@ -166,7 +167,7 @@ void MITMWindow::Draw() {
   DrawBase("ManInTheMiddleWindow");
     static ImGuiInputTextFlags input_text_ip_flag = ImGuiInputTextFlags_CharsDecimal;
 
-    pcpp::PcapLiveDevice * device= DrawInterfaceWidget();
+    std::string device= DrawInterfaceWidget();
     static char victim_ip[17] = "";
     ImGui::InputTextWithHint("victim(ip)", "0.0.0.0", victim_ip, IM_ARRAYSIZE(victim_ip));
 
@@ -182,14 +183,14 @@ void MITMWindow::Draw() {
     static char task_id[2] = "";
     ImGui::InputTextWithHint("task id", "0", task_id, IM_ARRAYSIZE(task_id),input_text_ip_flag);
     ImGui::SameLine(); if (ImGui::Button("GetData from arpSpoofing")){
-        std::string vic_mac_str= core_->GetTaskData(task_id, ashk::tasks_data_id::VICTIM_SRC_MAC);
-        std::string gate_mac_str= core_->GetTaskData(task_id, ashk::tasks_data_id::VICTIM_DST_MAC);
-        std::memcpy(victim_mac,vic_mac_str.c_str(),vic_mac_str.size());
-        std::memcpy(gateway_mac,gate_mac_str.c_str(),gate_mac_str.size());
+//        std::string vic_mac_str= core_->GetTaskData(task_id, ashk::tasks_data_id::VICTIM_SRC_MAC);
+//        std::string gate_mac_str= core_->GetTaskData(task_id, ashk::tasks_data_id::VICTIM_DST_MAC);
+//        std::memcpy(victim_mac,vic_mac_str.c_str(),vic_mac_str.size());
+//        std::memcpy(gateway_mac,gate_mac_str.c_str(),gate_mac_str.size());
     }
 
     ImGui::NewLine();if (ImGui::Button("start forwarding")){
-    core_->StartMitmForwarding(device->getIPv4Address().toString(),
+    core_->StartMitmForwarding(device,
                                victim_ip,
                                gateway_ip,
                                victim_mac,
@@ -199,7 +200,7 @@ void MITMWindow::Draw() {
     ImGui::End();
 }
 
-WIFIAttackWindow::WIFIAttackWindow(ashk::ModelInterface *core) : ISubWindow(core) {
+WIFIAttackWindow::WIFIAttackWindow(ClientInterface *core) : ISubWindow(core) {
 
 }
 
@@ -207,10 +208,10 @@ void WIFIAttackWindow::Draw() {
   DrawBase("WIFIAttackWindow");
     static ImGuiInputTextFlags input_text_ip_flag = ImGuiInputTextFlags_CharsDecimal;
 
-    pcpp::PcapLiveDevice * device= DrawInterfaceWidget();
+    std::string device= DrawInterfaceWidget();
 
     static std::vector<WifiAp> ap_list;
-    if (ImGui::Button("detect networks")){ core_->StartDetectingWifiAps(device->getName(), ap_list);}
+    if (ImGui::Button("detect networks")){ core_->StartDetectingWifiAps(device, ap_list);}
 
     static auto selectedAp=new WifiAp("None");
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_None;
@@ -232,7 +233,7 @@ void WIFIAttackWindow::Draw() {
 
     static std::vector<std::shared_ptr<WifiHost>> host_list{std::make_unique<WifiHost>(pcpp::MacAddress::Broadcast)};
     if (ImGui::Button("detect hosts")){
-      core_->StartDetectingWifiHosts(device->getName(), host_list);
+      core_->StartDetectingWifiHosts(device, host_list);
     }
     ImGui::SameLine();
     static bool select_hosts=false;
@@ -253,7 +254,7 @@ void WIFIAttackWindow::Draw() {
     ImGui::PopStyleVar();
 
     if (ImGui::Button("Start Deauthentication")){
-      core_->StartSendingDeauthPackets(device->getName(), selectedAp, host_list);
+      core_->StartSendingDeauthPackets(device, selectedAp, host_list);
     }
     static std::shared_ptr<HandShakeData> hand_shake_data;
     if (ImGui::Button("Capture WPA2 Handshake")){
@@ -262,12 +263,12 @@ void WIFIAttackWindow::Draw() {
         }
         else {
             hand_shake_data = std::make_unique<HandShakeData>(selectedAp);
-          core_->StartWpa2HandshakeCapturing(device->getName(), hand_shake_data);
+          core_->StartWpa2HandshakeCapturing(device, hand_shake_data);
         }
     }
     if (ImGui::Button("CRACK PASSWORD")){
         if(hand_shake_data && hand_shake_data->got_msg_2){
-          core_->StartPasswordCracking(device->getName(), hand_shake_data);
+          core_->StartPasswordCracking(device, hand_shake_data);
         }
         else{
           ashk::utils::Logger::getInstance().Log("no HandShake data available\n");

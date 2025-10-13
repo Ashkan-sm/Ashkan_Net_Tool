@@ -33,15 +33,15 @@ static void glfw_error_callback(int error, const char* description)
 
 
 #include "ui/windows/main-window.hpp"
-#include "core/interface.hpp"
+#include "grpc-interface/client-interface.hpp"
 
 
 class ImguiUi {
  public:
-  ImguiUi(ashk::ModelInterface *core);
+  ImguiUi(ClientInterface *core);
   int Exec();
  private:
-  ashk::ModelInterface *core_;
+  ClientInterface *core_;
 };
 
 #endif //ASHKANTOOL_IMGUI_UI_HPP

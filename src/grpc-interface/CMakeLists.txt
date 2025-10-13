@@ -34,8 +34,8 @@ add_custom_target(generate_protos ALL DEPENDS ${PROTO_SRCS} ${PROTO_HDRS})
 
 # Build the library
 add_library(grpc_interface ${PROTO_SRCS} ${PROTO_HDRS}
-        c-lient-interface.cpp
-        c-lient-interface.hpp
+        client-interface.cpp
+        client-interface.hpp
         server-interface.cpp
         server-interface.hpp
         services.cpp

@@ -16,52 +16,53 @@
 #include "core/interface.hpp"
 #include "core/data-holders/wifi.hpp"
 #include "utils/logger.hpp"
+#include "grpc-interface/client-interface.hpp"
 
 class ISubWindow {
 public:
-    explicit ISubWindow(ashk::ModelInterface *core);
+    explicit ISubWindow(ClientInterface *core);
     virtual void Draw() = 0;
 protected:
-    ashk::ModelInterface *core_;
+    ClientInterface *core_;
     void DrawBase(const std::string &name);
-    pcpp::PcapLiveDevice * DrawInterfaceWidget();
+    std::string DrawInterfaceWidget();
 private:
 };
 class DefaultWindow :public ISubWindow{
 public:
-    explicit DefaultWindow(ashk::ModelInterface *core);
+    explicit DefaultWindow(ClientInterface *core);
     void Draw() override;
 };
 
 class ArpSpoofWindow :public ISubWindow{
 public:
-    explicit ArpSpoofWindow(ashk::ModelInterface *core);
+    explicit ArpSpoofWindow(ClientInterface *core);
     void Draw() override;
 };
 
 class ArpPoisonDetectionWindow :public ISubWindow{
 public:
-    explicit ArpPoisonDetectionWindow(ashk::ModelInterface *core);
+    explicit ArpPoisonDetectionWindow(ClientInterface *core);
     void Draw() override;
 };
 class SendArpRequestWindow :public ISubWindow{
 public:
-    explicit SendArpRequestWindow(ashk::ModelInterface *core);
+    explicit SendArpRequestWindow(ClientInterface *core);
     void Draw() override;
 };
 class VlanHoppingWindow  :public ISubWindow{
 public:
-    explicit VlanHoppingWindow(ashk::ModelInterface *core);
+    explicit VlanHoppingWindow(ClientInterface *core);
     void Draw() override;
 };
 class MITMWindow  :public ISubWindow{
 public:
-    explicit MITMWindow(ashk::ModelInterface *core);
+    explicit MITMWindow(ClientInterface *core);
     void Draw() override;
 };
 class WIFIAttackWindow  : public ISubWindow{
 public:
-    explicit WIFIAttackWindow(ashk::ModelInterface *core);
+    explicit WIFIAttackWindow(ClientInterface *core);
     void Draw() override;
 };
 

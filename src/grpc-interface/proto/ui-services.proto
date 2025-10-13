@@ -4,6 +4,8 @@ service UiServie {
   rpc Arp(ArpRequestType) returns (ArpResponseType) {}
   rpc SendArpReq(SendArpReqRequestType) returns (SendArpReqResponseType) {}
   rpc StartArpPoison(StartArpPoisonRequestType) returns (StartArpPoisonResponseType) {}
+  rpc GetInterfaces(GetInterfacesRequestType) returns (GetInterfacesResponseType) {}
+
 }
 
 message ArpRequestType {
@@ -26,3 +28,8 @@ message StartArpPoisonRequestType {
   string forward_to_ip = 4;
 }
 message StartArpPoisonResponseType {}
+
+message GetInterfacesRequestType {}
+message GetInterfacesResponseType {
+  repeated string devices_names = 1;
+}

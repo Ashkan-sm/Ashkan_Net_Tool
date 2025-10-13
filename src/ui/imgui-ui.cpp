@@ -4,7 +4,7 @@
 
 #include "imgui-ui.hpp"
 
-ImguiUi::ImguiUi(ashk::ModelInterface *core) : core_(core) {
+ImguiUi::ImguiUi(ClientInterface *core) : core_(core) {
 
 }
 

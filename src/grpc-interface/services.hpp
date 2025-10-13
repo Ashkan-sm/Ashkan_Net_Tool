@@ -11,7 +11,13 @@
 class Services final : public UiServie::Service {
  public:
   Services(std::shared_ptr<ashk::ModelInterface> core);
-  grpc::Status Arp(::grpc::ClientContext* context, const ::ArpRequestType& request, ::ArpResponseType* response);
+  grpc::Status Arp(::grpc::ServerContext* context,
+                   const ::ArpRequestType* request,
+                   ::ArpResponseType* response) override;
+  grpc::Status GetInterfaces(::grpc::ServerContext* context,
+                             const ::GetInterfacesRequestType* request,
+                             ::GetInterfacesResponseType* response) override;
+
   grpc::Status SendArpReq(::grpc::ServerContext* context,
                           const ::SendArpReqRequestType* request,
                           ::SendArpReqResponseType* response) override;

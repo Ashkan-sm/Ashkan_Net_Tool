@@ -16,6 +16,7 @@
 #include "sub-window.hpp"
 
 #include "core/interface.hpp"
+#include "grpc-interface/client-interface.hpp"
 
 enum class SelectedWindow{
     defualt,
@@ -24,11 +25,11 @@ enum class SelectedWindow{
 
 class MainWindow{
 public:
-    MainWindow(ashk::ModelInterface *core);
+    MainWindow(ClientInterface *core);
     void Draw();
 
 private:
-    ashk::ModelInterface *core_;
+    ClientInterface *core_;
     std::shared_ptr<ISubWindow> default_window_;
     std::shared_ptr<ISubWindow> arp_spoof_window_;
     std::shared_ptr<ISubWindow> arp_poison_detection_window_;

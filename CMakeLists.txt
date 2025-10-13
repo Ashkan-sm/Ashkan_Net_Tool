@@ -18,18 +18,41 @@ endif ()
 
 add_subdirectory(src)
 
-add_executable(AshkanTool src/main.cpp
-        src/server.cpp)
+add_executable(AshkanTool src/main.cpp)
+add_executable(AshkanTool-Server src/server.cpp)
+add_executable(AshkanTool-Client src/client.cpp)
 
 target_include_directories(AshkanTool
         PUBLIC
         ${CMAKE_SOURCE_DIR}/src
 )
-
+target_include_directories(AshkanTool-Server
+        PUBLIC
+        ${CMAKE_SOURCE_DIR}/src
+)
+target_include_directories(AshkanTool-Client
+        PUBLIC
+        ${CMAKE_SOURCE_DIR}/src
+)
 target_link_libraries(AshkanTool
         PUBLIC
         AshkanTool-ui
         AshkanTool-Core
+        Pcap++ Packet++ Common++
+        utils
+        grpc_interface
+
+)
+target_link_libraries(AshkanTool-Server
+        PUBLIC
+        AshkanTool-Core
+        Pcap++ Packet++ Common++
+        utils
+        grpc_interface
+)
+target_link_libraries(AshkanTool-Client
+        PUBLIC
+        AshkanTool-ui
         Pcap++ Packet++ Common++
         utils
         grpc_interface

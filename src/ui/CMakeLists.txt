@@ -22,13 +22,14 @@ target_include_directories(AshkanTool-ui
 
 )
 
+
 target_link_libraries(AshkanTool-ui
         imgui
         ${GLFW_LIBRARIES}
         dl
         pthread
         GL
-        AshkanTool-Core
+        grpc_interface
 )
 
 add_executable(UiHelp ../libs/imgui/examples/example_glfw_opengl3/main.cpp)
