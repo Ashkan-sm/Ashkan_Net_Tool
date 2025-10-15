@@ -6,9 +6,8 @@
 
 ashk::tasks::DtpDomainExtraction::DtpDomainExtraction(pcpp::PcapLiveDevice *dev,
                                                       pcpp::IPv4Address iface_ip,
-                                                      std::string &buffer,
-                                                      int last_task_id)
-    : dev_(dev), iface_ip(iface_ip), buffer(buffer), Task(last_task_id) {
+                                                      std::string &buffer)
+    : dev_(dev), iface_ip(iface_ip), buffer(buffer){
 
 }
 

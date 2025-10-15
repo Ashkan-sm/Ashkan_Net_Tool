@@ -49,6 +49,7 @@ class ModelInterface {
   void AddLoggerMethod(const std::function<void(const std::string &)> &method);
   std::vector<int> GetRunningTasks();
   void EndTask(int id);
+  void WaitTasksChange();
 
   std::string GetTaskData(const std::string &task_id, tasks_data_id data_id);
 

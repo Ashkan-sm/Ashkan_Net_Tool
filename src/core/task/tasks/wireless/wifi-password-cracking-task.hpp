@@ -14,8 +14,7 @@ namespace ashk::tasks {
 class WifiPasswordCrackingTask : public Task {
  public:
   explicit WifiPasswordCrackingTask(pcpp::PcapLiveDevice *dev,
-                                    std::string iface_name_or_ip, std::shared_ptr<HandShakeData> handshake_data,
-                                    int last_task_id);
+                                    std::string iface_name_or_ip, std::shared_ptr<HandShakeData> handshake_data);
   std::string GetData(tasks_data_id data_id) override;
  private:
   void Exec_() override;

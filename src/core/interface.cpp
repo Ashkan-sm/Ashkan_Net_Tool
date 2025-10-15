@@ -136,16 +136,16 @@ void ashk::ModelInterface::StartDtpDomainExtraction(const std::string &iface_nam
 }
 
 std::string ashk::ModelInterface::GetTaskData(const std::string &task_id, tasks_data_id data_id) {
-  int task_id_int = 0;
-  try {
-    task_id_int = std::stoi(task_id);
-  } catch (const std::exception &) {
-    logger_.Log("invalid inputs\n");
-    return "";
-  }
-  if (!core_.Tasks().count(task_id_int))
-    return "";
-  return core_.Tasks()[task_id_int]->GetData(data_id);
+//  int task_id_int = 0;
+//  try {
+//    task_id_int = std::stoi(task_id);
+//  } catch (const std::exception &) {
+//    logger_.Log("invalid inputs\n");
+//    return "";
+//  }
+//  if (!core_.Tasks().count(task_id_int))
+//    return "";
+//  return core_.Tasks()[task_id_int]->GetData(data_id);
 }
 
 void ashk::ModelInterface::StartDetectingWifiAps(const std::string &iface_name, std::vector<WifiAp> &ap_list) {
@@ -178,5 +178,6 @@ void ashk::ModelInterface::StartWpa2HandshakeCapturing(const std::string &iface_
                                                        std::shared_ptr<HandShakeData> handshake_data) {
   core_.StartWpa2HandshakeCapturing(iface_name, std::move(handshake_data));
 }
-
-
+void ashk::ModelInterface::WaitTasksChange() {
+  core_.WaitTaskChange();
+}

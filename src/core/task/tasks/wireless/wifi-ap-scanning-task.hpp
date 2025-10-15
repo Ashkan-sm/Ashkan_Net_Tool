@@ -15,8 +15,7 @@ class WifiApScanningTask : public Task {
  public:
   explicit WifiApScanningTask(pcpp::PcapLiveDevice *dev,
                               std::string iface_name_or_ip,
-                              std::vector<WifiAp> &ap_list,
-                              int last_task_id);
+                              std::vector<WifiAp> &ap_list);
   std::string GetData(tasks_data_id data_id) override;
  private:
   void Exec_() override;

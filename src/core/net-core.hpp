@@ -34,6 +34,8 @@
 #include "core/task/tasks/wireless/deauth-packet-sending.hpp"
 #include "core/task/tasks/wireless/wpa-2-hand-shake-capture-task.hpp"
 #include "core/task/tasks/wireless/wifi-password-cracking-task.hpp"
+#include "core/task/task-watcher.hpp"
+
 
 #include "core/data-holders/wifi.hpp"
 #include "core/packet-receiver/packet-receiver.hpp"
@@ -74,16 +76,16 @@ class NetCore {
 
   void AddLoggerMethod(const std::function<void(const std::string &)> &method);
   void EndTask(int id);
-
+  void WaitTaskChange();
   std::vector<int> GetRunningTasks();
-  std::map<int, std::shared_ptr<Task>> &Tasks();
+
  private:
 
   pcpp::PcapLiveDevice *dev_ = nullptr;
   utils::Logger &logger_ = utils::Logger::getInstance();
   CaptureWrapper &capture_wrapper_ = CaptureWrapper::getInstance();
-  std::map<int, std::shared_ptr<Task>> tasks_;
-  int last_added_task_id_ = 0;
+
+  TaskWatcher task_wacher_;
 };
 }
 

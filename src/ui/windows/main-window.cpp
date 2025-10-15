@@ -20,6 +20,8 @@ MainWindow::MainWindow(ClientInterface *core) :core_(core){
     }
     memcpy(log_buffer_ + strlen(log_buffer_), a.c_str(), a.length());
   });
+
+  core_->GetRunningTasks(running_tasks);
 }
 void MainWindow::Draw(){
   DrawMainToolbar();
@@ -81,7 +83,8 @@ void MainWindow::DrawMainToolbar() {
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_None;
     ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
     ImGui::BeginChild("Threads", ImVec2(0, threads_child_height), ImGuiChildFlags_Borders, window_flags);
-    for (auto i : core_->GetRunningTasks()) {
+
+    for (auto i : running_tasks) {
         if (ImGui::Button(("kill thread " + std::to_string(i)).c_str())) {
           core_->EndTask(i);
         }

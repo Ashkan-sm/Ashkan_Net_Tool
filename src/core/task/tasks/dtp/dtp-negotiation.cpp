@@ -5,11 +5,10 @@
 #include "dtp-negotiation.hpp"
 
 ashk::tasks::DTPNegotiation::DTPNegotiation(pcpp::PcapLiveDevice *dev, pcpp::IPv4Address iface_ip,
-                                            std::string domain_name, int last_task_id) : dev_(dev),
+                                            std::string domain_name) : dev_(dev),
                                                                                          iface_ip_(iface_ip),
                                                                                          domain_name_(std::move(
-                                                                                             domain_name)),
-                                                                                         Task(last_task_id) {
+                                                                                             domain_name)) {
 
 }
 

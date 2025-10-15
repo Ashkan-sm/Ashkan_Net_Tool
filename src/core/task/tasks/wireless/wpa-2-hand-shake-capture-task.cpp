@@ -7,9 +7,8 @@
 #include <utility>
 
 ashk::tasks::WPA2HandShakeCaptureTask::WPA2HandShakeCaptureTask(pcpp::PcapLiveDevice *dev, std::string iface_name_or_ip,
-                                                                std::shared_ptr<HandShakeData> data, int last_task_id)
-    : Task(last_task_id),
-      dev_(dev),
+                                                                std::shared_ptr<HandShakeData> data)
+    : dev_(dev),
       iface_name_or_ip_(std::move(iface_name_or_ip)),
       data_(data) {
 

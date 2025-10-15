@@ -12,7 +12,7 @@
 namespace ashk::tasks {
 class ArpPoisonDetectionTask : public Task {
  public:
-  explicit ArpPoisonDetectionTask(pcpp::IPv4Address iface_ip, int last_task_id);
+  explicit ArpPoisonDetectionTask(pcpp::IPv4Address iface_ip);
   std::string GetData(tasks_data_id data_id) override;
  private:
   void Exec_() override;

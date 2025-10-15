@@ -44,5 +44,6 @@ private:
 
     char log_buffer_[1024]="";
 
+    std::vector<int> running_tasks;
 };
 #endif //ASHKANTOOL_MAIN_WINDOW_HPP

@@ -34,7 +34,7 @@ void ashk::tasks::MITMPacketForwarding::Exec_() {
 }
 ashk::tasks::MITMPacketForwarding::MITMPacketForwarding(pcpp::IPv4Address iface_ip, pcpp::IPv4Address victim_ip,
                                                         pcpp::IPv4Address gateway_ip, pcpp::MacAddress victim_mac,
-                                                        pcpp::MacAddress gateway_mac, int last_task_id) : iface_ip_(
+                                                        pcpp::MacAddress gateway_mac) : iface_ip_(
     iface_ip),
                                                                                                           victim_mac_(
                                                                                                               victim_mac),
@@ -43,9 +43,7 @@ ashk::tasks::MITMPacketForwarding::MITMPacketForwarding(pcpp::IPv4Address iface_
                                                                                                           victim_ip_(
                                                                                                               victim_ip),
                                                                                                           gateway_ip_(
-                                                                                                              gateway_ip),
-                                                                                                          Task(
-                                                                                                              last_task_id) {
+                                                                                                              gateway_ip) {
 
 }
 std::string ashk::tasks::MITMPacketForwarding::GetData(tasks_data_id data_id) {

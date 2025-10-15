@@ -11,10 +11,8 @@ ashk::tasks::WPA2CrackingThread::WPA2CrackingThread(long long int start_idx,
                                                     long long int epol_ofset,
                                                     unsigned char *seed,
                                                     std::shared_ptr<HandShakeData> handshake_data,
-                                                    Task *parent_task,
-                                                    int last_task_id)
-    : Task(last_task_id),
-      start_idx_(start_idx),
+                                                    Task *parent_task)
+    : start_idx_(start_idx),
       end_idx_(end_idx),
       eapol_offset_(epol_ofset),
       seed_(seed),

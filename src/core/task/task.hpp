@@ -21,9 +21,10 @@ class Task {
   void End();
   bool IsRunning();
   virtual std::string GetData(tasks_data_id data_id) = 0;
+  void SetTaskId(int id);
  protected:
   virtual void Exec_() = 0;
-  explicit Task(int last_task_id) : last_task_id_(last_task_id) {}
+  explicit Task() = default;
   utils::Logger &logger_ = utils::Logger::getInstance();
   std::shared_ptr<std::thread> thread_;
   std::atomic_flag m_ = ATOMIC_FLAG_INIT;

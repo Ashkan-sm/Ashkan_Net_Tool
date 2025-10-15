@@ -42,7 +42,7 @@ class ClientInterface {
                                    std::shared_ptr<HandShakeData> handshake_data);
 
   void AddLoggerMethod(const std::function<void(const std::string &)> &method);
-  std::vector<int> GetRunningTasks();
+  void GetRunningTasks(std::vector<int>& running_tasks);
   void EndTask(int id);
 
 //  std::string GetTaskData(const std::string &task_id, tasks_data_id data_id);

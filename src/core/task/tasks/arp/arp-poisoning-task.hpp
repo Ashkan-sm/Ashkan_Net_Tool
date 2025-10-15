@@ -19,8 +19,7 @@ class ArpPoisoningTask : public Task {
                             pcpp::IPv4Address vic_src_ip,
                             pcpp::IPv4Address vic_dst_ip,
                             pcpp::IPv4Address forward_to_ip,
-                            pcpp::IPv4Address iface_ip,
-                            int last_task_id);
+                            pcpp::IPv4Address iface_ip);
   std::string GetData(tasks_data_id data_id) override;
  private:
   void Exec_() override;

@@ -16,8 +16,7 @@ namespace ashk::tasks {
     class WPA2HandShakeCaptureTask : public Task {
     public:
         explicit WPA2HandShakeCaptureTask(pcpp::PcapLiveDevice *dev,
-                                          std::string iface_name_or_ip,std::shared_ptr<HandShakeData> data,
-                                     int last_task_id);
+                                          std::string iface_name_or_ip,std::shared_ptr<HandShakeData> data);
         std::string GetData(tasks_data_id data_id) override;
     private:
         void Exec_() override;

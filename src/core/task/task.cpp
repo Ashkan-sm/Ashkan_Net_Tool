@@ -28,6 +28,9 @@ bool Task::IsRunning() {
   m_.clear();
   return false;
 }
+void Task::SetTaskId(int id) {
+  last_task_id_=id;
+}
 
 }
 

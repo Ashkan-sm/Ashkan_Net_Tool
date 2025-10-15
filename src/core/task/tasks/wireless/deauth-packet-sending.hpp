@@ -14,8 +14,7 @@ class DeauthPacketSendingTask : public Task {
   explicit DeauthPacketSendingTask(pcpp::PcapLiveDevice *dev,
                                    std::string iface_name_or_ip,
                                    WifiAp &wifi_ap,
-                                   std::vector<std::shared_ptr<WifiHost>> &host_list,
-                                   int last_task_id);
+                                   std::vector<std::shared_ptr<WifiHost>> &host_list);
   std::string GetData(tasks_data_id data_id) override;
  private:
   void Exec_() override;

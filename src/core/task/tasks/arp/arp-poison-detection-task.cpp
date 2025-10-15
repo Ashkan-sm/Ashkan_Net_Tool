@@ -28,8 +28,8 @@ void ashk::tasks::ArpPoisonDetectionTask::Exec_() {
   logger_.Log("ArpPoisonDetection task finished.\n");
 }
 
-ashk::tasks::ArpPoisonDetectionTask::ArpPoisonDetectionTask(pcpp::IPv4Address iface_ip, int last_task_id) : iface_ip_(
-    iface_ip), Task(last_task_id) {
+ashk::tasks::ArpPoisonDetectionTask::ArpPoisonDetectionTask(pcpp::IPv4Address iface_ip) : iface_ip_(
+    iface_ip) {
 
 }
 

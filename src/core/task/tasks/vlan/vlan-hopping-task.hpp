@@ -17,8 +17,7 @@ class VlanHoppingTask : public Task {
   explicit VlanHoppingTask(pcpp::PcapLiveDevice *dev,
                            pcpp::IPv4Address iface_ip,
                            int outer_id,
-                           int inner_id,
-                           int last_task_id);
+                           int inner_id);
   std::string GetData(tasks_data_id data_id) override;
  private:
   void Exec_() override;

@@ -32,10 +32,8 @@ return dev_->getIPv4Address();
 void ashk::NetCore::StartArpPoisoning(pcpp::IPv4Address iface_ip, pcpp::IPv4Address vic_src_ip,
                                       pcpp::IPv4Address vic_dst_ip,
                                       pcpp::IPv4Address forward_to_ip) {
+  task_wacher_.AddAndStartTask(std::make_unique<tasks::ArpPoisoningTask>(dev_, vic_src_ip, vic_dst_ip, forward_to_ip, iface_ip));
 
-  tasks_[last_added_task_id_] = std::make_unique<tasks::ArpPoisoningTask>(dev_, vic_src_ip, vic_dst_ip, forward_to_ip, iface_ip, last_added_task_id_);
-  tasks_[last_added_task_id_]->Start();
-last_added_task_id_++;
 }
 
 void ashk::NetCore::AddLoggerMethod(const std::function<void(const std::string &)> &method) {
@@ -44,25 +42,18 @@ void ashk::NetCore::AddLoggerMethod(const std::function<void(const std::string &
 
 
 void ashk::NetCore::EndTask(int id) {
-  tasks_[id]->End();
+  task_wacher_.EndTask(id);
   utils::Logger::getInstance().Log("Sent end signal to task\n");
 
 }
 
 std::vector<int> ashk::NetCore::GetRunningTasks() {
-std::vector<int> out;
-for (const auto &i: tasks_) {
-    if (i.second->IsRunning()) {
-        out.push_back(i.first);
-    }
-}
-return out;
+  return task_wacher_.GetRunningTaskIds();
 }
 
 void ashk::NetCore::StartArpPoisonDetection(pcpp::IPv4Address iface_ip) {
-  tasks_[last_added_task_id_]=std::make_unique<tasks::ArpPoisonDetectionTask>(iface_ip, last_added_task_id_);
-  tasks_[last_added_task_id_]->Start();
-last_added_task_id_++;
+  task_wacher_.AddAndStartTask(std::make_unique<tasks::ArpPoisonDetectionTask>(iface_ip));
+
 
 }
 
@@ -108,33 +99,29 @@ return NetUtils::Arp(ip, dev_);
 void ashk::NetCore::StartMitmForwarding(pcpp::IPv4Address iface_ip
                                      , pcpp::IPv4Address victim_ip
                                      , pcpp::IPv4Address gateway_ip, pcpp::MacAddress victim_mac, pcpp::MacAddress gateway_mac) {
-  tasks_[last_added_task_id_]=std::make_unique<tasks::MITMPacketForwarding>(iface_ip, victim_ip, gateway_ip, victim_mac, gateway_mac, last_added_task_id_);
-  tasks_[last_added_task_id_]->Start();
-    last_added_task_id_++;
+  task_wacher_.AddAndStartTask(std::make_unique<tasks::MITMPacketForwarding>(iface_ip, victim_ip, gateway_ip, victim_mac, gateway_mac));
+
 }
 
 void ashk::NetCore::StartVlanHopping(pcpp::IPv4Address iface_ip, int outer_id, int inner_id) {
-  tasks_[last_added_task_id_]=std::make_unique<tasks::VlanHoppingTask>(dev_, iface_ip, outer_id, inner_id, last_added_task_id_);
-  tasks_[last_added_task_id_]->Start();
-    last_added_task_id_++;
+  task_wacher_.AddAndStartTask(std::make_unique<tasks::VlanHoppingTask>(dev_, iface_ip, outer_id, inner_id));
+
 }
 
 void ashk::NetCore::StartDtpNegotiation(pcpp::IPv4Address iface_ip, const std::string &domain_name) {
-  tasks_[last_added_task_id_]=std::make_unique<tasks::DTPNegotiation>(dev_, iface_ip, domain_name, last_added_task_id_);
-  tasks_[last_added_task_id_]->Start();
-    last_added_task_id_++;
+  task_wacher_.AddAndStartTask(std::make_unique<tasks::DTPNegotiation>(dev_, iface_ip, domain_name));
+
+
 }
 
 void ashk::NetCore::StartDtpDomainExtraction(pcpp::IPv4Address iface_ip, std::string buffer) {
-  tasks_[last_added_task_id_]=std::make_unique<tasks::DtpDomainExtraction>(dev_, iface_ip, buffer, last_added_task_id_);
-  tasks_[last_added_task_id_]->Start();
-    last_added_task_id_++;
+  task_wacher_.AddAndStartTask(std::make_unique<tasks::DtpDomainExtraction>(dev_, iface_ip, buffer));
+
 }
 
 void ashk::NetCore::StartDetectingWifiAps(std::string iface_name_or_ip, std::vector<WifiAp> &ap_list) {
-  tasks_[last_added_task_id_]=std::make_unique<tasks::WifiApScanningTask>(dev_, iface_name_or_ip, ap_list, last_added_task_id_);
-  tasks_[last_added_task_id_]->Start();
-    last_added_task_id_++;
+  task_wacher_.AddAndStartTask(std::make_unique<tasks::WifiApScanningTask>(dev_, iface_name_or_ip, ap_list));
+
 }
 
 std::string ashk::NetCore::InterfaceName() {
@@ -144,33 +131,26 @@ std::string ashk::NetCore::InterfaceName() {
 
 void ashk::NetCore::StartDetectingWifiHosts(const std::string &iface_ip_name_str,
                                             std::vector<std::shared_ptr<WifiHost>> &host_list) {
-  tasks_[last_added_task_id_]=std::make_unique<tasks::WifiHostScanningTask>(dev_, iface_ip_name_str, host_list, last_added_task_id_);
-  tasks_[last_added_task_id_]->Start();
-    last_added_task_id_++;
+  task_wacher_.AddAndStartTask(std::make_unique<tasks::WifiHostScanningTask>(dev_, iface_ip_name_str, host_list));
 
 }
 
 void ashk::NetCore::StartSendingDeauthPackets(const std::string &iface_ip_name_str,
                                               WifiAp* wifi_ap,
                                               std::vector<std::shared_ptr<WifiHost>> &host_list) {
-  tasks_[last_added_task_id_]=std::make_unique<tasks::DeauthPacketSendingTask>(dev_, iface_ip_name_str, *wifi_ap, host_list, last_added_task_id_);
-  tasks_[last_added_task_id_]->Start();
-    last_added_task_id_++;
+  task_wacher_.AddAndStartTask(std::make_unique<tasks::DeauthPacketSendingTask>(dev_, iface_ip_name_str, *wifi_ap, host_list));
+
 }
 
 void ashk::NetCore::StartPasswordCracking(const std::string &iface_ip_name_str, std::shared_ptr<HandShakeData> handshake_data) {
-  tasks_[last_added_task_id_]=std::make_unique<tasks::WifiPasswordCrackingTask>(dev_, iface_ip_name_str, handshake_data, last_added_task_id_);
-  tasks_[last_added_task_id_]->Start();
-    last_added_task_id_++;
+ task_wacher_.AddAndStartTask(std::make_unique<tasks::WifiPasswordCrackingTask>(dev_, iface_ip_name_str, handshake_data));
 }
 
 void ashk::NetCore::StartWpa2HandshakeCapturing(const std::string &iface_ip_name_str, std::shared_ptr<HandShakeData> handshake_data) {
-  tasks_[last_added_task_id_]=std::make_unique<tasks::WPA2HandShakeCaptureTask>(dev_, iface_ip_name_str, handshake_data, last_added_task_id_);
-  tasks_[last_added_task_id_]->Start();
-    last_added_task_id_++;
-}
-std::map<int, std::shared_ptr<ashk::Task>> &ashk::NetCore::Tasks() {
-  return tasks_;
+  task_wacher_.AddAndStartTask(std::make_unique<tasks::WPA2HandShakeCaptureTask>(dev_, iface_ip_name_str, handshake_data));
+
 }
 
-
+void ashk::NetCore::WaitTaskChange() {
+  task_wacher_.WaitChange();
+}

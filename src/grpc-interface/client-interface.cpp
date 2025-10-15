@@ -205,26 +205,32 @@ void ClientInterface::AddLoggerMethod(
     const std::function<void(const std::string&)>& method) {
 
 }
-std::vector<int> ClientInterface::GetRunningTasks() {
-//  GetRunningTasksRequestType request;
-//  GetRunningTasksResponseType response;
-//  grpc::ClientContext context;
-//
-//  std::vector<int> tasks;
-//  tasks.reserve(16);
-//  if (status.ok()) {
-//    for (int i=0;i<response.task_ids_size();i++){
-//      tasks.push_back(response.task_ids(i));
-//    }
-//  }
-//  else{
-//      std::cerr << "RPC failed: " << status.error_message() << std::endl;
-//  }
-//
-//  return tasks;
+void ClientInterface::GetRunningTasks(std::vector<int>& running_tasks) {
+
+
+  std::thread a([&](){
+    GetRunningTasksRequestType request;
+    grpc::ClientContext context;
+    std::unique_ptr<grpc::ClientReader<GetRunningTasksResponseType>> reader(stub_->GetRunningTasks(&context, request));
+    GetRunningTasksResponseType response;
+    while (reader->Read(&response)) {
+      running_tasks.clear();
+      for (auto& i : response.task_ids()) running_tasks.push_back(i);
+    }});
+  a.detach();
 }
 
-void ClientInterface::EndTask(int id) {}
+void ClientInterface::EndTask(int id) {
+  EndTaskRequestType request;
+  EndTaskResponseType response;
+  grpc::ClientContext context;
+  request.set_id(id);
+  grpc::Status status = stub_->EndTask(&context, request, &response);
+  if (status.ok()) {
+    return;
+  }
+  std::cerr << "RPC failed: " << status.error_message() << std::endl;
+}
 std::vector<std::string> ClientInterface::GetInterfaces() {
   GetInterfacesRequestType request;
   GetInterfacesResponseType response;

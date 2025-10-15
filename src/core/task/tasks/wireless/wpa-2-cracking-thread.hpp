@@ -22,8 +22,7 @@ class WPA2CrackingThread : public Task {
                               long long int epol_ofset,
                               unsigned char *seed,
                               std::shared_ptr<HandShakeData> handshake_data,
-                              Task *parent_task,
-                              int last_task_id);
+                              Task *parent_task);
   std::string GetData(tasks_data_id data_id) override;
   int t = 0;
  private:

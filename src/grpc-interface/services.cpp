@@ -122,12 +122,15 @@ grpc::Status Services::EndTask(::grpc::ServerContext* context,
 grpc::Status Services::GetRunningTasks(
     ::grpc::ServerContext* context, const ::GetRunningTasksRequestType* request,
     ::grpc::ServerWriter<::GetRunningTasksResponseType>* writer) {
-  GetRunningTasksResponseType tasks;
-  for (auto i:core_->GetRunningTasks()){
-    tasks.add_task_ids(i);
-  }
-  writer->Write(tasks);
+
+
   while(!context->IsCancelled()){
+    GetRunningTasksResponseType tasks;
+    for (auto i:core_->GetRunningTasks()){
+      tasks.add_task_ids(i);
+    }
+    writer->Write(tasks);
+    core_->WaitTasksChange();
 
   }
 

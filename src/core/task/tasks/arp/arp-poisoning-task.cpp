@@ -89,9 +89,8 @@ ashk::tasks::ArpPoisoningTask::ArpPoisoningTask(pcpp::PcapLiveDevice *dev,
                                                 pcpp::IPv4Address vic_src_ip,
                                                 pcpp::IPv4Address vic_dst_ip,
                                                 pcpp::IPv4Address forward_to_ip,
-                                                pcpp::IPv4Address iface_ip,
-                                                int last_task_id) :
+                                                pcpp::IPv4Address iface_ip) :
     dev_(dev), vic_dst_ip_(vic_dst_ip), vic_src_ip_(vic_src_ip),
-    iface_ip_(iface_ip), forward_to_ip_(forward_to_ip), Task(last_task_id) {
+    iface_ip_(iface_ip), forward_to_ip_(forward_to_ip) {
 
 }

@@ -7,9 +7,8 @@
 #include <unistd.h>
 ashk::tasks::WifiPasswordCrackingTask::WifiPasswordCrackingTask(pcpp::PcapLiveDevice *dev,
                                                                 std::string iface_name_or_ip,
-                                                                std::shared_ptr<HandShakeData> handshake_data,
-                                                                int last_task_id)
-    : Task(last_task_id), iface_name_or_ip_(std::move(iface_name_or_ip)), handshake_data_(std::move(handshake_data)) {
+                                                                std::shared_ptr<HandShakeData> handshake_data)
+    :iface_name_or_ip_(std::move(iface_name_or_ip)), handshake_data_(std::move(handshake_data)) {
 
 }
 
@@ -79,8 +78,7 @@ void ashk::tasks::WifiPasswordCrackingTask::Exec_() {
                                              epol_ofset,
                                              seed,
                                              handshake_data_,
-                                             this,
-                                             i));
+                                             this));
   }
   for (auto i : threads) {
     i->Start();

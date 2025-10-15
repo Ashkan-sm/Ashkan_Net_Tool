@@ -6,12 +6,11 @@
 
 ashk::tasks::DeauthPacketSendingTask::DeauthPacketSendingTask(pcpp::PcapLiveDevice *dev, std::string iface_name_or_ip,
                                                               WifiAp &wifi_ap,
-                                                              std::vector<std::shared_ptr<WifiHost>> &host_list,
-                                                              int last_task_id) :
-    dev_(dev),
-    wifi_ap_(&wifi_ap),
-    iface_name_or_ip_(iface_name_or_ip),
-    Task(last_task_id), host_list_(&host_list) {
+                                                              std::vector<std::shared_ptr<WifiHost>> &host_list) :
+      dev_(dev),
+      wifi_ap_(&wifi_ap),
+      iface_name_or_ip_(iface_name_or_ip),
+      host_list_(&host_list) {
 
 }
 

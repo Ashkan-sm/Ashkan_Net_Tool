@@ -10,11 +10,10 @@
 
 ashk::tasks::WifiApScanningTask::WifiApScanningTask(pcpp::PcapLiveDevice *dev,
                                                     std::string iface_name_or_ip,
-                                                    std::vector<WifiAp> &ap_list,
-                                                    int last_task_id) :
-    dev_(dev),
-    iface_name_or_ip_(std::move(iface_name_or_ip)),
-    Task(last_task_id), ap_list_(&ap_list) {
+                                                    std::vector<WifiAp> &ap_list) :
+      dev_(dev),
+      iface_name_or_ip_(std::move(iface_name_or_ip)),
+      ap_list_(&ap_list) {
 
 }
 

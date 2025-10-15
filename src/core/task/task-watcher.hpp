@@ -8,12 +8,16 @@
 #include "task.hpp"
 #include <map>
 #include <condition_variable>
+#include "utils/logger.hpp"
 
 class TaskWatcher {
  public:
-  void AddTask();
-  void RemoveTask(int id);
-  ashk::Task& GetTask();
+  void AddAndStartTask(std::shared_ptr<ashk::Task> task_ptr);
+  void EndTask(int id);
+  void WaitChange();
+  std::vector<int> GetRunningTaskIds();
+//  ashk::Task& GetTask();
+
  private:
   std::map<int, std::shared_ptr<ashk::Task>> tasks_;
   std::mutex mutex_;

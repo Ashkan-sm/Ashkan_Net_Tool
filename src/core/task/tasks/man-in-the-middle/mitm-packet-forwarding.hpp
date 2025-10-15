@@ -19,8 +19,7 @@ class MITMPacketForwarding : public Task {
                                 pcpp::IPv4Address victim_ip,
                                 pcpp::IPv4Address gateway_ip,
                                 pcpp::MacAddress victim_mac,
-                                pcpp::MacAddress gateway_mac,
-                                int last_task_id);
+                                pcpp::MacAddress gateway_mac);
   std::string GetData(tasks_data_id data_id) override;
  private:
   void Exec_() override;
