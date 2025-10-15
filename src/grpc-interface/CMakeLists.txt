@@ -5,6 +5,10 @@ set(PROTO_FILES
 set(PROTO_SRCS "")
 set(PROTO_HDRS "")
 
+find_package(Protobuf REQUIRED)
+include_directories(${Protobuf_INCLUDE_DIRS})
+
+
 foreach(proto ${PROTO_FILES})
     get_filename_component(proto_name ${proto} NAME_WE)
 
@@ -49,6 +53,9 @@ target_include_directories(grpc_interface PUBLIC
         ${CMAKE_CURRENT_BINARY_DIR}/proto
         ${CMAKE_SOURCE_DIR}/src)
 target_link_libraries(grpc_interface PUBLIC
+        ${Protobuf_LIBRARIES}   # <-- This is critical
         gRPC::grpc++
         protobuf::libprotobuf
-        AshkanTool-Core)
+        AshkanTool-Core
+        grpc++
+        grpc)

@@ -12,6 +12,9 @@ ServerInterface::ServerInterface(std::shared_ptr<ashk::ModelInterface> core,
 
 }
 int ServerInterface::Exec() {
+  std::cout << "builder_ is " << (builder_ ? "valid" : "null") << std::endl;
+  std::cout << "server_address_: " << server_address_ << std::endl;
+
   builder_->AddListeningPort(server_address_, grpc::InsecureServerCredentials());
   builder_->RegisterService(service_.get());
 

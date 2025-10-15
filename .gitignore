@@ -567,3 +567,6 @@
 /cmake-build-debug/core/CMakeFiles/AshkanTool-Core.dir/src/Task/tasks/vlan-hopping-task.cpp.o
 /build/
 /cmake-build-debug/
+/src/libs/
+/src/libs/
+/src/libs/grpc/

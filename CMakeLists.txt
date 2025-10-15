@@ -34,20 +34,13 @@ target_include_directories(AshkanTool-Client
         PUBLIC
         ${CMAKE_SOURCE_DIR}/src
 )
-target_link_libraries(AshkanTool
-        PUBLIC
-        AshkanTool-ui
-        AshkanTool-Core
-        Pcap++ Packet++ Common++
-        utils
-        grpc_interface
 
-)
 target_link_libraries(AshkanTool-Server
         PUBLIC
         AshkanTool-Core
         Pcap++ Packet++ Common++
         utils
+        ${Protobuf_LIBRARIES}  # This is crucial
         grpc_interface
 )
 target_link_libraries(AshkanTool-Client
@@ -62,7 +55,7 @@ target_link_libraries(AshkanTool-Client
 set(RESOURCE_SRC_DIR "${CMAKE_SOURCE_DIR}/resource")
 set(RESOURCE_DST_DIR "${CMAKE_BINARY_DIR}/ui-resource")
 add_custom_command(
-        TARGET AshkanTool POST_BUILD
+        TARGET AshkanTool-Client POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${RESOURCE_SRC_DIR}" "${RESOURCE_DST_DIR}"
         COMMENT "Copying subproject resources to build directory"
