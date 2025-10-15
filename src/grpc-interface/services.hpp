@@ -25,9 +25,57 @@ class Services final : public UiServie::Service {
   grpc::Status StartArpPoison(::grpc::ServerContext* context,
                               const ::StartArpPoisonRequestType* request,
                               ::StartArpPoisonResponseType* response) override;
+  grpc::Status StartVlanHopping(
+      ::grpc::ServerContext* context,
+      const ::StartVlanHoppingRequestType* request,
+      ::StartVlanHoppingResponseType* response) override;
+  grpc::Status StartDtpDomainExtraction(
+      ::grpc::ServerContext* context,
+      const ::StartDtpDomainExtractionRequestType* request,
+      ::StartDtpDomainExtractionResponseType* response) override;
+  grpc::Status StartDtpNegotiation(
+      ::grpc::ServerContext* context,
+      const ::StartDtpNegotiationRequestType* request,
+      ::StartDtpNegotiationResponseType* response) override;
+  grpc::Status StartWpa2HandshakeCapturing(
+      ::grpc::ServerContext* context,
+      const ::StartWpa2HandshakeCapturingRequestType* request,
+      ::StartWpa2HandshakeCapturingResponseType* response) override;
+  grpc::Status EndTask(::grpc::ServerContext* context,
+                       const ::EndTaskRequestType* request,
+                       ::EndTaskResponseType* response) override;
+  grpc::Status StartDetectingWifiHosts(
+      ::grpc::ServerContext* context,
+      const ::StartDetectingWifiHostsRequestType* request,
+      ::StartDetectingWifiHostsResponseType* response) override;
+  grpc::Status GetRunningTasks(
+      ::grpc::ServerContext* context,
+      const ::GetRunningTasksRequestType* request,
+      ::grpc::ServerWriter<::GetRunningTasksResponseType>* writer) override;
+  grpc::Status StartDetectingWifiAps(
+      ::grpc::ServerContext* context,
+      const ::StartDetectingWifiApsRequestType* request,
+      ::StartDetectingWifiApsResponseType* response) override;
+  grpc::Status StartPasswordCracking(
+      ::grpc::ServerContext* context,
+      const ::StartPasswordCrackingRequestType* request,
+      ::StartPasswordCrackingResponseType* response) override;
+  grpc::Status StartSendingDeauthPackets(
+      ::grpc::ServerContext* context,
+      const ::StartSendingDeauthPacketsRequestType* request,
+      ::StartSendingDeauthPacketsResponseType* response) override;
+  grpc::Status StartMitmForwarding(
+      ::grpc::ServerContext* context,
+      const ::StartMitmForwardingRequestType* request,
+      ::StartMitmForwardingResponseType* response) override;
+  grpc::Status StartArpPoisonDetection(
+      ::grpc::ServerContext* context,
+      const ::StartArpPoisonDetectionRequestType* request,
+      ::StartArpPoisonDetectionResponseType* response) override;
 
  private:
   std::shared_ptr<ashk::ModelInterface> core_;
+
 
 };
 

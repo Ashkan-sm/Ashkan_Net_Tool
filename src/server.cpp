@@ -10,6 +10,7 @@
 int main(int, char **) {
 
   auto system=std::make_shared<ashk::ModelInterface>();
+  system->AddLoggerMethod([](std::string a){std::cout << a << std::endl;});
   ServerInterface server_interface(system,"0.0.0.0:5000");
   return server_interface.Exec();
 

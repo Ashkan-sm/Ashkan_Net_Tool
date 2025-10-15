@@ -48,6 +48,8 @@ add_library(AshkanTool-Core
         net-core.hpp
         interface.cpp
         interface.hpp
+        task/task-watcher.cpp
+        task/task-watcher.hpp
 )
 
 target_include_directories(AshkanTool-Core

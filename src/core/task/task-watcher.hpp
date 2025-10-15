@@ -1,0 +1,24 @@
+//
+// Created by dev on 10/15/25.
+//
+
+#ifndef ASHKANTOOL_TASK_WATCHER_HPP
+#define ASHKANTOOL_TASK_WATCHER_HPP
+
+#include "task.hpp"
+#include <map>
+#include <condition_variable>
+
+class TaskWatcher {
+ public:
+  void AddTask();
+  void RemoveTask(int id);
+  ashk::Task& GetTask();
+ private:
+  std::map<int, std::shared_ptr<ashk::Task>> tasks_;
+  std::mutex mutex_;
+  std::condition_variable cnv_;
+  int last_task_id_=0;
+};
+
+#endif  //ASHKANTOOL_TASK_WATCHER_HPP

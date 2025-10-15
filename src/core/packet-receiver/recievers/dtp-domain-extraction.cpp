@@ -38,7 +38,7 @@ void ashk::PacketReceiver::onPacketArrivesDTPDomainExtraction(pcpp::RawPacket *r
   for (int i = 0; i < domain_length; i++) {
     domain += (char) *(dtp_layer + 5 + i);
   }
-  memcpy(data->buffer, domain.c_str(), domain_length);
+  data->buffer=domain;
   utils::Logger::getInstance().Log("extracted domain name: " + domain + "\n");
   data->task->End();
 }

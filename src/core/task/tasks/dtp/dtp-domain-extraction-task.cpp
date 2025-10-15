@@ -6,7 +6,7 @@
 
 ashk::tasks::DtpDomainExtraction::DtpDomainExtraction(pcpp::PcapLiveDevice *dev,
                                                       pcpp::IPv4Address iface_ip,
-                                                      char buffer[32],
+                                                      std::string &buffer,
                                                       int last_task_id)
     : dev_(dev), iface_ip(iface_ip), buffer(buffer), Task(last_task_id) {
 
@@ -24,9 +24,7 @@ void ashk::tasks::DtpDomainExtraction::Exec_() {
     return;
   }
 
-  DTPDomainExtractionCookie cookie;
-  cookie.buffer = buffer;
-  cookie.task = this;
+  DTPDomainExtractionCookie cookie{buffer,this};
   if (!capture_wrapper_.StartCapture(dev_, PacketReceiver::onPacketArrivesDTPDomainExtraction, &cookie,
                                      last_task_id_)) {
     return;

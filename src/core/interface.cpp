@@ -17,17 +17,18 @@ std::string ashk::ModelInterface::Arp(const std::string &ip) {
   return core_.Arp(pcpp::IPv4Address(ip)).toString();
 }
 
-void ashk::ModelInterface::StartArpPoison(const std::string &iface_ip,
+void ashk::ModelInterface::StartArpPoison(const std::string &iface_name,
                                           const std::string &vic_src_ip,
                                           const std::string &vic_dst_ip,
                                           const std::string &forward_to_ip) {
-  pcpp::IPv4Address iface;
+
   pcpp::IPv4Address vic_src;
   pcpp::IPv4Address vic_dst;
   pcpp::IPv4Address forward_to;
+  pcpp::PcapLiveDevice *iface=pcpp::PcapLiveDeviceList::getInstance().getDeviceByName(iface_name);
 
   try {
-    iface = pcpp::IPv4Address(iface_ip);
+
     vic_src = pcpp::IPv4Address(vic_src_ip);
     vic_dst = pcpp::IPv4Address(vic_dst_ip);
     forward_to = pcpp::IPv4Address(forward_to_ip);
@@ -38,7 +39,7 @@ void ashk::ModelInterface::StartArpPoison(const std::string &iface_ip,
     return;
   }
 
-  core_.StartArpPoisoning(iface, vic_src, vic_dst, forward_to);
+  core_.StartArpPoisoning(iface->getIPv4Address(), vic_src, vic_dst, forward_to);
 
 }
 
@@ -54,27 +55,19 @@ void ashk::ModelInterface::EndTask(int id) {
   core_.EndTask(id);
 }
 
-void ashk::ModelInterface::StartArpPoisonDetection(const std::string &iface_ip) {
-  pcpp::IPv4Address iface;
+void ashk::ModelInterface::StartArpPoisonDetection(const std::string &iface_name) {
 
-  try {
-    iface = pcpp::IPv4Address(iface_ip);
+  pcpp::PcapLiveDevice *iface=pcpp::PcapLiveDeviceList::getInstance().getDeviceByName(iface_name);
 
-  }
-  catch (const std::exception &) {
-    logger_.Log("invalid ip inputs\n");
-    return;
-  }
-  core_.StartArpPoisonDetection(iface_ip);
+  core_.StartArpPoisonDetection(iface->getIPv4Address());
 
 }
 
-void ashk::ModelInterface::SendArpReq(const std::string &iface_ip_str, const std::string &ip_str) {
-  pcpp::IPv4Address iface;
+void ashk::ModelInterface::SendArpReq(const std::string &iface_name, const std::string &ip_str) {
+  pcpp::IPv4Address iface_ip;
   pcpp::IPv4Address ip;
-
+  pcpp::PcapLiveDevice *iface=pcpp::PcapLiveDeviceList::getInstance().getDeviceByName(iface_name);
   try {
-    iface = pcpp::IPv4Address(iface_ip_str);
     ip = pcpp::IPv4Address(ip_str);
 
   }
@@ -82,20 +75,20 @@ void ashk::ModelInterface::SendArpReq(const std::string &iface_ip_str, const std
     logger_.Log("invalid ip inputs\n");
     return;
   }
-  core_.SendArpReq(iface, ip);
+  core_.SendArpReq(iface->getIPv4Address(), ip);
 }
-void ashk::ModelInterface::StartMitmForwarding(const std::string &iface_ip_str,
+void ashk::ModelInterface::StartMitmForwarding(const std::string &iface_name,
                                                const std::string &victim_ip_str,
                                                const std::string &gateway_ip_str,
                                                const std::string &victim_mac_str,
                                                const std::string &gateway_mac_str) {
-  pcpp::IPv4Address iface;
+  pcpp::PcapLiveDevice *iface=pcpp::PcapLiveDeviceList::getInstance().getDeviceByName(iface_name);
   pcpp::MacAddress victim_mac;
   pcpp::MacAddress gateway_mac;
   pcpp::IPv4Address victim_ip;
   pcpp::IPv4Address gateway_ip;
   try {
-    iface = pcpp::IPv4Address(iface_ip_str);
+
     victim_mac = pcpp::MacAddress(victim_mac_str);
     gateway_mac = pcpp::MacAddress(gateway_mac_str);
     victim_ip = pcpp::IPv4Address(victim_ip_str);
@@ -105,17 +98,17 @@ void ashk::ModelInterface::StartMitmForwarding(const std::string &iface_ip_str,
     logger_.Log("invalid ip inputs\n");
     return;
   }
-  core_.StartMitmForwarding(iface, victim_ip, gateway_ip, victim_mac, gateway_mac);
+  core_.StartMitmForwarding(iface->getIPv4Address(), victim_ip, gateway_ip, victim_mac, gateway_mac);
 }
 
-void ashk::ModelInterface::StartVlanHopping(const std::string &iface_ip_str,
+void ashk::ModelInterface::StartVlanHopping(const std::string &iface_name,
                                             const std::string &outer_str,
                                             const std::string &inner_str) {
-  pcpp::IPv4Address iface;
+  pcpp::PcapLiveDevice *iface=pcpp::PcapLiveDeviceList::getInstance().getDeviceByName(iface_name);
   int outer_tag = 0;
   int inner_tag = 0;
   try {
-    iface = pcpp::IPv4Address(iface_ip_str);
+
     if (!outer_str.empty()) {
       outer_tag = std::stoi(outer_str);
     }
@@ -128,32 +121,18 @@ void ashk::ModelInterface::StartVlanHopping(const std::string &iface_ip_str,
     logger_.Log("invalid inputs\n");
     return;
   }
-  core_.StartVlanHopping(iface, outer_tag, inner_tag);
+  core_.StartVlanHopping(iface->getIPv4Address(), outer_tag, inner_tag);
 }
 
-void ashk::ModelInterface::StartDtpNegotiation(const std::string &iface_ip_str, const std::string &domain_name) {
-  pcpp::IPv4Address iface;
-  try {
-    iface = pcpp::IPv4Address(iface_ip_str);
-  }
-  catch (const std::exception &) {
-    logger_.Log("invalid inputs\n");
-    return;
-  }
-  core_.StartDtpNegotiation(iface, domain_name);
+void ashk::ModelInterface::StartDtpNegotiation(const std::string &iface_name, const std::string &domain_name) {
+  pcpp::PcapLiveDevice *iface=pcpp::PcapLiveDeviceList::getInstance().getDeviceByName(iface_name);
+  core_.StartDtpNegotiation(iface->getIPv4Address(), domain_name);
 
 }
 
-void ashk::ModelInterface::StartDtpDomainExtraction(const std::string &iface_ip_str, char buffer[32]) {
-  pcpp::IPv4Address iface;
-  try {
-    iface = pcpp::IPv4Address(iface_ip_str);
-  }
-  catch (const std::exception &) {
-    logger_.Log("invalid inputs\n");
-    return;
-  }
-  core_.StartDtpDomainExtraction(iface, buffer);
+void ashk::ModelInterface::StartDtpDomainExtraction(const std::string &iface_name,std::string& buffer) {
+  pcpp::PcapLiveDevice *iface=pcpp::PcapLiveDeviceList::getInstance().getDeviceByName(iface_name);
+  core_.StartDtpDomainExtraction(iface->getIPv4Address(), buffer);
 }
 
 std::string ashk::ModelInterface::GetTaskData(const std::string &task_id, tasks_data_id data_id) {
@@ -169,35 +148,35 @@ std::string ashk::ModelInterface::GetTaskData(const std::string &task_id, tasks_
   return core_.Tasks()[task_id_int]->GetData(data_id);
 }
 
-void ashk::ModelInterface::StartDetectingWifiAps(const std::string &iface_ip_str, std::vector<WifiAp> &ap_list) {
+void ashk::ModelInterface::StartDetectingWifiAps(const std::string &iface_name, std::vector<WifiAp> &ap_list) {
 
-  core_.StartDetectingWifiAps(iface_ip_str, ap_list);
+  core_.StartDetectingWifiAps(iface_name, ap_list);
 
 }
 
-void ashk::ModelInterface::StartDetectingWifiHosts(const std::string &iface_ip_name_str,
+void ashk::ModelInterface::StartDetectingWifiHosts(const std::string &iface_name,
                                                    std::vector<std::shared_ptr<WifiHost>> &host_list) {
-  core_.StartDetectingWifiHosts(iface_ip_name_str, host_list);
+  core_.StartDetectingWifiHosts(iface_name, host_list);
 }
 
 std::string ashk::ModelInterface::GetInterfaceNmae() {
   return core_.InterfaceName();
 }
 
-void ashk::ModelInterface::StartSendingDeauthPackets(const std::string &iface_ip_name_str,
+void ashk::ModelInterface::StartSendingDeauthPackets(const std::string &iface_name,
                                                      WifiAp *wifi_ap,
                                                      std::vector<std::shared_ptr<WifiHost>> &host_list) {
-  core_.StartSendingDeauthPackets(iface_ip_name_str, wifi_ap, host_list);
+  core_.StartSendingDeauthPackets(iface_name, wifi_ap, host_list);
 }
 
-void ashk::ModelInterface::StartPasswordCracking(const std::string &iface_ip_name_str,
+void ashk::ModelInterface::StartPasswordCracking(const std::string &iface_name,
                                                  std::shared_ptr<HandShakeData> handshake_data) {
-  core_.StartPasswordCracking(iface_ip_name_str, std::move(handshake_data));
+  core_.StartPasswordCracking(iface_name, std::move(handshake_data));
 }
 
-void ashk::ModelInterface::StartWpa2HandshakeCapturing(const std::string &iface_ip_name_str,
+void ashk::ModelInterface::StartWpa2HandshakeCapturing(const std::string &iface_name,
                                                        std::shared_ptr<HandShakeData> handshake_data) {
-  core_.StartWpa2HandshakeCapturing(iface_ip_name_str, std::move(handshake_data));
+  core_.StartWpa2HandshakeCapturing(iface_name, std::move(handshake_data));
 }
 
 

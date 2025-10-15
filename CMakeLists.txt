@@ -18,14 +18,10 @@ endif ()
 
 add_subdirectory(src)
 
-add_executable(AshkanTool src/main.cpp)
 add_executable(AshkanTool-Server src/server.cpp)
 add_executable(AshkanTool-Client src/client.cpp)
 
-target_include_directories(AshkanTool
-        PUBLIC
-        ${CMAKE_SOURCE_DIR}/src
-)
+
 target_include_directories(AshkanTool-Server
         PUBLIC
         ${CMAKE_SOURCE_DIR}/src

@@ -67,14 +67,14 @@ last_added_task_id_++;
 }
 
 void ashk::NetCore::SendArpReq(pcpp::IPv4Address iface_ip, pcpp::IPv4Address ip) {
-dev_ = pcpp::PcapLiveDeviceList::getInstance().getDeviceByIp(iface_ip);
-if (dev_ == nullptr) {
-  logger_.Log("couldn't find device\n");
-    return;
-}
-if (!dev_->open()) {
-  logger_.Log("couldn't open device");
-    return;
+  dev_ = pcpp::PcapLiveDeviceList::getInstance().getDeviceByIp(iface_ip);
+  if (dev_ == nullptr) {
+    logger_.Log("couldn't find device\n");
+      return;
+  }
+  if (!dev_->open()) {
+    logger_.Log("couldn't open device");
+      return;
 }
 pcpp::Packet arpRequest(100);
 
@@ -125,7 +125,7 @@ void ashk::NetCore::StartDtpNegotiation(pcpp::IPv4Address iface_ip, const std::s
     last_added_task_id_++;
 }
 
-void ashk::NetCore::StartDtpDomainExtraction(pcpp::IPv4Address iface_ip, char *buffer) {
+void ashk::NetCore::StartDtpDomainExtraction(pcpp::IPv4Address iface_ip, std::string buffer) {
   tasks_[last_added_task_id_]=std::make_unique<tasks::DtpDomainExtraction>(dev_, iface_ip, buffer, last_added_task_id_);
   tasks_[last_added_task_id_]->Start();
     last_added_task_id_++;

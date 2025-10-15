@@ -19,31 +19,31 @@ class ModelInterface {
   ModelInterface() = default;
 
   std::string Arp(const std::string &ip);
-  void SendArpReq(const std::string &iface_ip_str, const std::string &ip_str);
+  void SendArpReq(const std::string &iface_name, const std::string &ip_str);
 
   std::string GetInterfaceIp();
   std::vector<pcpp::PcapLiveDevice *> GetInterfaces();
   std::string GetInterfaceNmae();
 
-  void StartArpPoison(const std::string &iface_ip, const std::string &vic_src_ip, const std::string &vic_dst_ip,
+  void StartArpPoison(const std::string &iface_name, const std::string &vic_src_ip, const std::string &vic_dst_ip,
                       const std::string &forward_to_ip);
-  void StartArpPoisonDetection(const std::string &iface_ip);
-  void StartVlanHopping(const std::string &iface_ip_str, const std::string &outer_str, const std::string &inner_str);
-  void StartDtpNegotiation(const std::string &iface_ip_str, const std::string &domain_name);
-  void StartDtpDomainExtraction(const std::string &iface_ip_str, char buffer[32]);
-  void StartMitmForwarding(const std::string &iface_ip_str,
+  void StartArpPoisonDetection(const std::string &iface_name);
+  void StartVlanHopping(const std::string &iface_name, const std::string &outer_str, const std::string &inner_str);
+  void StartDtpNegotiation(const std::string &iface_name, const std::string &domain_name);
+  void StartDtpDomainExtraction(const std::string &iface_name,std::string &buffer);
+  void StartMitmForwarding(const std::string &iface_name,
                            const std::string &victim_ip_str,
                            const std::string &gateway_ip_str,
                            const std::string &victim_mac_str,
                            const std::string &gateway_mac_str);
-  void StartDetectingWifiAps(const std::string &iface_ip_str, std::vector<WifiAp> &ap_list);
-  void StartDetectingWifiHosts(const std::string &iface_ip_name_str,
+  void StartDetectingWifiAps(const std::string &iface_name, std::vector<WifiAp> &ap_list);
+  void StartDetectingWifiHosts(const std::string &iface_name,
                                std::vector<std::shared_ptr<WifiHost>> &host_list);
-  void StartSendingDeauthPackets(const std::string &iface_ip_name_str,
+  void StartSendingDeauthPackets(const std::string &iface_name,
                                  WifiAp *wifi_ap,
                                  std::vector<std::shared_ptr<WifiHost>> &host_list);
-  void StartPasswordCracking(const std::string &iface_ip_name_str, std::shared_ptr<HandShakeData> handshake_data);
-  void StartWpa2HandshakeCapturing(const std::string &iface_ip_name_str,
+  void StartPasswordCracking(const std::string &iface_name, std::shared_ptr<HandShakeData> handshake_data);
+  void StartWpa2HandshakeCapturing(const std::string &iface_name,
                                    std::shared_ptr<HandShakeData> handshake_data);
 
   void AddLoggerMethod(const std::function<void(const std::string &)> &method);

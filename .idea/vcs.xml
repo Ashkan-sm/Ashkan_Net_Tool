@@ -38,6 +38,5 @@
     <mapping directory="$PROJECT_DIR$/src/libs/grpc/third_party/re2" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/libs/grpc/third_party/xds" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/libs/grpc/third_party/zlib" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/src/libs/protobuf" vcs="Git" />
   </component>
 </project>

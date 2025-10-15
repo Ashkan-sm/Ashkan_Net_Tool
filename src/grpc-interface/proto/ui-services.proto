@@ -15,7 +15,7 @@ service UiServie {
   rpc StartSendingDeauthPackets(StartSendingDeauthPacketsRequestType) returns (StartSendingDeauthPacketsResponseType) {}
   rpc StartPasswordCracking(StartPasswordCrackingRequestType) returns (StartPasswordCrackingResponseType) {}
   rpc StartWpa2HandshakeCapturing(StartWpa2HandshakeCapturingRequestType) returns (StartWpa2HandshakeCapturingResponseType) {}
-  rpc GetRunningTasks(GetRunningTasksRequestType) returns (GetRunningTasksResponseType) {}
+  rpc GetRunningTasks(GetRunningTasksRequestType) returns (stream GetRunningTasksResponseType) {}
   rpc EndTask(EndTaskRequestType) returns (EndTaskResponseType) {}
 
 
@@ -29,13 +29,13 @@ message ArpResponseType {
 }
 
 message SendArpReqRequestType {
-  string iface_ip = 1;
+  string iface_name = 1;
   string ip = 2;
 }
 message SendArpReqResponseType {}
 
 message StartArpPoisonRequestType {
-  string iface_ip = 1;
+  string iface_name = 1;
   string vic_src_ip = 2;
   string vic_dst_ip = 3;
   string forward_to_ip = 4;
@@ -48,32 +48,32 @@ message GetInterfacesResponseType {
 }
 
 message StartArpPoisonDetectionRequestType {
-  string iface_ip = 1;
+  string iface_name = 1;
 }
 message StartArpPoisonDetectionResponseType {}
 
 message StartVlanHoppingRequestType {
-  string iface_ip = 1;
+  string iface_name = 1;
   string outer_str = 2;
   string inner_str = 3;
 }
 message StartVlanHoppingResponseType {}
 
 message StartDtpNegotiationRequestType {
-  string iface_ip = 1;
+  string iface_name = 1;
   string domain_name = 2;
 }
 message StartDtpNegotiationResponseType {}
 
 message StartDtpDomainExtractionRequestType {
-  string iface_ip = 1;
+  string iface_name = 1;
 }
 message StartDtpDomainExtractionResponseType {
   string domain_name = 1;
 }
 
 message StartMitmForwardingRequestType {
-  string iface_ip = 1;
+  string iface_name = 1;
   string victim_ip = 2;
   string gateway_ip = 3;
   string victim_mac= 4;
@@ -82,14 +82,14 @@ message StartMitmForwardingRequestType {
 message StartMitmForwardingResponseType {}
 
 message StartDetectingWifiApsRequestType {
-  string iface_ip = 1;
+  string iface_name = 1;
 }
 message StartDetectingWifiApsResponseType {
   repeated string ap_list=1;
 }
 
 message StartDetectingWifiHostsRequestType {
-  string iface_ip = 1;
+  string iface_name = 1;
 }
 message StartDetectingWifiHostsResponseType {
   repeated string host_list=1;

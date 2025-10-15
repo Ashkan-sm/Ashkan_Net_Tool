@@ -42,7 +42,7 @@ struct MITMForwardingCookie {
   pcpp::MacAddress gateway_mac;
 };
 struct DTPDomainExtractionCookie {
-  char *buffer = nullptr;
+  std::string &buffer;
   Task *task = nullptr;
 };
 struct WPA2HandShakeCapturingCookie {

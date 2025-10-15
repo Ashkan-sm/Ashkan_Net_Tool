@@ -15,7 +15,7 @@ namespace ashk::tasks {
 class DtpDomainExtraction : public Task {
  public:
   explicit DtpDomainExtraction(pcpp::PcapLiveDevice *dev,
-                               pcpp::IPv4Address iface_ip, char buffer[32],
+                               pcpp::IPv4Address iface_ip, std::string &buffer,
                                int last_task_id);
   std::string GetData(tasks_data_id data_id) override;
  private:
@@ -23,7 +23,7 @@ class DtpDomainExtraction : public Task {
   pcpp::PcapLiveDevice *dev_ = nullptr;
   CaptureWrapper &capture_wrapper_ = CaptureWrapper::getInstance();
   pcpp::IPv4Address iface_ip;
-  char *buffer;
+  std::string &buffer;
 
 };
 }
