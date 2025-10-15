@@ -1,2 +1,0 @@
-sudo apt install libprotobuf-dev protobuf-compiler
-sudo apt install libgrpc++-dev libprotobuf-dev protobuf-compiler
