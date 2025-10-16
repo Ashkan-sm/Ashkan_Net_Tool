@@ -7,6 +7,7 @@ void TaskWatcher::AddAndStartTask(std::shared_ptr<ashk::Task> task_ptr) {
   std::lock_guard<std::mutex> lock(mutex_);
   tasks_[last_task_id_]=task_ptr;
   task_ptr->SetTaskId(last_task_id_);
+  task_ptr->SetWatcherNotify(&cnv_);
   task_ptr->Start();
   last_task_id_++;
   cnv_.notify_all();

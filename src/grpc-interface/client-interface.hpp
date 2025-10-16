@@ -44,6 +44,7 @@ class ClientInterface {
   void AddLoggerMethod(const std::function<void(const std::string &)> &method);
   void GetRunningTasks(std::vector<int>& running_tasks);
   void EndTask(int id);
+  void ReadLogsFromServer();
 
 //  std::string GetTaskData(const std::string &task_id, tasks_data_id data_id);
 

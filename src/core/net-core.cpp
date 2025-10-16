@@ -114,7 +114,7 @@ void ashk::NetCore::StartDtpNegotiation(pcpp::IPv4Address iface_ip, const std::s
 
 }
 
-void ashk::NetCore::StartDtpDomainExtraction(pcpp::IPv4Address iface_ip, std::string buffer) {
+void ashk::NetCore::StartDtpDomainExtraction(pcpp::IPv4Address iface_ip, std::string &buffer) {
   task_wacher_.AddAndStartTask(std::make_unique<tasks::DtpDomainExtraction>(dev_, iface_ip, buffer));
 
 }

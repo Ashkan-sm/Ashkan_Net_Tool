@@ -14,7 +14,7 @@ MainWindow::MainWindow(ClientInterface *core) :core_(core){
 
     sub_window_=default_window_;
 
-  core_->AddLoggerMethod([&](const std::string &a) {
+  ashk::utils::Logger::getInstance().AddLogMethod([&](const std::string &a) {
     if (strlen(log_buffer_) + strlen(log_buffer_) >= sizeof(log_buffer_)) {
       memset(log_buffer_, '\0', sizeof(log_buffer_));
     }
@@ -22,6 +22,7 @@ MainWindow::MainWindow(ClientInterface *core) :core_(core){
   });
 
   core_->GetRunningTasks(running_tasks);
+  core_->ReadLogsFromServer();
 }
 void MainWindow::Draw(){
   DrawMainToolbar();

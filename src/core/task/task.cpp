@@ -18,7 +18,7 @@ void Task::Start() {
 
 void Task::End() {
   m_.clear();
-
+  watcher_notify_->notify_all();
 }
 
 bool Task::IsRunning() {
@@ -31,6 +31,10 @@ bool Task::IsRunning() {
 void Task::SetTaskId(int id) {
   last_task_id_=id;
 }
+void Task::SetWatcherNotify(std::condition_variable* watcher_notify) {
+  watcher_notify_ = watcher_notify;
+}
+
 
 }
 

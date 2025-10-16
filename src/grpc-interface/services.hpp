@@ -10,7 +10,10 @@
 
 class Services final : public UiServie::Service {
  public:
-  Services(std::shared_ptr<ashk::ModelInterface> core);
+  explicit Services(std::shared_ptr<ashk::ModelInterface> core);
+  grpc::Status ReadLogs(
+      ::grpc::ServerContext* context, const ::ReadLogsRequestType* request,
+      ::grpc::ServerWriter<::ReadLogsResponseType>* writer) override;
   grpc::Status Arp(::grpc::ServerContext* context,
                    const ::ArpRequestType* request,
                    ::ArpResponseType* response) override;

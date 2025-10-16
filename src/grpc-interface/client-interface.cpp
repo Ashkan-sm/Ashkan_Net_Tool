@@ -113,31 +113,44 @@ void ClientInterface::StartDtpNegotiation(const std::string& iface_name,
 }
 void ClientInterface::StartDtpDomainExtraction(const std::string& iface_name,
                                                char* buffer) {
-  StartDtpDomainExtractionRequestType request;
-  StartDtpDomainExtractionResponseType response;
+  std::thread a([=](){
+    StartDtpDomainExtractionRequestType request;
+    StartDtpDomainExtractionResponseType response;
 
-  request.set_iface_name(iface_name);
+    request.set_iface_name(iface_name);
 
-  grpc::ClientContext context;
-  grpc::Status status = stub_->StartDtpDomainExtraction(&context, request, &response);
-  if (status.ok()) {
-    return;
-  }
-  std::cerr << "RPC failed: " << status.error_message() << std::endl;
+    grpc::ClientContext context;
+    grpc::Status status = stub_->StartDtpDomainExtraction(&context, request, &response);
+    if (status.ok()) {
+
+      memcpy(buffer,response.domain_name().c_str(),(response.domain_name().size() <= 32) ? response.domain_name().size() : 32);
+    }
+    else {
+      std::cerr << "RPC failed: " << status.error_message() << std::endl;
+    }
+  });
+  a.detach();
+
 }
 void ClientInterface::StartDetectingWifiAps(const std::string& iface_name,
                                             std::vector<WifiAp>& ap_list) {
-  StartDetectingWifiApsRequestType request;
-  StartDetectingWifiApsResponseType response;
+  std::thread a([&](){
+    StartDetectingWifiApsRequestType request;
+    StartDetectingWifiApsResponseType response;
 
-  request.set_iface_name(iface_name);
+    request.set_iface_name(iface_name);
 
-  grpc::ClientContext context;
-  grpc::Status status = stub_->StartDetectingWifiAps(&context, request, &response);
-  if (status.ok()) {
-    return;
-  }
-  std::cerr << "RPC failed: " << status.error_message() << std::endl;
+    grpc::ClientContext context;
+    grpc::Status status =
+        stub_->StartDetectingWifiAps(&context, request, &response);
+    if (status.ok()) {
+
+    }
+    else {
+      std::cerr << "RPC failed: " << status.error_message() << std::endl;
+    }
+  });
+  a.detach();
 }
 void ClientInterface::StartMitmForwarding(const std::string& iface_name,
                                           const std::string& victim_ip_str,
@@ -206,8 +219,6 @@ void ClientInterface::AddLoggerMethod(
 
 }
 void ClientInterface::GetRunningTasks(std::vector<int>& running_tasks) {
-
-
   std::thread a([&](){
     GetRunningTasksRequestType request;
     grpc::ClientContext context;
@@ -247,3 +258,16 @@ std::vector<std::string> ClientInterface::GetInterfaces() {
   std::cerr << "RPC failed: " << status.error_message() << std::endl;
   return std::vector<std::string>();
 }
+
+void ClientInterface::ReadLogsFromServer() {
+  std::thread a([&](){
+    ReadLogsRequestType request;
+    grpc::ClientContext context;
+    std::unique_ptr<grpc::ClientReader<ReadLogsResponseType>> reader(stub_->ReadLogs(&context, request));
+    ReadLogsResponseType response;
+    while (reader->Read(&response)) {
+      ashk::utils::Logger::getInstance().Log(response.log());
+    }});
+  a.detach();
+}
+

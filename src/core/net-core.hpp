@@ -63,7 +63,7 @@ class NetCore {
                            pcpp::MacAddress gateway_mac);
   void StartVlanHopping(pcpp::IPv4Address iface_ip, int outer_id, int inner_id);
   void StartDtpNegotiation(pcpp::IPv4Address iface_ip, const std::string &domain_name);
-  void StartDtpDomainExtraction(pcpp::IPv4Address iface_ip, std::string buffer);
+  void StartDtpDomainExtraction(pcpp::IPv4Address iface_ip, std::string &buffer);
   void StartDetectingWifiAps(std::string iface_name_or_ip, std::vector<WifiAp> &ap_list);
   void StartDetectingWifiHosts(const std::string &iface_ip_name_str,
                                std::vector<std::shared_ptr<WifiHost>> &host_list);

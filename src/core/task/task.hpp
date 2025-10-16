@@ -11,7 +11,7 @@
 #include <set>
 
 #include "utils/logger.hpp"
-
+#include <condition_variable>
 namespace ashk {
 enum tasks_data_id { VICTIM_DST_MAC, VICTIM_SRC_MAC, WPA2_CRACK_T };
 class Task {
@@ -22,6 +22,7 @@ class Task {
   bool IsRunning();
   virtual std::string GetData(tasks_data_id data_id) = 0;
   void SetTaskId(int id);
+  void SetWatcherNotify(std::condition_variable *watcher_notify);
  protected:
   virtual void Exec_() = 0;
   explicit Task() = default;
@@ -30,6 +31,7 @@ class Task {
   std::atomic_flag m_ = ATOMIC_FLAG_INIT;
   std::set<tasks_data_id> extractable_data_;
   int last_task_id_;
+  std::condition_variable *watcher_notify_;
 };
 
 }

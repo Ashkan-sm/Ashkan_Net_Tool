@@ -4,10 +4,11 @@
 
 #include "services.hpp"
 
-Services::Services(std::shared_ptr<ashk::ModelInterface> core) : core_(core){
+#include <utility>
+
+Services::Services(std::shared_ptr<ashk::ModelInterface> core) : core_(std::move(core)){
 
 }
-
 
 grpc::Status Services::Arp(::grpc::ServerContext* context,
                            const ::ArpRequestType* request,
@@ -65,8 +66,12 @@ grpc::Status Services::StartDtpDomainExtraction(
     const ::StartDtpDomainExtractionRequestType* request,
     ::StartDtpDomainExtractionResponseType* response) {
 
-  std::string buffer;
+  std::string buffer="EMPTY";
   core_->StartDtpDomainExtraction(request->iface_name(),buffer);
+  while (!context->IsCancelled() && buffer=="EMPTY"){
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+  }
+  response->set_domain_name(buffer);
   return grpc::Status::OK;
 }
 grpc::Status Services::StartMitmForwarding(
@@ -136,3 +141,18 @@ grpc::Status Services::GetRunningTasks(
 
   return grpc::Status::OK;
 }
+grpc::Status Services::ReadLogs(
+    ::grpc::ServerContext* context, const ::ReadLogsRequestType* request,
+    ::grpc::ServerWriter<::ReadLogsResponseType>* writer) {
+  core_->AddLoggerMethod([=](std::string a){
+    ReadLogsResponseType response;
+    response.set_log(a);
+    writer->Write(response);});
+
+  while (!context->IsCancelled()) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+  }
+
+  return grpc::Status::OK;
+}
+

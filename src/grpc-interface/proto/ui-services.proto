@@ -17,10 +17,14 @@ service UiServie {
   rpc StartWpa2HandshakeCapturing(StartWpa2HandshakeCapturingRequestType) returns (StartWpa2HandshakeCapturingResponseType) {}
   rpc GetRunningTasks(GetRunningTasksRequestType) returns (stream GetRunningTasksResponseType) {}
   rpc EndTask(EndTaskRequestType) returns (EndTaskResponseType) {}
+  rpc ReadLogs(ReadLogsRequestType) returns (stream ReadLogsResponseType) {}
 
 
 }
-
+message ReadLogsRequestType{}
+message ReadLogsResponseType{
+  string log = 1;
+}
 message ArpRequestType {
   string ip = 1;
 }

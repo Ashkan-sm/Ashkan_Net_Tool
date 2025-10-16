@@ -29,7 +29,7 @@ std::string ISubWindow::DrawInterfaceWidget(){
             {
                 const bool is_selected = (item_selected_idx == n);
                 if (filter.PassFilter(devices[n].c_str()))
-                    if (ImGui::Selectable((devices[n]+" "+devices[n]).c_str(), is_selected))
+                    if (ImGui::Selectable((devices[n]).c_str(), is_selected))
 //                       get device ip and put here;
                       item_selected_idx = n;
             }
