@@ -129,8 +129,8 @@ std::string ashk::NetCore::InterfaceName() {
     return dev_->getName();
 }
 
-void ashk::NetCore::StartDetectingWifiHosts(const std::string &iface_ip_name_str) {
-  task_wacher_.AddAndStartTask(std::make_unique<tasks::WifiHostScanningTask>(dev_, iface_ip_name_str,wifi_host_list));
+int ashk::NetCore::StartDetectingWifiHosts(const std::string &iface_ip_name_str) {
+  return task_wacher_.AddAndStartTask(std::make_unique<tasks::WifiHostScanningTask>(dev_, iface_ip_name_str,wifi_host_list));
 
 }
 

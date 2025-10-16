@@ -37,7 +37,7 @@ class ModelInterface {
                            const std::string &victim_mac_str,
                            const std::string &gateway_mac_str);
   int StartDetectingWifiAps(const std::string &iface_name);
-  void StartDetectingWifiHosts(const std::string &iface_name);
+  int StartDetectingWifiHosts(const std::string &iface_name);
   void StartSendingDeauthPackets(const std::string &iface_name,
                                  WifiAp* wifi_ap);
   void StartPasswordCracking(const std::string &iface_name, std::shared_ptr<HandShakeData> handshake_data);

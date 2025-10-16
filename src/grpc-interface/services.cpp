@@ -82,13 +82,6 @@ grpc::Status Services::StartMitmForwarding(
   return grpc::Status::OK;
 }
 
-grpc::Status Services::StartDetectingWifiHosts(
-    ::grpc::ServerContext* context,
-    const ::StartDetectingWifiHostsRequestType* request,
-    ::StartDetectingWifiHostsResponseType* response) {
-  // to be done
-  return grpc::Status::OK;
-}
 grpc::Status Services::StartSendingDeauthPackets(
     ::grpc::ServerContext* context,
     const ::StartSendingDeauthPacketsRequestType* request,
@@ -164,6 +157,26 @@ grpc::Status Services::StartDetectingWifiAps(
     }
     writer->Write(Aps);
     core_->getWifiApList().WaitChange();
+
+  }
+  return grpc::Status::OK;
+}
+
+grpc::Status Services::StartDetectingWifiHosts(
+    ::grpc::ServerContext* context,
+    const ::StartDetectingWifiHostsRequestType* request,
+    ::grpc::ServerWriter<::StartDetectingWifiHostsResponseType>* writer) {
+
+  int id = core_->StartDetectingWifiHosts(request->iface_name());
+
+  while(!context->IsCancelled() && core_->taskWatcher().IsRunning(id)) {
+    StartDetectingWifiHostsResponseType Aps;
+    for (auto i : core_->getWifiHostList()) {
+      auto t=Aps.add_host_list();
+      t->set_mac(i.mac.toString());
+    }
+    writer->Write(Aps);
+    core_->getWifiHostList().WaitChange();
 
   }
   return grpc::Status::OK;

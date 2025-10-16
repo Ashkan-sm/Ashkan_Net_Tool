@@ -211,6 +211,11 @@ void WIFIAttackWindow::Draw() {
     std::string device= DrawInterfaceWidget();
 
     if (ImGui::Button("detect networks")){ core_->StartDetectingWifiAps(device,wifi_ap_list);}
+    ImGui::SameLine();
+    if (ImGui::Button("detect hosts")){
+      core_->StartDetectingWifiHosts(device, wifi_host_list);
+    }
+
 
     static auto selectedAp=new ashk::ui::WifiAp("","");
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_None;
@@ -223,6 +228,7 @@ void WIFIAttackWindow::Draw() {
           selectedAp=&i;
         }
     }
+
     ImGui::EndChild();
     ImGui::PopStyleVar();
 
@@ -230,23 +236,18 @@ void WIFIAttackWindow::Draw() {
     ImGui::Text("selected access point: %s", selectedAp->name.c_str());
 
 
-    if (ImGui::Button("detect hosts")){
-      core_->StartDetectingWifiHosts(device, wifi_host_list);
-    }
-    ImGui::SameLine();
-    static bool select_hosts=false;
-    ImGui::Checkbox("Select All",&select_hosts);
-    if(select_hosts) {
-        for (auto &i: wifi_host_list) {
 
-        }
+    if (ImGui::Button("Select All")) {
+      for (auto& i : wifi_host_list) {
+        i.is_selected = true;
+      }
     }
 
     ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
     ImGui::BeginChild("ApHostsChildWindow", ImVec2(0, 180), ImGuiChildFlags_Borders, window_flags);
 
     for(auto &i :wifi_host_list){
-//        ImGui::Checkbox(i,&i->is_selected);
+        ImGui::Checkbox(i.mac.c_str(),&i.is_selected);
     }
     ImGui::EndChild();
     ImGui::PopStyleVar();
@@ -256,7 +257,7 @@ void WIFIAttackWindow::Draw() {
     }
 
     if (ImGui::Button("Capture WPA2 Handshake")){
-        if(selectedAp->mac == ""){
+        if(selectedAp->mac.empty()){
           ashk::utils::Logger::getInstance().Log("no AP selected\n");
         }
         else {

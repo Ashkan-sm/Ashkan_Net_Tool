@@ -154,8 +154,8 @@ int ashk::ModelInterface::StartDetectingWifiAps(const std::string &iface_name) {
 
 }
 
-void ashk::ModelInterface::StartDetectingWifiHosts(const std::string &iface_name) {
-  core_.StartDetectingWifiHosts(iface_name);
+int ashk::ModelInterface::StartDetectingWifiHosts(const std::string &iface_name) {
+  return core_.StartDetectingWifiHosts(iface_name);
 }
 
 std::string ashk::ModelInterface::GetInterfaceNmae() {

@@ -51,7 +51,8 @@ class Services final : public UiServie::Service {
   grpc::Status StartDetectingWifiHosts(
       ::grpc::ServerContext* context,
       const ::StartDetectingWifiHostsRequestType* request,
-      ::StartDetectingWifiHostsResponseType* response) override;
+      ::grpc::ServerWriter<::StartDetectingWifiHostsResponseType>* writer)
+      override;
   grpc::Status GetRunningTasks(
       ::grpc::ServerContext* context,
       const ::GetRunningTasksRequestType* request,

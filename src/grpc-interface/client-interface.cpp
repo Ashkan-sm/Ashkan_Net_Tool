@@ -168,14 +168,17 @@ void ClientInterface::StartMitmForwarding(const std::string& iface_name,
 }
 void ClientInterface::StartDetectingWifiHosts(
     const std::string& iface_name,std::vector<ashk::ui::WifiHost>& wifi_host_list) {
-  StartDetectingWifiHostsRequestType request;
-  StartDetectingWifiHostsResponseType response;
-  grpc::ClientContext context;
-  grpc::Status status = stub_->StartDetectingWifiHosts(&context, request, &response);
-  if (status.ok()) {
-    return;
-  }
-  std::cerr << "RPC failed: " << status.error_message() << std::endl;
+  std::thread a([&,iface_name](){
+    StartDetectingWifiHostsRequestType request;
+    request.set_iface_name(iface_name);
+    grpc::ClientContext context;
+    std::unique_ptr<grpc::ClientReader<StartDetectingWifiHostsResponseType>> reader(stub_->StartDetectingWifiHosts(&context, request));
+    StartDetectingWifiHostsResponseType response;
+    while (reader->Read(&response)) {
+      wifi_host_list.clear();
+      for (auto& i : response.host_list()) wifi_host_list.push_back(ashk::ui::WifiHost(i.mac()));
+    }});
+  a.detach();
 }
 void ClientInterface::StartSendingDeauthPackets(
     const std::string& iface_ip_name_str, ashk::ui::WifiAp* selected_ap,std::vector<ashk::ui::WifiHost>& wifi_host_list) {

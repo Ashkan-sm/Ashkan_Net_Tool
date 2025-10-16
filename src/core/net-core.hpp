@@ -66,7 +66,7 @@ class NetCore {
   void StartDtpNegotiation(pcpp::IPv4Address iface_ip, const std::string &domain_name);
   void StartDtpDomainExtraction(pcpp::IPv4Address iface_ip, std::string &buffer);
   int StartDetectingWifiAps(std::string iface_name_or_ip);
-  void StartDetectingWifiHosts(const std::string &iface_ip_name_str);
+  int StartDetectingWifiHosts(const std::string &iface_ip_name_str);
   void StartSendingDeauthPackets(const std::string &iface_ip_name_str,
                                  WifiAp* wifi_ap);
   void StartPasswordCracking(const std::string &iface_ip_name_str);

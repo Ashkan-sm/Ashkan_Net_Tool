@@ -14,6 +14,7 @@ struct WifiAp {
 struct WifiHost {
   std::string mac;
   std::string name;
+  bool is_selected=false;
 };
 }  // namespace ashk::ui
 #endif  //ASHKANTOOL_WIRELESS_HPP
