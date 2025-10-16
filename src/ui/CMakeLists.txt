@@ -12,7 +12,8 @@ add_library(AshkanTool-ui
         windows/main-window.hpp
         config.h
         windows/sub-window.cpp
-        windows/sub-window.hpp)
+        windows/sub-window.hpp
+        data-holders/wireless.hpp)
 
 target_include_directories(AshkanTool-ui
         PUBLIC

@@ -23,10 +23,10 @@ struct WifiAp {
   std::string e_ssid;
   pcpp::MacAddress b_ssid;
   int pwr;
-  std::string enc;
+
 
   bool operator==(const WifiAp &b) {
-    return e_ssid == b.e_ssid && b_ssid == b.b_ssid && enc == b.enc;
+    return e_ssid == b.e_ssid && b_ssid == b.b_ssid;
   }
 };
 

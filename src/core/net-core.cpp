@@ -119,8 +119,8 @@ void ashk::NetCore::StartDtpDomainExtraction(pcpp::IPv4Address iface_ip, std::st
 
 }
 
-void ashk::NetCore::StartDetectingWifiAps(std::string iface_name_or_ip) {
-  task_wacher_.AddAndStartTask(std::make_unique<tasks::WifiApScanningTask>(dev_, iface_name_or_ip, wifi_ap_list));
+int ashk::NetCore::StartDetectingWifiAps(std::string iface_name_or_ip) {
+  return task_wacher_.AddAndStartTask(std::make_unique<tasks::WifiApScanningTask>(dev_, iface_name_or_ip, wifi_ap_list));
 
 }
 
@@ -152,11 +152,14 @@ void ashk::NetCore::StartWpa2HandshakeCapturing(const std::string &iface_ip_name
 void ashk::NetCore::WaitTaskChange() {
   task_wacher_.WaitChange();
 }
-ashk::utils::SignalVector<std::shared_ptr<WifiAp>>&
+ashk::utils::SignalVector<WifiAp>&
 ashk::NetCore::getWifiApList() {
   return wifi_ap_list;
 }
-ashk::utils::SignalVector<std::shared_ptr<WifiHost>>&
+ashk::utils::SignalVector<WifiHost>&
 ashk::NetCore::getWifiHostList() {
   return wifi_host_list;
+}
+const TaskWatcher& ashk::NetCore::taskWatcher() const {
+  return task_wacher_;
 }

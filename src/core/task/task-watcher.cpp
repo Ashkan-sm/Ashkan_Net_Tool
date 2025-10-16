@@ -3,7 +3,7 @@
 //
 
 #include "task-watcher.hpp"
-void TaskWatcher::AddAndStartTask(std::shared_ptr<ashk::Task> task_ptr) {
+int TaskWatcher::AddAndStartTask(std::shared_ptr<ashk::Task> task_ptr) {
   std::lock_guard<std::mutex> lock(mutex_);
   tasks_[last_task_id_]=task_ptr;
   task_ptr->SetTaskId(last_task_id_);
@@ -11,6 +11,7 @@ void TaskWatcher::AddAndStartTask(std::shared_ptr<ashk::Task> task_ptr) {
   task_ptr->Start();
   last_task_id_++;
   cnv_.notify_all();
+  return last_task_id_-1;
 }
 void TaskWatcher::EndTask(int id) {
   if(!tasks_.contains(id)) {
@@ -33,3 +34,7 @@ std::vector<int> TaskWatcher::GetRunningTaskIds() {
   }
   return std::move(out);
 }
+bool TaskWatcher::IsRunning(int id) const{
+  return tasks_.at(id)->IsRunning();
+}
+

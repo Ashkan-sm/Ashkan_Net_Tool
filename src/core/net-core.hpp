@@ -65,7 +65,7 @@ class NetCore {
   void StartVlanHopping(pcpp::IPv4Address iface_ip, int outer_id, int inner_id);
   void StartDtpNegotiation(pcpp::IPv4Address iface_ip, const std::string &domain_name);
   void StartDtpDomainExtraction(pcpp::IPv4Address iface_ip, std::string &buffer);
-  void StartDetectingWifiAps(std::string iface_name_or_ip);
+  int StartDetectingWifiAps(std::string iface_name_or_ip);
   void StartDetectingWifiHosts(const std::string &iface_ip_name_str);
   void StartSendingDeauthPackets(const std::string &iface_ip_name_str,
                                  WifiAp* wifi_ap);
@@ -76,17 +76,17 @@ class NetCore {
   void EndTask(int id);
   void WaitTaskChange();
   std::vector<int> GetRunningTasks();
-  [[nodiscard]] utils::SignalVector<std::shared_ptr<WifiAp>>& getWifiApList();
-  [[nodiscard]] utils::SignalVector<std::shared_ptr<WifiHost>>& getWifiHostList();
-
+  [[nodiscard]] utils::SignalVector<WifiAp>& getWifiApList();
+  [[nodiscard]] utils::SignalVector<WifiHost>& getWifiHostList();
+  [[nodiscard]] const TaskWatcher& taskWatcher() const;
  private:
 
   pcpp::PcapLiveDevice *dev_ = nullptr;
   utils::Logger &logger_ = utils::Logger::getInstance();
   CaptureWrapper &capture_wrapper_ = CaptureWrapper::getInstance();
 
-  utils::SignalVector<std::shared_ptr<WifiAp>> wifi_ap_list;
-  utils::SignalVector<std::shared_ptr<WifiHost>> wifi_host_list;
+  utils::SignalVector<WifiAp> wifi_ap_list;
+  utils::SignalVector<WifiHost> wifi_host_list;
   std::shared_ptr<HandShakeData> wifi_wpa2_handshake_data;
 
   TaskWatcher task_wacher_;

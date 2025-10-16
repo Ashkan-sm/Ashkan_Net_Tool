@@ -12,9 +12,10 @@
 
 class TaskWatcher {
  public:
-  void AddAndStartTask(std::shared_ptr<ashk::Task> task_ptr);
+  int AddAndStartTask(std::shared_ptr<ashk::Task> task_ptr);
   void EndTask(int id);
   void WaitChange();
+  bool IsRunning(int id) const;
   std::vector<int> GetRunningTaskIds();
 //  ashk::Task& GetTask();
 

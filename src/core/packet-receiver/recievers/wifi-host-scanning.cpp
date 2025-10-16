@@ -28,8 +28,8 @@ void ashk::PacketReceiver::onPacketArrivesWifiHostScanning(pcpp::RawPacket *raw_
   std::shared_ptr<WifiHost> out = std::make_unique<WifiHost>(pcpp::MacAddress(transmiter_mac_adr), false);
   if (std::find_if(data->host_list->begin(),
                    data->host_list->end(),
-                   [&out](const auto &a) { return a->mac == out->mac; }) == data->host_list->end())
-    data->host_list->push_back(std::make_unique<WifiHost>(pcpp::MacAddress(transmiter_mac_adr), false));
+                   [&out](const auto &a) { return a.mac == out->mac; }) == data->host_list->end())
+    data->host_list->push_back(WifiHost(pcpp::MacAddress(transmiter_mac_adr), false));
 
 }
 

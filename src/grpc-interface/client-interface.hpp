@@ -6,12 +6,14 @@
 #define ASHKANTOOL_CLIENT_INTERFACE_HPP
 
 #include <string>
+#include <thread>
 
 #include <grpcpp/grpcpp.h>
 #include "ui-services.grpc.pb.h"
 
 #include "utils/logger.hpp"
-#include "core/data-holders/wifi.hpp"
+#include "ui/data-holders/wireless.hpp"
+
 
 class ClientInterface {
  public:
@@ -31,9 +33,9 @@ class ClientInterface {
                            const std::string &gateway_ip_str,
                            const std::string &victim_mac_str,
                            const std::string &gateway_mac_str);
-  void StartDetectingWifiAps(const std::string &iface_ip_str,std::vector<std::string>& wifi_ap_list);
-  void StartDetectingWifiHosts(const std::string &iface_ip_name_str,std::vector<std::string>& wifi_host_list);
-  void StartSendingDeauthPackets(const std::string &iface_ip_name_str,std::string selected_ap,std::vector<std::string>& wifi_host_list);
+  void StartDetectingWifiAps(const std::string &iface_ip_str,std::vector<ashk::ui::WifiAp>& wifi_ap_list);
+  void StartDetectingWifiHosts(const std::string &iface_ip_name_str,std::vector<ashk::ui::WifiHost>& wifi_host_list);
+  void StartSendingDeauthPackets(const std::string &iface_ip_name_str, ashk::ui::WifiAp* selected_ap,std::vector<ashk::ui::WifiHost>& wifi_host_list);
   void StartPasswordCracking(const std::string &iface_ip_name_str);
   void StartWpa2HandshakeCapturing(const std::string &iface_ip_name_str);
 

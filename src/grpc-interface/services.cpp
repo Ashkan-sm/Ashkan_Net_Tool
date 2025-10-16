@@ -153,11 +153,14 @@ grpc::Status Services::StartDetectingWifiAps(
     ::grpc::ServerContext* context,
     const ::StartDetectingWifiApsRequestType* request,
     ::grpc::ServerWriter<::StartDetectingWifiApsResponseType>* writer) {
-
-  while(!context->IsCancelled()) {
+  int id = core_->StartDetectingWifiAps(request->iface_name());
+  while(!context->IsCancelled() && core_->taskWatcher().IsRunning(id)) {
     StartDetectingWifiApsResponseType Aps;
     for (auto i : core_->getWifiApList()) {
-      Aps.add_ap_list(i->e_ssid);
+
+      auto t=Aps.add_ap_list();
+      t->set_name(i.e_ssid);
+      t->set_mac(i.b_ssid.toString());
     }
     writer->Write(Aps);
     core_->getWifiApList().WaitChange();

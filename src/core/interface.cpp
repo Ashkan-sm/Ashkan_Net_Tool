@@ -148,9 +148,9 @@ std::string ashk::ModelInterface::GetTaskData(const std::string &task_id, tasks_
 //  return core_.Tasks()[task_id_int]->GetData(data_id);
 }
 
-void ashk::ModelInterface::StartDetectingWifiAps(const std::string &iface_name) {
+int ashk::ModelInterface::StartDetectingWifiAps(const std::string &iface_name) {
 
-  core_.StartDetectingWifiAps(iface_name);
+  return core_.StartDetectingWifiAps(iface_name);
 
 }
 
@@ -179,11 +179,14 @@ void ashk::ModelInterface::StartWpa2HandshakeCapturing(const std::string &iface_
 void ashk::ModelInterface::WaitTasksChange() {
   core_.WaitTaskChange();
 }
-ashk::utils::SignalVector<std::shared_ptr<WifiAp>>&
+ashk::utils::SignalVector<WifiAp>&
 ashk::ModelInterface::getWifiApList() {
   return core_.getWifiApList();
 }
-ashk::utils::SignalVector<std::shared_ptr<WifiHost>>&
+ashk::utils::SignalVector<WifiHost>&
 ashk::ModelInterface::getWifiHostList() {
   return core_.getWifiHostList();
+}
+const TaskWatcher& ashk::ModelInterface::taskWatcher() const {
+  return core_.taskWatcher();
 }

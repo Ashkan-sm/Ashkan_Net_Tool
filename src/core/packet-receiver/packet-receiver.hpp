@@ -31,10 +31,10 @@ struct VlanHoppingCookie {
   int outer_id;
 };
 struct WifiApScanningCookie {
-  ashk::utils::SignalVector<std::shared_ptr<WifiAp>> *ap_list;
+  ashk::utils::SignalVector<WifiAp> *ap_list;
 };
 struct WifiHostScanningCookie {
-  ashk::utils::SignalVector<std::shared_ptr<WifiHost>> *host_list;
+  ashk::utils::SignalVector<WifiHost> *host_list;
 };
 struct MITMForwardingCookie {
   pcpp::IPv4Address victim_ip;

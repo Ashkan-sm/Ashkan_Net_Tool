@@ -212,22 +212,22 @@ void WIFIAttackWindow::Draw() {
 
     if (ImGui::Button("detect networks")){ core_->StartDetectingWifiAps(device,wifi_ap_list);}
 
-    static auto selectedAp=new WifiAp("None");
+    static auto selectedAp=new ashk::ui::WifiAp("","");
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_None;
 //    window_flags |= ImGuiWindowFlags_MenuBar;
     ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
     ImGui::BeginChild("ApListChildWindow", ImVec2(0, 180), ImGuiChildFlags_Borders, window_flags);
 
     for(auto &i :wifi_ap_list){
-        if (ImGui::Button(i.c_str())){
-
+        if (ImGui::Button((i.name +" "+i.mac).c_str())){
+          selectedAp=&i;
         }
     }
     ImGui::EndChild();
     ImGui::PopStyleVar();
 
 
-    ImGui::Text("selected access point: %s", selectedAp->e_ssid.c_str());
+    ImGui::Text("selected access point: %s", selectedAp->name.c_str());
 
 
     if (ImGui::Button("detect hosts")){
@@ -252,25 +252,19 @@ void WIFIAttackWindow::Draw() {
     ImGui::PopStyleVar();
 
     if (ImGui::Button("Start Deauthentication")){
-      core_->StartSendingDeauthPackets(device, selectedAp->e_ssid, wifi_host_list);
+      core_->StartSendingDeauthPackets(device, selectedAp, wifi_host_list);
     }
-    static std::shared_ptr<HandShakeData> hand_shake_data;
+
     if (ImGui::Button("Capture WPA2 Handshake")){
-        if(selectedAp->e_ssid== "None"){
+        if(selectedAp->mac == ""){
           ashk::utils::Logger::getInstance().Log("no AP selected\n");
         }
         else {
-            hand_shake_data = std::make_unique<HandShakeData>(selectedAp);
-//          core_->StartWpa2HandshakeCapturing(device, hand_shake_data);
+          core_->StartWpa2HandshakeCapturing(device);
         }
     }
     if (ImGui::Button("CRACK PASSWORD")){
-        if(hand_shake_data && hand_shake_data->got_msg_2){
-//          core_->StartPasswordCracking(device, hand_shake_data);
-        }
-        else{
-          ashk::utils::Logger::getInstance().Log("no HandShake data available\n");
-        }
+      core_->StartPasswordCracking(device);
 
     }
 

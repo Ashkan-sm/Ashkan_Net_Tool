@@ -13,10 +13,10 @@
 #include "imgui_internal.h"
 
 #include "config.h"
-#include "core/interface.hpp"
-#include "core/data-holders/wifi.hpp"
 #include "utils/logger.hpp"
 #include "grpc-interface/client-interface.hpp"
+
+#include "ui/data-holders/wireless.hpp"
 
 class ISubWindow {
 public:
@@ -65,8 +65,8 @@ class WIFIAttackWindow  : public ISubWindow{
   explicit WIFIAttackWindow(ClientInterface *core);
   void Draw() override;
  private:
-  std::vector<std::string> wifi_ap_list;
-  std::vector<std::string> wifi_host_list;
+  std::vector<ashk::ui::WifiAp> wifi_ap_list;
+  std::vector<ashk::ui::WifiHost> wifi_host_list;
 };
 
 #endif //ASHKANTOOL_SUB_WINDOW_HPP

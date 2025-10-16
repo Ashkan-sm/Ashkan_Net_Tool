@@ -6,7 +6,7 @@
 
 ashk::tasks::WifiHostScanningTask::WifiHostScanningTask(pcpp::PcapLiveDevice *dev,
                                                         std::string iface_name_or_ip,
-                                                        utils::SignalVector<std::shared_ptr<WifiHost>> &host_list) :
+                                                        utils::SignalVector<WifiHost> &host_list) :
       dev_(dev),
       iface_name_or_ip_(iface_name_or_ip),
       host_list_(&host_list) {

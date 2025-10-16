@@ -6,7 +6,7 @@
 
 ashk::tasks::DeauthPacketSendingTask::DeauthPacketSendingTask(pcpp::PcapLiveDevice *dev, std::string iface_name_or_ip,
                                                               WifiAp &wifi_ap,
-                                                              utils::SignalVector<std::shared_ptr<WifiHost>> &host_list) :
+                                                              utils::SignalVector<WifiHost> &host_list) :
       dev_(dev),
       wifi_ap_(&wifi_ap),
       iface_name_or_ip_(iface_name_or_ip),
@@ -61,11 +61,11 @@ void ashk::tasks::DeauthPacketSendingTask::Exec_() {
   while (IsRunning()) {
     std::vector<pcpp::Packet> packets;
     for (auto i : *host_list_) {
-      if (i->is_selected) {
+      if (i.is_selected) {
         auto pkt = new uint8_t[sizeof(packet)];
         memcpy(pkt, packet, sizeof(packet));
 
-        memcpy(pkt + 16, i->mac.getRawData(), 6);
+        memcpy(pkt + 16, i.mac.getRawData(), 6);
         memcpy(pkt + 22, wifi_ap_->b_ssid.getRawData(), 6);
         memcpy(pkt + 28, wifi_ap_->b_ssid.getRawData(), 6);
 

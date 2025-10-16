@@ -36,7 +36,7 @@ class ModelInterface {
                            const std::string &gateway_ip_str,
                            const std::string &victim_mac_str,
                            const std::string &gateway_mac_str);
-  void StartDetectingWifiAps(const std::string &iface_name);
+  int StartDetectingWifiAps(const std::string &iface_name);
   void StartDetectingWifiHosts(const std::string &iface_name);
   void StartSendingDeauthPackets(const std::string &iface_name,
                                  WifiAp* wifi_ap);
@@ -51,8 +51,9 @@ class ModelInterface {
 
   std::string GetTaskData(const std::string &task_id, tasks_data_id data_id);
 
-  [[nodiscard]] utils::SignalVector<std::shared_ptr<WifiAp>>& getWifiApList();
-  [[nodiscard]] utils::SignalVector<std::shared_ptr<WifiHost>>& getWifiHostList();
+  [[nodiscard]] utils::SignalVector<WifiAp>& getWifiApList();
+  [[nodiscard]] utils::SignalVector<WifiHost>& getWifiHostList();
+  [[nodiscard]] const TaskWatcher& taskWatcher() const;
  private:
   NetCore core_;
   utils::Logger &logger_ = utils::Logger::getInstance();

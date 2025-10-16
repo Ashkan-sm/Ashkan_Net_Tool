@@ -132,15 +132,16 @@ void ClientInterface::StartDtpDomainExtraction(const std::string& iface_name,
   a.detach();
 
 }
-void ClientInterface::StartDetectingWifiAps(const std::string& iface_name,std::vector<std::string>& wifi_ap_list) {
-  std::thread a([&](){
+void ClientInterface::StartDetectingWifiAps(const std::string& iface_name,std::vector<ashk::ui::WifiAp>& wifi_ap_list) {
+  std::thread a([&,iface_name](){
     StartDetectingWifiApsRequestType request;
+    request.set_iface_name(iface_name);
     grpc::ClientContext context;
     std::unique_ptr<grpc::ClientReader<StartDetectingWifiApsResponseType>> reader(stub_->StartDetectingWifiAps(&context, request));
     StartDetectingWifiApsResponseType response;
     while (reader->Read(&response)) {
       wifi_ap_list.clear();
-      for (auto& i : response.ap_list()) wifi_ap_list.push_back(i);
+      for (auto& i : response.ap_list()) wifi_ap_list.push_back(ashk::ui::WifiAp(i.mac(),i.name()));
     }});
   a.detach();
 }
@@ -166,7 +167,7 @@ void ClientInterface::StartMitmForwarding(const std::string& iface_name,
   std::cerr << "RPC failed: " << status.error_message() << std::endl;
 }
 void ClientInterface::StartDetectingWifiHosts(
-    const std::string& iface_name,std::vector<std::string>& wifi_host_list) {
+    const std::string& iface_name,std::vector<ashk::ui::WifiHost>& wifi_host_list) {
   StartDetectingWifiHostsRequestType request;
   StartDetectingWifiHostsResponseType response;
   grpc::ClientContext context;
@@ -177,7 +178,7 @@ void ClientInterface::StartDetectingWifiHosts(
   std::cerr << "RPC failed: " << status.error_message() << std::endl;
 }
 void ClientInterface::StartSendingDeauthPackets(
-    const std::string& iface_name,std::string selected_ap,std::vector<std::string>& wifi_host_list) {
+    const std::string& iface_ip_name_str, ashk::ui::WifiAp* selected_ap,std::vector<ashk::ui::WifiHost>& wifi_host_list) {
   StartSendingDeauthPacketsRequestType request;
   StartSendingDeauthPacketsResponseType response;
   grpc::ClientContext context;

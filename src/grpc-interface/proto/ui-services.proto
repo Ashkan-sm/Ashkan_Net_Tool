@@ -85,18 +85,26 @@ message StartMitmForwardingRequestType {
 }
 message StartMitmForwardingResponseType {}
 
+message WifiApType{
+  string name = 1;
+  string mac = 2;
+}
 message StartDetectingWifiApsRequestType {
-  string iface_name = 1;
+  bytes iface_name = 1;
 }
 message StartDetectingWifiApsResponseType {
-  repeated string ap_list=1;
+  repeated WifiApType ap_list=2;
 }
 
+message WifiHostType{
+  string name = 1;
+  string mac = 2;
+}
 message StartDetectingWifiHostsRequestType {
-  string iface_name = 1;
+  bytes iface_name = 1;
 }
 message StartDetectingWifiHostsResponseType {
-  repeated string host_list=1;
+  repeated WifiHostType host_list=1;
 }
 
 message StartSendingDeauthPacketsRequestType {

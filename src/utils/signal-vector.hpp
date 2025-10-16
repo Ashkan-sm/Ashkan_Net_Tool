@@ -20,7 +20,7 @@ class SignalVector {
   ~SignalVector();
   void push_back(T a);
   void WaitChange();
-  std::function<void()> OnChanged;
+  std::function<void()> OnChanged{[](){}};
   [[nodiscard]] const T& operator[](size_t idx) const;
   size_t size() const;
 
