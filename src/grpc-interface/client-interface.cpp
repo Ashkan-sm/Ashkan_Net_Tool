@@ -113,7 +113,7 @@ void ClientInterface::StartDtpNegotiation(const std::string& iface_name,
 }
 void ClientInterface::StartDtpDomainExtraction(const std::string& iface_name,
                                                char* buffer) {
-  std::thread a([=](){
+  std::thread a([=,this](){
     StartDtpDomainExtractionRequestType request;
     StartDtpDomainExtractionResponseType response;
 
@@ -132,24 +132,16 @@ void ClientInterface::StartDtpDomainExtraction(const std::string& iface_name,
   a.detach();
 
 }
-void ClientInterface::StartDetectingWifiAps(const std::string& iface_name,
-                                            std::vector<WifiAp>& ap_list) {
+void ClientInterface::StartDetectingWifiAps(const std::string& iface_name,std::vector<std::string>& wifi_ap_list) {
   std::thread a([&](){
     StartDetectingWifiApsRequestType request;
-    StartDetectingWifiApsResponseType response;
-
-    request.set_iface_name(iface_name);
-
     grpc::ClientContext context;
-    grpc::Status status =
-        stub_->StartDetectingWifiAps(&context, request, &response);
-    if (status.ok()) {
-
-    }
-    else {
-      std::cerr << "RPC failed: " << status.error_message() << std::endl;
-    }
-  });
+    std::unique_ptr<grpc::ClientReader<StartDetectingWifiApsResponseType>> reader(stub_->StartDetectingWifiAps(&context, request));
+    StartDetectingWifiApsResponseType response;
+    while (reader->Read(&response)) {
+      wifi_ap_list.clear();
+      for (auto& i : response.ap_list()) wifi_ap_list.push_back(i);
+    }});
   a.detach();
 }
 void ClientInterface::StartMitmForwarding(const std::string& iface_name,
@@ -159,6 +151,13 @@ void ClientInterface::StartMitmForwarding(const std::string& iface_name,
                                           const std::string& gateway_mac_str) {
   StartMitmForwardingRequestType request;
   StartMitmForwardingResponseType response;
+  request.set_iface_name(iface_name);
+  request.set_victim_ip(victim_ip_str);
+  request.set_gateway_ip(gateway_ip_str);
+  request.set_victim_mac(victim_mac_str);
+  request.set_gateway_mac(victim_mac_str);
+  request.set_gateway_mac(gateway_mac_str);
+
   grpc::ClientContext context;
   grpc::Status status = stub_->StartMitmForwarding(&context, request, &response);
   if (status.ok()) {
@@ -167,8 +166,7 @@ void ClientInterface::StartMitmForwarding(const std::string& iface_name,
   std::cerr << "RPC failed: " << status.error_message() << std::endl;
 }
 void ClientInterface::StartDetectingWifiHosts(
-    const std::string& iface_name,
-    std::vector<std::shared_ptr<WifiHost>>& host_list) {
+    const std::string& iface_name,std::vector<std::string>& wifi_host_list) {
   StartDetectingWifiHostsRequestType request;
   StartDetectingWifiHostsResponseType response;
   grpc::ClientContext context;
@@ -179,8 +177,7 @@ void ClientInterface::StartDetectingWifiHosts(
   std::cerr << "RPC failed: " << status.error_message() << std::endl;
 }
 void ClientInterface::StartSendingDeauthPackets(
-    const std::string& iface_name_name_str, WifiAp* wifi_ap,
-    std::vector<std::shared_ptr<WifiHost>>& host_list) {
+    const std::string& iface_name,std::string selected_ap,std::vector<std::string>& wifi_host_list) {
   StartSendingDeauthPacketsRequestType request;
   StartSendingDeauthPacketsResponseType response;
   grpc::ClientContext context;
@@ -191,8 +188,7 @@ void ClientInterface::StartSendingDeauthPackets(
   std::cerr << "RPC failed: " << status.error_message() << std::endl;
 }
 void ClientInterface::StartPasswordCracking(
-    const std::string& iface_name_name_str,
-    std::shared_ptr<HandShakeData> handshake_data) {
+    const std::string& iface_name) {
   StartPasswordCrackingRequestType request;
   StartPasswordCrackingResponseType response;
   grpc::ClientContext context;
@@ -203,8 +199,7 @@ void ClientInterface::StartPasswordCracking(
   std::cerr << "RPC failed: " << status.error_message() << std::endl;
 }
 void ClientInterface::StartWpa2HandshakeCapturing(
-    const std::string& iface_name_name_str,
-    std::shared_ptr<HandShakeData> handshake_data) {
+    const std::string& iface_name_name_str) {
   StartWpa2HandshakeCapturingRequestType request;
   StartWpa2HandshakeCapturingResponseType response;
   grpc::ClientContext context;

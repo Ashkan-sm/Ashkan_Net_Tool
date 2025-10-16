@@ -21,6 +21,7 @@
 
 #include "utils/logger.hpp"
 #include "utils/net-utils.hpp"
+#include "utils/signal-vector.hpp"
 
 #include "core/task/task.hpp"
 #include "core/task/tasks/arp/arp-poisoning-task.hpp"
@@ -64,26 +65,29 @@ class NetCore {
   void StartVlanHopping(pcpp::IPv4Address iface_ip, int outer_id, int inner_id);
   void StartDtpNegotiation(pcpp::IPv4Address iface_ip, const std::string &domain_name);
   void StartDtpDomainExtraction(pcpp::IPv4Address iface_ip, std::string &buffer);
-  void StartDetectingWifiAps(std::string iface_name_or_ip, std::vector<WifiAp> &ap_list);
-  void StartDetectingWifiHosts(const std::string &iface_ip_name_str,
-                               std::vector<std::shared_ptr<WifiHost>> &host_list);
+  void StartDetectingWifiAps(std::string iface_name_or_ip);
+  void StartDetectingWifiHosts(const std::string &iface_ip_name_str);
   void StartSendingDeauthPackets(const std::string &iface_ip_name_str,
-                                 WifiAp *wifi_ap,
-                                 std::vector<std::shared_ptr<WifiHost>> &host_list);
-  void StartPasswordCracking(const std::string &iface_ip_name_str, std::shared_ptr<HandShakeData> handshake_data);
-  void StartWpa2HandshakeCapturing(const std::string &iface_ip_name_str,
-                                   std::shared_ptr<HandShakeData> handshake_data);
+                                 WifiAp* wifi_ap);
+  void StartPasswordCracking(const std::string &iface_ip_name_str);
+  void StartWpa2HandshakeCapturing(const std::string &iface_ip_name_str);
 
   void AddLoggerMethod(const std::function<void(const std::string &)> &method);
   void EndTask(int id);
   void WaitTaskChange();
   std::vector<int> GetRunningTasks();
+  [[nodiscard]] utils::SignalVector<std::shared_ptr<WifiAp>>& getWifiApList();
+  [[nodiscard]] utils::SignalVector<std::shared_ptr<WifiHost>>& getWifiHostList();
 
  private:
 
   pcpp::PcapLiveDevice *dev_ = nullptr;
   utils::Logger &logger_ = utils::Logger::getInstance();
   CaptureWrapper &capture_wrapper_ = CaptureWrapper::getInstance();
+
+  utils::SignalVector<std::shared_ptr<WifiAp>> wifi_ap_list;
+  utils::SignalVector<std::shared_ptr<WifiHost>> wifi_host_list;
+  std::shared_ptr<HandShakeData> wifi_wpa2_handshake_data;
 
   TaskWatcher task_wacher_;
 };

@@ -17,6 +17,7 @@
 #include "PayloadLayer.h"
 
 #include "utils/logger.hpp"
+#include "utils/signal-vector.hpp"
 #include "core/task/task.hpp"
 #include "core/data-holders/wifi.hpp"
 
@@ -30,10 +31,10 @@ struct VlanHoppingCookie {
   int outer_id;
 };
 struct WifiApScanningCookie {
-  std::vector<WifiAp> *ap_list;
+  ashk::utils::SignalVector<std::shared_ptr<WifiAp>> *ap_list;
 };
 struct WifiHostScanningCookie {
-  std::vector<std::shared_ptr<WifiHost>> *host_list;
+  ashk::utils::SignalVector<std::shared_ptr<WifiHost>> *host_list;
 };
 struct MITMForwardingCookie {
   pcpp::IPv4Address victim_ip;

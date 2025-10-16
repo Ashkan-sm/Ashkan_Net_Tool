@@ -61,9 +61,12 @@ public:
     void Draw() override;
 };
 class WIFIAttackWindow  : public ISubWindow{
-public:
-    explicit WIFIAttackWindow(ClientInterface *core);
-    void Draw() override;
+ public:
+  explicit WIFIAttackWindow(ClientInterface *core);
+  void Draw() override;
+ private:
+  std::vector<std::string> wifi_ap_list;
+  std::vector<std::string> wifi_host_list;
 };
 
 #endif //ASHKANTOOL_SUB_WINDOW_HPP

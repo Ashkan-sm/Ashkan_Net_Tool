@@ -210,8 +210,7 @@ void WIFIAttackWindow::Draw() {
 
     std::string device= DrawInterfaceWidget();
 
-    static std::vector<WifiAp> ap_list;
-    if (ImGui::Button("detect networks")){ core_->StartDetectingWifiAps(device, ap_list);}
+    if (ImGui::Button("detect networks")){ core_->StartDetectingWifiAps(device,wifi_ap_list);}
 
     static auto selectedAp=new WifiAp("None");
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_None;
@@ -219,9 +218,9 @@ void WIFIAttackWindow::Draw() {
     ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
     ImGui::BeginChild("ApListChildWindow", ImVec2(0, 180), ImGuiChildFlags_Borders, window_flags);
 
-    for(auto &i :ap_list){
-        if (ImGui::Button((i.e_ssid+" ("+i.b_ssid.toString()+")").c_str())) {
-            selectedAp=&i;
+    for(auto &i :wifi_ap_list){
+        if (ImGui::Button(i.c_str())){
+
         }
     }
     ImGui::EndChild();
@@ -231,30 +230,29 @@ void WIFIAttackWindow::Draw() {
     ImGui::Text("selected access point: %s", selectedAp->e_ssid.c_str());
 
 
-    static std::vector<std::shared_ptr<WifiHost>> host_list{std::make_unique<WifiHost>(pcpp::MacAddress::Broadcast)};
     if (ImGui::Button("detect hosts")){
-      core_->StartDetectingWifiHosts(device, host_list);
+      core_->StartDetectingWifiHosts(device, wifi_host_list);
     }
     ImGui::SameLine();
     static bool select_hosts=false;
     ImGui::Checkbox("Select All",&select_hosts);
     if(select_hosts) {
-        for (auto &i: host_list) {
-            i->is_selected = true;
+        for (auto &i: wifi_host_list) {
+
         }
     }
 
     ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
     ImGui::BeginChild("ApHostsChildWindow", ImVec2(0, 180), ImGuiChildFlags_Borders, window_flags);
 
-    for(auto &i :host_list){
-        ImGui::Checkbox(i->mac.toString().c_str(),&i->is_selected);
+    for(auto &i :wifi_host_list){
+//        ImGui::Checkbox(i,&i->is_selected);
     }
     ImGui::EndChild();
     ImGui::PopStyleVar();
 
     if (ImGui::Button("Start Deauthentication")){
-      core_->StartSendingDeauthPackets(device, selectedAp, host_list);
+      core_->StartSendingDeauthPackets(device, selectedAp->e_ssid, wifi_host_list);
     }
     static std::shared_ptr<HandShakeData> hand_shake_data;
     if (ImGui::Button("Capture WPA2 Handshake")){
@@ -263,12 +261,12 @@ void WIFIAttackWindow::Draw() {
         }
         else {
             hand_shake_data = std::make_unique<HandShakeData>(selectedAp);
-          core_->StartWpa2HandshakeCapturing(device, hand_shake_data);
+//          core_->StartWpa2HandshakeCapturing(device, hand_shake_data);
         }
     }
     if (ImGui::Button("CRACK PASSWORD")){
         if(hand_shake_data && hand_shake_data->got_msg_2){
-          core_->StartPasswordCracking(device, hand_shake_data);
+//          core_->StartPasswordCracking(device, hand_shake_data);
         }
         else{
           ashk::utils::Logger::getInstance().Log("no HandShake data available\n");

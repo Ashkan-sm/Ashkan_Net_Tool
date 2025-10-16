@@ -148,15 +148,14 @@ std::string ashk::ModelInterface::GetTaskData(const std::string &task_id, tasks_
 //  return core_.Tasks()[task_id_int]->GetData(data_id);
 }
 
-void ashk::ModelInterface::StartDetectingWifiAps(const std::string &iface_name, std::vector<WifiAp> &ap_list) {
+void ashk::ModelInterface::StartDetectingWifiAps(const std::string &iface_name) {
 
-  core_.StartDetectingWifiAps(iface_name, ap_list);
+  core_.StartDetectingWifiAps(iface_name);
 
 }
 
-void ashk::ModelInterface::StartDetectingWifiHosts(const std::string &iface_name,
-                                                   std::vector<std::shared_ptr<WifiHost>> &host_list) {
-  core_.StartDetectingWifiHosts(iface_name, host_list);
+void ashk::ModelInterface::StartDetectingWifiHosts(const std::string &iface_name) {
+  core_.StartDetectingWifiHosts(iface_name);
 }
 
 std::string ashk::ModelInterface::GetInterfaceNmae() {
@@ -164,20 +163,27 @@ std::string ashk::ModelInterface::GetInterfaceNmae() {
 }
 
 void ashk::ModelInterface::StartSendingDeauthPackets(const std::string &iface_name,
-                                                     WifiAp *wifi_ap,
-                                                     std::vector<std::shared_ptr<WifiHost>> &host_list) {
-  core_.StartSendingDeauthPackets(iface_name, wifi_ap, host_list);
+                                                     WifiAp* wifi_ap) {
+  core_.StartSendingDeauthPackets(iface_name,wifi_ap);
 }
 
 void ashk::ModelInterface::StartPasswordCracking(const std::string &iface_name,
                                                  std::shared_ptr<HandShakeData> handshake_data) {
-  core_.StartPasswordCracking(iface_name, std::move(handshake_data));
+  core_.StartPasswordCracking(iface_name);
 }
 
 void ashk::ModelInterface::StartWpa2HandshakeCapturing(const std::string &iface_name,
                                                        std::shared_ptr<HandShakeData> handshake_data) {
-  core_.StartWpa2HandshakeCapturing(iface_name, std::move(handshake_data));
+  core_.StartWpa2HandshakeCapturing(iface_name);
 }
 void ashk::ModelInterface::WaitTasksChange() {
   core_.WaitTaskChange();
+}
+ashk::utils::SignalVector<std::shared_ptr<WifiAp>>&
+ashk::ModelInterface::getWifiApList() {
+  return core_.getWifiApList();
+}
+ashk::utils::SignalVector<std::shared_ptr<WifiHost>>&
+ashk::ModelInterface::getWifiHostList() {
+  return core_.getWifiHostList();
 }

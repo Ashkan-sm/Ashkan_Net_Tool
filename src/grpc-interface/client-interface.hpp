@@ -31,15 +31,11 @@ class ClientInterface {
                            const std::string &gateway_ip_str,
                            const std::string &victim_mac_str,
                            const std::string &gateway_mac_str);
-  void StartDetectingWifiAps(const std::string &iface_ip_str, std::vector<WifiAp> &ap_list);
-  void StartDetectingWifiHosts(const std::string &iface_ip_name_str,
-                               std::vector<std::shared_ptr<WifiHost>> &host_list);
-  void StartSendingDeauthPackets(const std::string &iface_ip_name_str,
-                                 WifiAp *wifi_ap,
-                                 std::vector<std::shared_ptr<WifiHost>> &host_list);
-  void StartPasswordCracking(const std::string &iface_ip_name_str, std::shared_ptr<HandShakeData> handshake_data);
-  void StartWpa2HandshakeCapturing(const std::string &iface_ip_name_str,
-                                   std::shared_ptr<HandShakeData> handshake_data);
+  void StartDetectingWifiAps(const std::string &iface_ip_str,std::vector<std::string>& wifi_ap_list);
+  void StartDetectingWifiHosts(const std::string &iface_ip_name_str,std::vector<std::string>& wifi_host_list);
+  void StartSendingDeauthPackets(const std::string &iface_ip_name_str,std::string selected_ap,std::vector<std::string>& wifi_host_list);
+  void StartPasswordCracking(const std::string &iface_ip_name_str);
+  void StartWpa2HandshakeCapturing(const std::string &iface_ip_name_str);
 
   void AddLoggerMethod(const std::function<void(const std::string &)> &method);
   void GetRunningTasks(std::vector<int>& running_tasks);

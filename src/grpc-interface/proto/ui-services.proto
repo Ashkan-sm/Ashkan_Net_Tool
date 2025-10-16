@@ -10,7 +10,7 @@ service UiServie {
   rpc StartDtpNegotiation(StartDtpNegotiationRequestType) returns (StartDtpNegotiationResponseType) {}
   rpc StartDtpDomainExtraction(StartDtpDomainExtractionRequestType) returns (StartDtpDomainExtractionResponseType) {}
   rpc StartMitmForwarding(StartMitmForwardingRequestType) returns (StartMitmForwardingResponseType) {}
-  rpc StartDetectingWifiAps(StartDetectingWifiApsRequestType) returns (StartDetectingWifiApsResponseType) {}
+  rpc StartDetectingWifiAps(StartDetectingWifiApsRequestType) returns (stream StartDetectingWifiApsResponseType) {}
   rpc StartDetectingWifiHosts(StartDetectingWifiHostsRequestType) returns (StartDetectingWifiHostsResponseType) {}
   rpc StartSendingDeauthPackets(StartSendingDeauthPacketsRequestType) returns (StartSendingDeauthPacketsResponseType) {}
   rpc StartPasswordCracking(StartPasswordCrackingRequestType) returns (StartPasswordCrackingResponseType) {}

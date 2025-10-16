@@ -3,6 +3,8 @@ set(CMAKE_CXX_STANDARD 20)
 add_library(utils STATIC
         logger.cpp
         net-utils.cpp
+        signal-vector.cpp
+        signal-vector.hpp
 )
 
 target_include_directories(utils PUBLIC ${CMAKE_SOURCE_DIR}/src)

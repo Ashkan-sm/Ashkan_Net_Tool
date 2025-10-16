@@ -7,6 +7,7 @@
 
 #include "ui-services.grpc.pb.h"
 #include "core/interface.hpp"
+#include "utils/signal-vector.hpp"
 
 class Services final : public UiServie::Service {
  public:
@@ -58,7 +59,8 @@ class Services final : public UiServie::Service {
   grpc::Status StartDetectingWifiAps(
       ::grpc::ServerContext* context,
       const ::StartDetectingWifiApsRequestType* request,
-      ::StartDetectingWifiApsResponseType* response) override;
+      ::grpc::ServerWriter<::StartDetectingWifiApsResponseType>* writer)
+      override;
   grpc::Status StartPasswordCracking(
       ::grpc::ServerContext* context,
       const ::StartPasswordCrackingRequestType* request,

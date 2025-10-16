@@ -15,13 +15,13 @@ class WifiApScanningTask : public Task {
  public:
   explicit WifiApScanningTask(pcpp::PcapLiveDevice *dev,
                               std::string iface_name_or_ip,
-                              std::vector<WifiAp> &ap_list);
+                              utils::SignalVector<std::shared_ptr<WifiAp>> &ap_list);
   std::string GetData(tasks_data_id data_id) override;
  private:
   void Exec_() override;
   pcpp::PcapLiveDevice *dev_ = nullptr;
   std::string iface_name_or_ip_;
-  std::vector<WifiAp> *ap_list_;
+  ashk::utils::SignalVector<std::shared_ptr<WifiAp>> *ap_list_;
   CaptureWrapper &capture_wrapper_ = CaptureWrapper::getInstance();
 
 };

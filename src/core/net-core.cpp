@@ -119,8 +119,8 @@ void ashk::NetCore::StartDtpDomainExtraction(pcpp::IPv4Address iface_ip, std::st
 
 }
 
-void ashk::NetCore::StartDetectingWifiAps(std::string iface_name_or_ip, std::vector<WifiAp> &ap_list) {
-  task_wacher_.AddAndStartTask(std::make_unique<tasks::WifiApScanningTask>(dev_, iface_name_or_ip, ap_list));
+void ashk::NetCore::StartDetectingWifiAps(std::string iface_name_or_ip) {
+  task_wacher_.AddAndStartTask(std::make_unique<tasks::WifiApScanningTask>(dev_, iface_name_or_ip, wifi_ap_list));
 
 }
 
@@ -129,28 +129,34 @@ std::string ashk::NetCore::InterfaceName() {
     return dev_->getName();
 }
 
-void ashk::NetCore::StartDetectingWifiHosts(const std::string &iface_ip_name_str,
-                                            std::vector<std::shared_ptr<WifiHost>> &host_list) {
-  task_wacher_.AddAndStartTask(std::make_unique<tasks::WifiHostScanningTask>(dev_, iface_ip_name_str, host_list));
+void ashk::NetCore::StartDetectingWifiHosts(const std::string &iface_ip_name_str) {
+  task_wacher_.AddAndStartTask(std::make_unique<tasks::WifiHostScanningTask>(dev_, iface_ip_name_str,wifi_host_list));
 
 }
 
 void ashk::NetCore::StartSendingDeauthPackets(const std::string &iface_ip_name_str,
-                                              WifiAp* wifi_ap,
-                                              std::vector<std::shared_ptr<WifiHost>> &host_list) {
-  task_wacher_.AddAndStartTask(std::make_unique<tasks::DeauthPacketSendingTask>(dev_, iface_ip_name_str, *wifi_ap, host_list));
+                                              WifiAp* wifi_ap) {
+  task_wacher_.AddAndStartTask(std::make_unique<tasks::DeauthPacketSendingTask>(dev_, iface_ip_name_str, *wifi_ap, wifi_host_list));
 
 }
 
-void ashk::NetCore::StartPasswordCracking(const std::string &iface_ip_name_str, std::shared_ptr<HandShakeData> handshake_data) {
- task_wacher_.AddAndStartTask(std::make_unique<tasks::WifiPasswordCrackingTask>(dev_, iface_ip_name_str, handshake_data));
+void ashk::NetCore::StartPasswordCracking(const std::string &iface_ip_name_str) {
+ task_wacher_.AddAndStartTask(std::make_unique<tasks::WifiPasswordCrackingTask>(dev_, iface_ip_name_str, wifi_wpa2_handshake_data));
 }
 
-void ashk::NetCore::StartWpa2HandshakeCapturing(const std::string &iface_ip_name_str, std::shared_ptr<HandShakeData> handshake_data) {
-  task_wacher_.AddAndStartTask(std::make_unique<tasks::WPA2HandShakeCaptureTask>(dev_, iface_ip_name_str, handshake_data));
+void ashk::NetCore::StartWpa2HandshakeCapturing(const std::string &iface_ip_name_str) {
+  task_wacher_.AddAndStartTask(std::make_unique<tasks::WPA2HandShakeCaptureTask>(dev_, iface_ip_name_str, wifi_wpa2_handshake_data));
 
 }
 
 void ashk::NetCore::WaitTaskChange() {
   task_wacher_.WaitChange();
+}
+ashk::utils::SignalVector<std::shared_ptr<WifiAp>>&
+ashk::NetCore::getWifiApList() {
+  return wifi_ap_list;
+}
+ashk::utils::SignalVector<std::shared_ptr<WifiHost>>&
+ashk::NetCore::getWifiHostList() {
+  return wifi_host_list;
 }

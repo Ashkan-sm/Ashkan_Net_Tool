@@ -81,13 +81,7 @@ grpc::Status Services::StartMitmForwarding(
   core_->StartMitmForwarding(request->iface_name(),request->victim_ip(),request->gateway_ip(),request->victim_mac(),request->gateway_mac());
   return grpc::Status::OK;
 }
-grpc::Status Services::StartDetectingWifiAps(
-    ::grpc::ServerContext* context,
-    const ::StartDetectingWifiApsRequestType* request,
-    ::StartDetectingWifiApsResponseType* response) {
-// to be done
-  return grpc::Status::OK;
-}
+
 grpc::Status Services::StartDetectingWifiHosts(
     ::grpc::ServerContext* context,
     const ::StartDetectingWifiHostsRequestType* request,
@@ -155,4 +149,19 @@ grpc::Status Services::ReadLogs(
 
   return grpc::Status::OK;
 }
+grpc::Status Services::StartDetectingWifiAps(
+    ::grpc::ServerContext* context,
+    const ::StartDetectingWifiApsRequestType* request,
+    ::grpc::ServerWriter<::StartDetectingWifiApsResponseType>* writer) {
 
+  while(!context->IsCancelled()) {
+    StartDetectingWifiApsResponseType Aps;
+    for (auto i : core_->getWifiApList()) {
+      Aps.add_ap_list(i->e_ssid);
+    }
+    writer->Write(Aps);
+    core_->getWifiApList().WaitChange();
+
+  }
+  return grpc::Status::OK;
+}

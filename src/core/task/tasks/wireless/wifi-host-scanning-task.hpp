@@ -12,18 +12,20 @@
 #include "core/packet-receiver/packet-receiver.hpp"
 #include "core/capture-wrapper.hpp"
 
+#include "utils/signal-vector.hpp"
+
 namespace ashk::tasks {
 class WifiHostScanningTask : public Task {
  public:
   explicit WifiHostScanningTask(pcpp::PcapLiveDevice *dev,
                                 std::string iface_name_or_ip,
-                                std::vector<std::shared_ptr<WifiHost>> &host_list);
+                                utils::SignalVector<std::shared_ptr<WifiHost>> &host_list);
   std::string GetData(tasks_data_id data_id) override;
  private:
   void Exec_() override;
   pcpp::PcapLiveDevice *dev_ = nullptr;
   std::string iface_name_or_ip_;
-  std::vector<std::shared_ptr<WifiHost>> *host_list_;
+  utils::SignalVector<std::shared_ptr<WifiHost>> *host_list_;
   CaptureWrapper &capture_wrapper_ = CaptureWrapper::getInstance();
 
 };
