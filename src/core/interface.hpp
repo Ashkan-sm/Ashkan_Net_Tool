@@ -39,10 +39,9 @@ class ModelInterface {
   int StartDetectingWifiAps(const std::string &iface_name);
   int StartDetectingWifiHosts(const std::string &iface_name);
   void StartSendingDeauthPackets(const std::string &iface_name,
-                                 WifiAp* wifi_ap);
-  void StartPasswordCracking(const std::string &iface_name, std::shared_ptr<HandShakeData> handshake_data);
-  void StartWpa2HandshakeCapturing(const std::string &iface_name,
-                                   std::shared_ptr<HandShakeData> handshake_data);
+                                 WifiAp* wifi_ap,std::vector<std::string> host_mac_list);
+  void StartPasswordCracking(const std::string &iface_name);
+  void StartWpa2HandshakeCapturing(const std::string &iface_name,std::string selected_ap);
 
   void AddLoggerMethod(const std::function<void(const std::string &)> &method);
   std::vector<int> GetRunningTasks();

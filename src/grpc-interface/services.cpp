@@ -86,22 +86,28 @@ grpc::Status Services::StartSendingDeauthPackets(
     ::grpc::ServerContext* context,
     const ::StartSendingDeauthPacketsRequestType* request,
     ::StartSendingDeauthPacketsResponseType* response) {
-//  core_->StartSendingDeauthPackets(request->iface_name(),request->wifi_ap(),request,)
-// to do
+  std::vector<std::string> host_list;
+  host_list.reserve(request->host_list_size());
+  for(int i=0;i<request->host_list_size();i++){
+    host_list.push_back(request->host_list(i));
+  }
+  core_->StartSendingDeauthPackets(request->iface_name(),new WifiAp("",request->wifi_ap()),host_list);
+
   return grpc::Status::OK;
 }
 grpc::Status Services::StartPasswordCracking(
     ::grpc::ServerContext* context,
     const ::StartPasswordCrackingRequestType* request,
     ::StartPasswordCrackingResponseType* response) {
-//  core_->StartPasswordCracking(request->iface_name(),request->handshake_data())
+  core_->StartPasswordCracking(request->iface_name());
   return grpc::Status::OK;
 }
 grpc::Status Services::StartWpa2HandshakeCapturing(
     ::grpc::ServerContext* context,
     const ::StartWpa2HandshakeCapturingRequestType* request,
     ::StartWpa2HandshakeCapturingResponseType* response) {
-//  core_->StartWpa2HandshakeCapturing(request->iface_name());
+
+  core_->StartWpa2HandshakeCapturing(request->iface_name(),request->selected_ap());
   return grpc::Status::OK;
 }
 

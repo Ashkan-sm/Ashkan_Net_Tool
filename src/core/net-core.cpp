@@ -135,8 +135,8 @@ int ashk::NetCore::StartDetectingWifiHosts(const std::string &iface_ip_name_str)
 }
 
 void ashk::NetCore::StartSendingDeauthPackets(const std::string &iface_ip_name_str,
-                                              WifiAp* wifi_ap) {
-  task_wacher_.AddAndStartTask(std::make_unique<tasks::DeauthPacketSendingTask>(dev_, iface_ip_name_str, *wifi_ap, wifi_host_list));
+                                              WifiAp* wifi_ap,std::vector<std::string> host_mac_list) {
+  task_wacher_.AddAndStartTask(std::make_unique<tasks::DeauthPacketSendingTask>(dev_, iface_ip_name_str, *wifi_ap, host_mac_list));
 
 }
 
@@ -144,7 +144,14 @@ void ashk::NetCore::StartPasswordCracking(const std::string &iface_ip_name_str) 
  task_wacher_.AddAndStartTask(std::make_unique<tasks::WifiPasswordCrackingTask>(dev_, iface_ip_name_str, wifi_wpa2_handshake_data));
 }
 
-void ashk::NetCore::StartWpa2HandshakeCapturing(const std::string &iface_ip_name_str) {
+void ashk::NetCore::StartWpa2HandshakeCapturing(const std::string &iface_ip_name_str,std::string selected_ap) {
+
+  if(!wifi_wpa2_handshake_data) {
+    wifi_wpa2_handshake_data = std::make_shared<HandShakeData>();
+  }
+  wifi_wpa2_handshake_data->selected_ap=new WifiAp(" ",selected_ap);
+  wifi_wpa2_handshake_data->got_msg_1= false;
+  wifi_wpa2_handshake_data->got_msg_2= false;
   task_wacher_.AddAndStartTask(std::make_unique<tasks::WPA2HandShakeCaptureTask>(dev_, iface_ip_name_str, wifi_wpa2_handshake_data));
 
 }

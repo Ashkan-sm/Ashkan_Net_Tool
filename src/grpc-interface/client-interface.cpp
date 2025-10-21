@@ -174,6 +174,7 @@ void ClientInterface::StartDetectingWifiHosts(
     grpc::ClientContext context;
     std::unique_ptr<grpc::ClientReader<StartDetectingWifiHostsResponseType>> reader(stub_->StartDetectingWifiHosts(&context, request));
     StartDetectingWifiHostsResponseType response;
+
     while (reader->Read(&response)) {
       wifi_host_list.clear();
       for (auto& i : response.host_list()) wifi_host_list.push_back(ashk::ui::WifiHost(i.mac()));
@@ -185,6 +186,15 @@ void ClientInterface::StartSendingDeauthPackets(
   StartSendingDeauthPacketsRequestType request;
   StartSendingDeauthPacketsResponseType response;
   grpc::ClientContext context;
+
+  for (auto i:wifi_host_list){
+    if (i.is_selected) {
+      request.add_host_list(i.mac);
+    }
+  }
+  request.set_iface_name(iface_ip_name_str);
+  request.set_wifi_ap(selected_ap->mac);
+
   grpc::Status status = stub_->StartSendingDeauthPackets(&context, request, &response);
   if (status.ok()) {
     return;
@@ -194,6 +204,7 @@ void ClientInterface::StartSendingDeauthPackets(
 void ClientInterface::StartPasswordCracking(
     const std::string& iface_name) {
   StartPasswordCrackingRequestType request;
+  request.set_iface_name(iface_name);
   StartPasswordCrackingResponseType response;
   grpc::ClientContext context;
   grpc::Status status = stub_->StartPasswordCracking(&context, request, &response);
@@ -203,9 +214,11 @@ void ClientInterface::StartPasswordCracking(
   std::cerr << "RPC failed: " << status.error_message() << std::endl;
 }
 void ClientInterface::StartWpa2HandshakeCapturing(
-    const std::string& iface_name_name_str) {
+    const std::string& iface_name,std::string selected_ap) {
   StartWpa2HandshakeCapturingRequestType request;
   StartWpa2HandshakeCapturingResponseType response;
+  request.set_iface_name(iface_name);
+  request.set_selected_ap(selected_ap);
   grpc::ClientContext context;
   grpc::Status status = stub_->StartWpa2HandshakeCapturing(&context, request, &response);
   if (status.ok()) {

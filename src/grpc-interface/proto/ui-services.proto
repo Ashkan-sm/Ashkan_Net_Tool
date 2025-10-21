@@ -115,18 +115,16 @@ message StartSendingDeauthPacketsRequestType {
 message StartSendingDeauthPacketsResponseType {}
 
 
-message HandShakeDataType {
 
-}
 message StartPasswordCrackingRequestType {
   string iface_name = 1;
-  HandShakeDataType handshake_data = 2;
+
 }
 message StartPasswordCrackingResponseType {}
 
 message StartWpa2HandshakeCapturingRequestType {
   string iface_name = 1;
-  HandShakeDataType handshake_data = 2;
+  string selected_ap = 2;
 }
 message StartWpa2HandshakeCapturingResponseType {}
 

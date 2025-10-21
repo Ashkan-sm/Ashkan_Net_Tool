@@ -37,7 +37,7 @@ std::string ISubWindow::DrawInterfaceWidget(){
         }
     }
     ImGui::SameLine(); if (ImGui::Button("discover")){
-//        devices= core_->GetInterfaces();
+        devices= core_->GetInterfaces();
     }
     return devices[item_selected_idx];
 }
@@ -261,7 +261,7 @@ void WIFIAttackWindow::Draw() {
           ashk::utils::Logger::getInstance().Log("no AP selected\n");
         }
         else {
-          core_->StartWpa2HandshakeCapturing(device);
+          core_->StartWpa2HandshakeCapturing(device,selectedAp->mac);
         }
     }
     if (ImGui::Button("CRACK PASSWORD")){

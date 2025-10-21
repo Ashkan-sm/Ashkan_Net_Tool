@@ -9,6 +9,7 @@
 
 #include "wpa-2-cracking-thread.hpp"
 #include "core/task/task.hpp"
+#include "iostream"
 
 namespace ashk::tasks {
 class WifiPasswordCrackingTask : public Task {

@@ -68,9 +68,9 @@ class NetCore {
   int StartDetectingWifiAps(std::string iface_name_or_ip);
   int StartDetectingWifiHosts(const std::string &iface_ip_name_str);
   void StartSendingDeauthPackets(const std::string &iface_ip_name_str,
-                                 WifiAp* wifi_ap);
+                                 WifiAp* wifi_ap,std::vector<std::string> host_mac_list);
   void StartPasswordCracking(const std::string &iface_ip_name_str);
-  void StartWpa2HandshakeCapturing(const std::string &iface_ip_name_str);
+  void StartWpa2HandshakeCapturing(const std::string &iface_ip_name_str,std::string selected_ap);
 
   void AddLoggerMethod(const std::function<void(const std::string &)> &method);
   void EndTask(int id);

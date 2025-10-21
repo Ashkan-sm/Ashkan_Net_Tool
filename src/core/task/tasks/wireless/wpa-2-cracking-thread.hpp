@@ -13,6 +13,8 @@
 #include "core/task/task.hpp"
 #include "core/data-holders/wifi.hpp"
 
+#include "iostream"
+
 #define SHA1_DIGEST_LENGTH 20
 namespace ashk::tasks {
 class WPA2CrackingThread : public Task {

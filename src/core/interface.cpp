@@ -163,18 +163,16 @@ std::string ashk::ModelInterface::GetInterfaceNmae() {
 }
 
 void ashk::ModelInterface::StartSendingDeauthPackets(const std::string &iface_name,
-                                                     WifiAp* wifi_ap) {
-  core_.StartSendingDeauthPackets(iface_name,wifi_ap);
+                                                     WifiAp* wifi_ap,std::vector<std::string> host_mac_list) {
+  core_.StartSendingDeauthPackets(iface_name,wifi_ap,host_mac_list);
 }
 
-void ashk::ModelInterface::StartPasswordCracking(const std::string &iface_name,
-                                                 std::shared_ptr<HandShakeData> handshake_data) {
+void ashk::ModelInterface::StartPasswordCracking(const std::string &iface_name) {
   core_.StartPasswordCracking(iface_name);
 }
 
-void ashk::ModelInterface::StartWpa2HandshakeCapturing(const std::string &iface_name,
-                                                       std::shared_ptr<HandShakeData> handshake_data) {
-  core_.StartWpa2HandshakeCapturing(iface_name);
+void ashk::ModelInterface::StartWpa2HandshakeCapturing(const std::string &iface_name,std::string selected_ap) {
+  core_.StartWpa2HandshakeCapturing(iface_name,selected_ap);
 }
 void ashk::ModelInterface::WaitTasksChange() {
   core_.WaitTaskChange();

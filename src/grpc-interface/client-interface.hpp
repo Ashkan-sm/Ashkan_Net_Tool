@@ -37,7 +37,7 @@ class ClientInterface {
   void StartDetectingWifiHosts(const std::string &iface_ip_name_str,std::vector<ashk::ui::WifiHost>& wifi_host_list);
   void StartSendingDeauthPackets(const std::string &iface_ip_name_str, ashk::ui::WifiAp* selected_ap,std::vector<ashk::ui::WifiHost>& wifi_host_list);
   void StartPasswordCracking(const std::string &iface_ip_name_str);
-  void StartWpa2HandshakeCapturing(const std::string &iface_ip_name_str);
+  void StartWpa2HandshakeCapturing(const std::string &iface_ip_name_str,std::string selected_ap);
 
   void AddLoggerMethod(const std::function<void(const std::string &)> &method);
   void GetRunningTasks(std::vector<int>& running_tasks);
